@@ -27,6 +27,8 @@ namespace Zorched.Migrations.SqlServer.Data
         public IDataReader Execute(IDbCommand cmd)
         {
             cmd.CommandText = CreateSql();
+            whereHelper.AppendWhereParameter(cmd, BaseDataOperation.PARAM_FORMAT);
+
             return cmd.ExecuteReader();
         }
 

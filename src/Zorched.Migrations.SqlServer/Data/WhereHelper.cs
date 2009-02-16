@@ -1,3 +1,4 @@
+using System.Data;
 using System.Text;
 
 namespace Zorched.Migrations.SqlServer.Data
@@ -34,6 +35,16 @@ namespace Zorched.Migrations.SqlServer.Data
             get
             {
                 return !string.IsNullOrEmpty(WhereColumn) && null != WhereValue;
+            }
+        }
+
+        public void AppendWhereParameter(IDbCommand command, string format)
+        {
+            if (HasWhereColumn)
+            {
+                var whereParam = command.CreateParameter();
+                whereParam.ParameterName = string.Format(format, WhereColumn);
+                whereParam.Value = WhereValue;
             }
         }
     }

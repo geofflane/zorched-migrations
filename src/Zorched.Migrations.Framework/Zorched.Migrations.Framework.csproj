@@ -48,6 +48,7 @@
     <Compile Include="Column.cs" />
     <Compile Include="ColumnProperty.cs" />
     <Compile Include="Data\IDataOperation.cs" />
+    <Compile Include="Data\IDeleteOperation.cs" />
     <Compile Include="Data\ISelectOperation.cs" />
     <Compile Include="Data\IGenericReaderOperation.cs" />
     <Compile Include="Data\IInsertOperation.cs" />

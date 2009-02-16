@@ -52,6 +52,7 @@
     <Compile Include="AddTableTests.cs" />
     <Compile Include="AddForeignKeyTests.cs" />
     <Compile Include="AddColumnTests.cs" />
+    <Compile Include="DeleteTests.cs" />
     <Compile Include="InsertTests.cs" />
     <Compile Include="DropColumnTests.cs" />
     <Compile Include="DropConstraintTests.cs" />

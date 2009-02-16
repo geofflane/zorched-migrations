@@ -7,6 +7,9 @@ namespace Zorched.Migrations.Framework.Schema
     {
         IList<Column> Columns { get; }
         void AddColumn(Column c);
+        void AddColumn(string name, DbType type);
+        void AddColumn(string name, DbType type, ColumnProperty property);
+        void AddColumn(string name, DbType type, ColumnProperty property, object defaultValue);
         void AddColumn(string name, DbType type, int size, object defaultValue);
         void AddColumn(string name, DbType type, int size);
 

@@ -8,7 +8,7 @@ using Zorched.Migrations.SqlServer.Schema;
 
 namespace Zorched.Migrations.SqlServer
 {
-    [Driver("SQLServer")]
+    [Driver("SQLServer", "System.Data.SqlClient")]
     public class SqlServerDriver : IDriver
     {
         public SqlServerDriver(IDbConnection connection)
@@ -65,6 +65,11 @@ namespace Zorched.Migrations.SqlServer
         public void DropConstraint(Action<IDropConstraintOperation> fn)
         {
             Execute(fn, new SqlDropConstraintOperation());
+        }
+
+        public void Delete(Action<IDeleteOperation> fn)
+        {
+            Execute(fn, new SqlDeleteOperation());
         }
 
         public void Insert(Action<IInsertOperation> fn)

@@ -1,15 +1,11 @@
-using System;
 using System.Data;
 using System.Text;
 using Zorched.Migrations.Framework.Data;
-using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.SqlServer.Data
 {
-    public class SqlUpdateOperation : BaseDataOperation, IUpdateOperation
+    public class SqlDeleteOperation : BaseDataOperation, IDeleteOperation
     {
-        public const string UPDATE_FORMAT = QUOTE_FORMAT + "=" + PARAM_FORMAT;
-
         private readonly WhereHelper whereHelper = new WhereHelper();
 
         public string WhereColumn { get { return whereHelper.WhereColumn; } set { whereHelper.WhereColumn = value; } }
@@ -19,29 +15,16 @@ namespace Zorched.Migrations.SqlServer.Data
         public void Execute(IDbCommand command)
         {
             command.CommandText = CreateSql();
-            Columns.IterateOver(
-                (i, c) =>
-                    {
-                        var param = command.CreateParameter();
-                        param.ParameterName = string.Format(PARAM_FORMAT, c);
-                        param.Value = Values[i] ?? DBNull.Value;
-                        command.Parameters.Add(param);
-                    });
-
             whereHelper.AppendWhereParameter(command, PARAM_FORMAT);
             command.ExecuteNonQuery();
         }
 
         public override string CreateSql()
         {
-            var sb = new StringBuilder("UPDATE ");
+            var sb = new StringBuilder("DELETE FROM ");
             AddTableInfo(sb, SchemaName, TableName);
-            sb.Append(" SET ");
 
-            Columns.IterateOver((i, c) => sb.AppendFormat(UPDATE_FORMAT, c).Append(","));
-            sb.TrimEnd(',');
-
-            whereHelper.AppendWhere(sb, UPDATE_FORMAT);
+            whereHelper.AppendWhere(sb, SqlUpdateOperation.UPDATE_FORMAT);
 
             return sb.ToString();
         }

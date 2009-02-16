@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Text;
 using Zorched.Migrations.Framework.Data;
@@ -15,7 +16,7 @@ namespace Zorched.Migrations.SqlServer.Data
                 {
                     var param = command.CreateParameter();
                     param.ParameterName = string.Format(PARAM_FORMAT, c);
-                    param.Value = Values[i];
+                    param.Value = Values[i] ?? DBNull.Value;
                     command.Parameters.Add(param);
                 });
 

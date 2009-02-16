@@ -31,6 +31,11 @@ namespace Zorched.Migrations.SqlServer.Schema
             Columns.Add(c);
         }
 
+        public void AddColumn(string name, DbType type, ColumnProperty property, object defaultValue)
+        {
+            AddColumn(new Column {Name=name, DbType = type, Property = property, DefaultValue = defaultValue});
+        }
+
         public void AddColumn(string name, DbType type, int size, object defaultValue)
         {
             AddColumn(new Column {Name = name, DbType = type, Size = size, DefaultValue = defaultValue});

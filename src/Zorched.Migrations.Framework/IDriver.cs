@@ -15,9 +15,10 @@ namespace Zorched.Migrations.Framework
         void DropColumn(Action<IDropColumnOperation> fn);
         void DropConstraint(Action<IDropConstraintOperation> fn);
 
+        void Delete(Action<IDeleteOperation> fn);
         void Insert(Action<IInsertOperation> fn);
         void Update(Action<IUpdateOperation> fn);
-        IDataReader Select(Action<IGenericReaderOperation> fn);
+        IDataReader Select(Action<ISelectOperation> fn);
 
         void Execute(Action<IGenericOperation> fn);
 
