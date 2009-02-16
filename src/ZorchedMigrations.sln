@@ -5,9 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.Framewor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.Core", "Zorched.Migrations.Core\Zorched.Migrations.Core.csproj", "{1E5BC6C6-86AC-467C-AE56-7DCE1998F0F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.Providers", "Zorched.Migrations.Providers\Zorched.Migrations.Providers.csproj", "{35479FAF-CF44-4457-91CD-E5C4FCAC6181}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.Examples", "Zorched.Migrations.Examples\Zorched.Migrations.Examples.csproj", "{F3393A50-D6DE-477A-9EEA-277168AA9844}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.Tests", "Zorched.Migrations.Tests\Zorched.Migrations.Tests.csproj", "{FC2BF658-CD2B-4D48-A43B-2371DD719AB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.SqlServer.Tests", "Zorched.Migrations.SqlServer.Tests\Zorched.Migrations.SqlServer.Tests.csproj", "{2E5703EF-2E1E-4276-9CDE-46065F9F3AAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zorched.Migrations.SqlServer", "Zorched.Migrations.SqlServer\Zorched.Migrations.SqlServer.csproj", "{35479FAF-CF44-4457-91CD-E5C4FCAC6181}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +27,22 @@ Global
 		{1E5BC6C6-86AC-467C-AE56-7DCE1998F0F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E5BC6C6-86AC-467C-AE56-7DCE1998F0F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E5BC6C6-86AC-467C-AE56-7DCE1998F0F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3393A50-D6DE-477A-9EEA-277168AA9844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3393A50-D6DE-477A-9EEA-277168AA9844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3393A50-D6DE-477A-9EEA-277168AA9844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3393A50-D6DE-477A-9EEA-277168AA9844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2BF658-CD2B-4D48-A43B-2371DD719AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2BF658-CD2B-4D48-A43B-2371DD719AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2BF658-CD2B-4D48-A43B-2371DD719AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2BF658-CD2B-4D48-A43B-2371DD719AB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5703EF-2E1E-4276-9CDE-46065F9F3AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5703EF-2E1E-4276-9CDE-46065F9F3AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5703EF-2E1E-4276-9CDE-46065F9F3AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5703EF-2E1E-4276-9CDE-46065F9F3AAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35479FAF-CF44-4457-91CD-E5C4FCAC6181}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

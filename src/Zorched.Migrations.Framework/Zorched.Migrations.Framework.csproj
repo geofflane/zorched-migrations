@@ -47,6 +47,11 @@
   <ItemGroup>
     <Compile Include="Column.cs" />
     <Compile Include="ColumnProperty.cs" />
+    <Compile Include="Data\IDataOperation.cs" />
+    <Compile Include="Data\ISelectOperation.cs" />
+    <Compile Include="Data\IGenericReaderOperation.cs" />
+    <Compile Include="Data\IInsertOperation.cs" />
+    <Compile Include="Data\IUpdateOperation.cs" />
     <Compile Include="DownAttribute.cs" />
     <Compile Include="DriverAttribute.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
@@ -54,16 +59,19 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="IMigrationDirection.cs" />
+    <Compile Include="IOperation.cs" />
     <Compile Include="MigrationAttribute.cs" />
+    <Compile Include="Schema\IAddColumnOperation.cs" />
+    <Compile Include="Schema\IAddForeignKeyOperation.cs" />
     <Compile Include="Schema\IAddTableOperation.cs" />
+    <Compile Include="Schema\IDropColumnOperation.cs" />
+    <Compile Include="Schema\IDropConstraintOperation.cs" />
     <Compile Include="Schema\IDropTableOperation.cs" />
+    <Compile Include="Schema\IGenericOperation.cs" />
     <Compile Include="Schema\ISchemaOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeNames.cs" />
     <Compile Include="UpAttribute.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

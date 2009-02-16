@@ -13,6 +13,15 @@ namespace Zorched.Migrations.Framework.Extensions
             }
         }
 
+        public static void IterateOver<T>(this IEnumerable<T> input, Action<int, T> fn)
+        {
+            int i = 0;
+            foreach (T item in input)
+            {
+                fn(i ++, item);
+            }
+        }
+
         public static IEnumerable<T2> CastAs<T1, T2>(this IEnumerable<T1> input, Func<T1, T2> fn)
         {
             var output = new List<T2>();

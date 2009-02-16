@@ -2,7 +2,7 @@ using System;
 using System.Data;
 using Zorched.Migrations.Framework;
 
-namespace Zorched.Migrations.Providers.SQLServer
+namespace Zorched.Migrations.SqlServer
 {
     public class DbTypeMap
     {
@@ -10,43 +10,47 @@ namespace Zorched.Migrations.Providers.SQLServer
 
         static DbTypeMap()
 	    {
-	        RegisterColumnType(DbType.AnsiStringFixedLength, "CHAR(255)");
-            RegisterColumnType(DbType.AnsiStringFixedLength, 8000, "CHAR($l)");
+	        RegisterColumnType(DbType.AnsiStringFixedLength, "[char](255)");
+            RegisterColumnType(DbType.AnsiStringFixedLength, 8000, "[char]($l)");
 
-            RegisterColumnType(DbType.AnsiString, "VARCHAR(MAX)");
-            RegisterColumnType(DbType.AnsiString, 8000, "VARCHAR($l)");
+            RegisterColumnType(DbType.AnsiString, "[varchar](MAX)");
+            RegisterColumnType(DbType.AnsiString, 8000, "[varchar]($l)");
 
-            RegisterColumnType(DbType.Binary, "IMAGE");
-            RegisterColumnType(DbType.Binary, 8000, "VARBINARY($l)");
+            RegisterColumnType(DbType.Binary, "[image]");
+            RegisterColumnType(DbType.Binary, 8000, "[varbinary]($l)");
             
-            RegisterColumnType(DbType.Boolean, "BIT");
+            RegisterColumnType(DbType.Boolean, "[bit]");
             
-            RegisterColumnType(DbType.Byte, "TINYINT");
+            RegisterColumnType(DbType.Byte, "[tinyint]");
             
-            RegisterColumnType(DbType.Currency, "MONEY");
+            RegisterColumnType(DbType.Currency, "[money]");
             
-            RegisterColumnType(DbType.Date, "DATETIME");
-            RegisterColumnType(DbType.DateTime, "DATETIME");
+            RegisterColumnType(DbType.Date, "[datetime]");
+            RegisterColumnType(DbType.DateTime, "[datetime]");
             
-            RegisterColumnType(DbType.Decimal, "DECIMAL(19,5)");
-            RegisterColumnType(DbType.Decimal, 19, "DECIMAL(19, $l)");
+            RegisterColumnType(DbType.Decimal, "[decimal](19,5)");
+            RegisterColumnType(DbType.Decimal, 19, "[decimal](19, $l)");
             
-            RegisterColumnType(DbType.Double, "DOUBLE PRECISION"); //synonym for FLOAT(53)
+            RegisterColumnType(DbType.Double, "[double precision]"); //synonym for FLOAT(53)
             
-            RegisterColumnType(DbType.Guid, "UNIQUEIDENTIFIER");
+            RegisterColumnType(DbType.Guid, "[uniqueidentifier]");
 
-            RegisterColumnType(DbType.Int16, "SMALLINT");
-            RegisterColumnType(DbType.Int32, "INT");
-            RegisterColumnType(DbType.Int64, "BIGINT");
-            RegisterColumnType(DbType.Single, "REAL"); //synonym for FLOAT(24)
+            RegisterColumnType(DbType.Int16, "[smallint]");
+            RegisterColumnType(DbType.Int32, "[int]");
+            RegisterColumnType(DbType.Int64, "[bigint]");
+            RegisterColumnType(DbType.Single, "[real]"); //synonym for FLOAT(24)
 
-            RegisterColumnType(DbType.StringFixedLength, "NCHAR(255)");
-            RegisterColumnType(DbType.StringFixedLength, 4000, "NCHAR($l)");
+            RegisterColumnType(DbType.StringFixedLength, "[nchar](255)");
+            RegisterColumnType(DbType.StringFixedLength, 4000, "[nchar]($l)");
 
-            RegisterColumnType(DbType.String, "NVARCHAR(MAX)");
-            RegisterColumnType(DbType.String, 4000, "NVARCHAR($l)");
+            RegisterColumnType(DbType.String, "[nvarchar](MAX)");
+            RegisterColumnType(DbType.String, 4000, "[nvarchar]($l)");
 
-            RegisterColumnType(DbType.Time, "DATETIME");
+            RegisterColumnType(DbType.Time, "[datetime]");
+
+            RegisterColumnType(DbType.Xml, "[xml](255)");
+            RegisterColumnType(DbType.Xml, 8000, "[xml]($l)");
+
         }
 
         /// <summary>
@@ -81,22 +85,12 @@ namespace Zorched.Migrations.Providers.SQLServer
         /// <param name="length"></param>
         public static string GetTypeName(DbType type, int length)
         {
-            return GetTypeName(type, length, 0, 0);
-        }
-
-        /// <summary>
-        /// Get the name of the database type associated with the given 
-        /// </summary>
-        /// <param name="type">The DbType</param>
-        /// <returns>The database type name used by ddl.</returns>
-        /// <param name="length"></param>
-        /// <param name="precision"></param>
-        /// <param name="scale"></param>
-        public static string GetTypeName(DbType type, int length, int precision, int scale)
-        {
-            string resultWithLength = typeNames.Get(type, length, precision, scale);
-            if (resultWithLength != null)
-                return resultWithLength;
+            if (length > 0)
+            {
+                string resultWithLength = typeNames.Get(type, length, 0, 0);
+                if (resultWithLength != null)
+                    return resultWithLength;
+            }
 
             return GetTypeName(type);
         }

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1E5BC6C6-86AC-467C-AE56-7DCE1998F0F4}</ProjectGuid>
+    <ProjectGuid>{35479FAF-CF44-4457-91CD-E5C4FCAC6181}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Zorched.Migrations.Core</RootNamespace>
-    <AssemblyName>Zorched.Migrations.Core</AssemblyName>
+    <RootNamespace>Zorched.Migrations.SqlServer</RootNamespace>
+    <AssemblyName>Zorched.Migrations.SqlServer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,11 +45,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Migrate.cs" />
-    <Compile Include="MigrationLoader.cs" />
-    <Compile Include="Migration.cs" />
+    <Compile Include="Data\BaseDataOperation.cs" />
+    <Compile Include="Data\SqlSelectOperation.cs" />
+    <Compile Include="Data\SqlGenericReaderOperation.cs" />
+    <Compile Include="Data\SqlInsertOperation.cs" />
+    <Compile Include="Data\SqlUpdateOperation.cs" />
+    <Compile Include="Data\WhereHelper.cs" />
+    <Compile Include="DbTypeMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema\BaseSchemaOperation.cs" />
+    <Compile Include="Schema\SqlDropColumnOperation.cs" />
+    <Compile Include="Schema\SqlAddColumnOperation.cs" />
+    <Compile Include="Schema\SqlAddForeignKeyOperation.cs" />
+    <Compile Include="SqlBaseOperation.cs" />
+    <Compile Include="Schema\SqlAddTableOperation.cs" />
+    <Compile Include="Schema\SqlDropConstraintOperation.cs" />
+    <Compile Include="Schema\SqlDropTableOperation.cs" />
+    <Compile Include="Schema\SqlGenericOperation.cs" />
+    <Compile Include="SqlServerDriver.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zorched.Migrations.Framework\Zorched.Migrations.Framework.csproj">

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -5,18 +6,16 @@ using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Extensions;
 using Zorched.Migrations.Framework.Schema;
 
-namespace Zorched.Migrations.Providers.SQLServer.Schema
+namespace Zorched.Migrations.SqlServer.Schema
 {
-    class SqlAddTableOperation : IAddTableOperation
+    public class SqlAddTableOperation : BaseSchemaOperation, IAddTableOperation
     {
-
-        private const string QUOTE_FORMAT = "[{0}]";
 
         private const string PK_FORMAT = QUOTE_FORMAT + " ASC";
         private const string PK_BLOCK =
 @"PRIMARY KEY CLUSTERED 
 (
-	{0}
+{0}
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON)";
 
         public SqlAddTableOperation()
@@ -25,9 +24,7 @@ namespace Zorched.Migrations.Providers.SQLServer.Schema
             Columns = new List<Column>();
         }
 
-        public string SchemaName { get; set; }
-        public string TableName { get; set; }
-        public IList<Column> Columns { get; set; }
+        public IList<Column> Columns { get; private set; }
 
         public void AddColumn(Column c)
         {
@@ -39,21 +36,39 @@ namespace Zorched.Migrations.Providers.SQLServer.Schema
             AddColumn(new Column {Name = name, DbType = type, Size = size, DefaultValue = defaultValue});
         }
 
+        public void AddColumn(string name, DbType type)
+        {
+            AddColumn(new Column { Name = name, DbType = type });
+        }
+
+        public void AddColumn(string name, DbType type, ColumnProperty prop)
+        {
+            AddColumn(new Column { Name = name, DbType = type, Property = prop });
+        }
+
         public void AddColumn(string name, DbType type, int size)
         {
             AddColumn(new Column { Name = name, DbType = type, Size = size });
         }
 
-        public void Execute(IDbCommand command)
+        public void AddColumn(string name, DbType type, int size, ColumnProperty prop)
         {
+            AddColumn(new Column { Name = name, DbType = type, Size = size, Property = prop });
+        }
+
+        public override string CreateSql()
+        {
+            if (string.IsNullOrEmpty(TableName))
+                throw new ArgumentException("TableName must be set.");
+
             var sb = new StringBuilder("CREATE TABLE ");
-            if (!string.IsNullOrEmpty(SchemaName))
-                sb.AppendFormat(QUOTE_FORMAT, SchemaName).Append(".");
+            AddTableInfo(sb, SchemaName, TableName);
 
-            sb.AppendFormat(QUOTE_FORMAT, TableName).AppendLine(" (");
+            sb.AppendLine("(");
             AddColumns(sb);
-            sb.AppendLine(")");
+            sb.Append(")");
 
+            return sb.ToString();
         }
 
         private void AddColumns(StringBuilder sb)
@@ -63,32 +78,24 @@ namespace Zorched.Migrations.Providers.SQLServer.Schema
             Columns.ForEach(
                 c =>
                     {
-                        sb.AppendFormat(QUOTE_FORMAT, c.Name);
-                        sb.Append(" ").Append(DbTypeMap.GetTypeName(c.DbType, c.Size));
-                        if (c.Property.Match(ColumnProperty.Identity))
-                        {
-                            sb.Append(" IDENTITY(1,1)");
-                        }
-                        sb.Append(c.Property.Match(ColumnProperty.Null) ? " NULL" : " NOT NULL");
-                        if (null != c.DefaultValue)
-                        {
-                            sb.Append("DEFAULT ").Append(c.DefaultValue);
-                        }
+                        AddColumnDefinition(sb, c);
                         sb.AppendLine(",");
 
                         if (c.Property.Match(ColumnProperty.PrimaryKey))
+                        {
                             pks.Add(c);
+                        }
                     });
 
             if (0 != pks.Count)
             {
                 var pksSb = new StringBuilder();
                 pks.ForEach(c => pksSb.AppendFormat(PK_FORMAT, c.Name).AppendLine(","));
-                pksSb.TrimEnd(',');
+                pksSb.TrimEnd().TrimEnd(',');
                 sb.AppendFormat(PK_BLOCK, pksSb).AppendLine();
             }
 
-            sb.TrimEnd(',');
+            sb.TrimEnd().TrimEnd(',');
         }
     }
 }

@@ -53,5 +53,14 @@ namespace Zorched.Migrations.Framework.Extensions
             }
             return sb;
         }
+
+        public static StringBuilder TrimEnd(this StringBuilder sb)
+        {
+            while (char.IsWhiteSpace(sb[sb.Length - 1]))
+            {
+                sb.Remove(sb.Length - 1, 1);
+            }
+            return sb;
+        }
     }
 }
