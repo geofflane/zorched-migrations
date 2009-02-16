@@ -41,7 +41,7 @@ namespace Zorched.Migrations.SqlServer.Data
             } 
             else
             {
-                Columns.ForEach(c => sb.AppendFormat(QUOTE_FORMAT, c).Append(","));
+                Columns.ForEach(c => sb.Append(c).Append(","));
                 sb.TrimEnd(',');
             }
             sb.Append(" FROM ");

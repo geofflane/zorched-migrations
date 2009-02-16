@@ -27,7 +27,7 @@ namespace Zorched.Migrations.SqlServer.Tests
             var op = new SqlSelectOperation { SchemaName = "dbo", TableName = "Foo" };
             op.Columns.Add("Id");
             op.Columns.Add("Bar");
-            Assert.AreEqual("SELECT [Id],[Bar] FROM [dbo].[Foo]", op.CreateSql());
+            Assert.AreEqual("SELECT Id,Bar FROM [dbo].[Foo]", op.CreateSql());
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Zorched.Migrations.SqlServer.Tests
             op.WhereColumn = "Baz";
             op.WhereValue = "123";
 
-            Assert.AreEqual("SELECT [Id],[Bar] FROM [dbo].[Foo] WHERE [Baz]=@Baz", op.CreateSql());
+            Assert.AreEqual("SELECT Id,Bar FROM [dbo].[Foo] WHERE [Baz]=@Baz", op.CreateSql());
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Zorched.Migrations.SqlServer.Tests
             op.Columns.Add("Bar");
             op.WhereClause = "Baz=123";
 
-            Assert.AreEqual("SELECT [Id],[Bar] FROM [dbo].[Foo] WHERE  Baz=123", op.CreateSql());
+            Assert.AreEqual("SELECT Id,Bar FROM [dbo].[Foo] WHERE  Baz=123", op.CreateSql());
         }
     }
 }

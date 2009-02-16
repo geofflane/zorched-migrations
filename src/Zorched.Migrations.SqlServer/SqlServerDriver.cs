@@ -82,9 +82,9 @@ namespace Zorched.Migrations.SqlServer
             Execute(fn, new SqlUpdateOperation());
         }
 
-        public IDataReader Select(Action<IGenericReaderOperation> fn)
+        public IDataReader Select(Action<ISelectOperation> fn)
         {
-            var op = new SqlGenericReaderOperation();
+            var op = new SqlSelectOperation();
             var cmd = Connection.CreateCommand();
             try
             {

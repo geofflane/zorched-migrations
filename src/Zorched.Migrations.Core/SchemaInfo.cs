@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using Zorched.Migrations.Framework;
 
@@ -25,17 +26,36 @@ namespace Zorched.Migrations.Core
                 });
         }
 
-        public long LastMigration()
+        public long LastAppliedMigration()
         {
             var reader = Driver.Select(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
-                    op.Columns.Add("MAX(VERSION)");
+                    op.Columns.Add("MAX(Version)");
                 });
 
             return reader.Read() ? reader.GetInt64(0) : 0;
         }
+
+        public List<long> AppliedMigrations()
+        {
+            var reader = Driver.Select(
+                op =>
+                {
+                    op.TableName = SCHEMA_VERSION_TABLE;
+                    op.Columns.Add("Version");
+                });
+
+            var versions = new List<long>();
+            while (reader.Read())
+            {
+                versions.Add(reader.GetInt64(0));
+            }
+
+            return versions;
+        }
+
 
         public void InsertSchemaVersion(long version)
         {
