@@ -7,6 +7,8 @@ namespace Zorched.Migrations.Framework
 {
     public interface IDriver
     {
+        IDbConnection Connection { get; }
+
         void AddColumn(Action<IAddColumnOperation> fn);
         void AddForeignKey(Action<IAddForeignKeyOperation> fn);
         void AddTable(Action<IAddTableOperation> fn);
@@ -21,7 +23,12 @@ namespace Zorched.Migrations.Framework
         IDataReader Select(Action<ISelectOperation> fn);
 
         void Execute(Action<IGenericOperation> fn);
-
         void Execute(IOperation op);
+
+        void BeforeUp(long version);
+        void BeforeDown(long version);
+
+        void AfterUp(long version);
+        void AfterDown(long version);
     }
 }

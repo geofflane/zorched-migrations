@@ -31,6 +31,22 @@ namespace Zorched.Migrations.SqlServer
             }
         }
 
+        public void BeforeUp(long version)
+        {
+        }
+
+        public void BeforeDown(long version)
+        {
+        }
+
+        public void AfterUp(long version)
+        {
+        }
+
+        public void AfterDown(long version)
+        {
+        }
+
         public void Execute<T>(Action<T> fn, T op) where T : IOperation
         {
             fn(op);

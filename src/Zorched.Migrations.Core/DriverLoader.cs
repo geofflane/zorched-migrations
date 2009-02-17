@@ -9,14 +9,19 @@ namespace Zorched.Migrations.Core
     public class DriverLoader
     {
 
-        public Assembly GetAssembly(string assemblyName)
+        public Assembly GetAssemblyByName(string assemblyName)
         {
             return Assembly.Load(new AssemblyName(assemblyName));
         }
 
-        public IDriver GetDriver(string assemblyName, string connectionString)
+        public Assembly GetAssemblyFromPath(string assemblyPath)
         {
-            var assembly = GetAssembly(assemblyName);
+            return Assembly.LoadFile(assemblyPath);
+        }
+
+        public IDriver GetDriver(string assemblyPath, string connectionString)
+        {
+            var assembly = GetAssemblyFromPath(assemblyPath);
             return GetDriver(assembly, connectionString);
         }
 

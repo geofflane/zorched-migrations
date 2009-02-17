@@ -25,16 +25,38 @@ namespace Zorched.Migrations.Core
             get { return MigrationAttribute.GetVersion(type); }
         }
 
-        public void Up(IDriver driver)
+        public void Up(IDriver driver, SchemaInfo schemaInfo)
         {
-            var methods = GetUpMethods(migration.GetType());
-            methods.ForEach(method => method.Invoke(migration, new[] { driver }));
+            using (var trans = driver.Connection.BeginTransaction())
+            {
+                driver.BeforeUp(Version);
+
+                var methods = GetUpMethods(migration.GetType());
+                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+
+                driver.AfterUp(Version);
+
+                schemaInfo.InsertSchemaVersion(Version);
+
+                trans.Commit();
+            }
         }
 
-        public void Down(IDriver driver)
+        public void Down(IDriver driver, SchemaInfo schemaInfo)
         {
-            var methods = GetDownMethods(migration.GetType());
-            methods.ForEach(method => method.Invoke(migration, new[] { driver }));
+            using (var trans = driver.Connection.BeginTransaction())
+            {
+                driver.BeforeDown(Version);
+
+                var methods = GetDownMethods(migration.GetType());
+                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+
+                driver.AfterDown(Version);
+
+                schemaInfo.DeleteSchemaVersion(Version);
+
+                trans.Commit();
+            }
         }
 
         public IEnumerable<MethodInfo> GetUpMethods(Type t)

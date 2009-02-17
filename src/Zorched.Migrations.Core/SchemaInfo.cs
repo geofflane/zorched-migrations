@@ -26,7 +26,7 @@ namespace Zorched.Migrations.Core
                 });
         }
 
-        public long LastAppliedMigration()
+        public long CurrentSchemaVersion()
         {
             var reader = Driver.Select(
                 op =>
