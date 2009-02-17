@@ -1,11 +1,29 @@
 
 = General
+Extend TransactionalMigration from Migration in core
+Add attribute to mark Up/Down method as non-transactional and use base Migration
+
+== Think UnitTesting Framework:
+   Expose IDriver in a Setup Attribute marked class/method
+   Allow user to override type for a given operation with their own type
+   Allow user to register custom types for easy access
+   Get an instance for an interface type
+
+Look at Windsor for managing dependencies?
 Work on client interface to see if it can be improved
+
+Change CreateSql methods to ToString methods?
+Provide IDriver interface for just generating the script without running against the DB
+
 Create attribute to denote an Up/Down method should only be run for a certain Driver type.
 Generate schema from existing database
 Dump schema changes to stdout/file
 Dry run to find out what changes will be applied
 Logging?
+
+= MSBuild
+ScriptFile to output the scripts that were run
+Dryrun
 
 = Operations
 Rename table
@@ -14,10 +32,10 @@ Change column
 Add check constraint
 Add unique constraint
 
-Schema inspections
-- Column exists
-- Table exists
-- Constraint exists
-- List of tables
+== Schema inspections
+  Column exists
+  Table exists
+  Constraint exists
+  List of tables
 
 
