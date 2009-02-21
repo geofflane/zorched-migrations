@@ -61,7 +61,7 @@ namespace Zorched.Migrations.SqlServer.Schema
             AddColumn(new Column { Name = name, DbType = type, Size = size, Property = prop });
         }
 
-        public override string CreateSql()
+        public override string ToString()
         {
             if (string.IsNullOrEmpty(TableName))
                 throw new ArgumentException("TableName must be set.");

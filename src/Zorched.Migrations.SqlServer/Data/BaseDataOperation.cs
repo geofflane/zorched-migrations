@@ -19,6 +19,5 @@ namespace Zorched.Migrations.SqlServer.Data
         public IList<string> Columns { get; protected set; }
         public IList<object> Values { get; protected set; }
 
-        public abstract string CreateSql();
     }
 }

@@ -49,8 +49,8 @@
     <Compile Include="ColumnProperty.cs" />
     <Compile Include="Data\IDataOperation.cs" />
     <Compile Include="Data\IDeleteOperation.cs" />
+    <Compile Include="Data\IReaderOperation.cs" />
     <Compile Include="Data\ISelectOperation.cs" />
-    <Compile Include="Data\IGenericReaderOperation.cs" />
     <Compile Include="Data\IInsertOperation.cs" />
     <Compile Include="Data\IUpdateOperation.cs" />
     <Compile Include="DownAttribute.cs" />
@@ -60,6 +60,8 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="IMigrationDirection.cs" />
+    <Compile Include="IOperationRepository.cs" />
+    <Compile Include="OnlyWhenDriverAttribute.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="MigrationAttribute.cs" />
     <Compile Include="Schema\IAddColumnOperation.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Schema\IGenericOperation.cs" />
     <Compile Include="Schema\ISchemaOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetupAttribute.cs" />
     <Compile Include="TypeNames.cs" />
     <Compile Include="UpAttribute.cs" />
   </ItemGroup>

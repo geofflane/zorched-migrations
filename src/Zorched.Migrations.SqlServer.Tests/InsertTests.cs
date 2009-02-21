@@ -13,7 +13,7 @@ namespace Zorched.Migrations.SqlServer.Tests
             var op = new SqlInsertOperation() { SchemaName = "dbo", TableName = "Foo" };
             op.Columns.Add("var");
             op.Columns.Add("var2");
-            Assert.AreEqual("INSERT INTO [dbo].[Foo] ([var],[var2]) VALUES (@var,@var2)", op.CreateSql());
+            Assert.AreEqual("INSERT INTO [dbo].[Foo] ([var],[var2]) VALUES (@var,@var2)", op.ToString());
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace Zorched.Migrations.SqlServer.Tests
             var op = new SqlInsertOperation { SchemaName = null, TableName = "Foo" };
             op.Columns.Add("var");
             op.Columns.Add("var2");
-            Assert.AreEqual("INSERT INTO [Foo] ([var],[var2]) VALUES (@var,@var2)", op.CreateSql());
+            Assert.AreEqual("INSERT INTO [Foo] ([var],[var2]) VALUES (@var,@var2)", op.ToString());
         }
     }
 }

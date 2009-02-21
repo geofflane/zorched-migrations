@@ -45,13 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISchemaInfo.cs" />
     <Compile Include="DriverLoader.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IMigration.cs" />
     <Compile Include="MigrationLoader.cs" />
     <Compile Include="Migration.cs" />
     <Compile Include="Migrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemaInfo.cs" />
+    <Compile Include="TransactionalMigration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zorched.Migrations.Framework\Zorched.Migrations.Framework.csproj">

@@ -17,7 +17,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         public void add_table_throws_exception_without_tablename()
         {
             var op = new SqlAddColumnOperation { SchemaName = "dbo", TableName = null, Column = new Column()};
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -26,7 +26,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         public void add_table_throws_exception_without_column()
         {
             var op = new SqlAddColumnOperation { SchemaName = "dbo", TableName = "Foo"};
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -45,7 +45,7 @@ namespace Zorched.Migrations.SqlServer.Tests
                                          Property = ColumnProperty.NotNull
                                      }
                          };
-            Assert.AreEqual(COLUMN1, op.CreateSql());
+            Assert.AreEqual(COLUMN1, op.ToString());
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Zorched.Migrations.SqlServer.Tests
                         Property = ColumnProperty.PrimaryKeyWithIdentity
                     }
             };
-            Assert.AreEqual(COLUMN2, op.CreateSql());
+            Assert.AreEqual(COLUMN2, op.ToString());
         }
     }
 }

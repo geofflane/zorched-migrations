@@ -28,14 +28,17 @@ namespace Zorched.Migrations.Framework
 
         public static string GetDriverName(Type t)
         {
-            var upAttr = (DriverAttribute)GetCustomAttribute(t, typeof(DriverAttribute), true);
-            return upAttr.Name;
+            return GetAttribute(t).Name;
         }
 
         public static string GetProvider(Type t)
         {
-            var upAttr = (DriverAttribute)GetCustomAttribute(t, typeof(DriverAttribute), true);
-            return upAttr.Provider;
+            return GetAttribute(t).Provider;
+        }
+
+        private static DriverAttribute GetAttribute(Type t)
+        {
+            return (DriverAttribute)GetCustomAttribute(t, typeof(DriverAttribute), true);
         }
     }
 }

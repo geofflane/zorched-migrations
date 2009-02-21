@@ -8,7 +8,7 @@ using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Core
 {
-    public class Migration
+    public class Migration : IMigration
     {
         private readonly object migration;
         private readonly Type type;
@@ -25,50 +25,62 @@ namespace Zorched.Migrations.Core
             get { return MigrationAttribute.GetVersion(type); }
         }
 
-        public void Up(IDriver driver, SchemaInfo schemaInfo)
+        public virtual void Setup(IOperationRepository driver)
         {
-            using (var trans = driver.Connection.BeginTransaction())
+            var method = GetSetupMethod(type);
+            if (null != method)
             {
-                driver.BeforeUp(Version);
-
-                var methods = GetUpMethods(migration.GetType());
-                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
-
-                driver.AfterUp(Version);
-
-                schemaInfo.InsertSchemaVersion(Version);
-
-                trans.Commit();
+                method.Invoke(migration, new []{driver});
             }
         }
 
-        public void Down(IDriver driver, SchemaInfo schemaInfo)
+        public virtual void Up(IDriver driver, ISchemaInfo schemaInfo)
         {
-            using (var trans = driver.Connection.BeginTransaction())
-            {
-                driver.BeforeDown(Version);
+            driver.BeforeUp(Version);
 
-                var methods = GetDownMethods(migration.GetType());
-                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+            var methods = GetUpMethods(migration.GetType(), driver);
+            methods.ForEach(method => method.Invoke(migration, new[] {driver}));
 
-                driver.AfterDown(Version);
+            driver.AfterUp(Version);
 
-                schemaInfo.DeleteSchemaVersion(Version);
-
-                trans.Commit();
-            }
+            schemaInfo.InsertSchemaVersion(Version);
         }
 
-        public IEnumerable<MethodInfo> GetUpMethods(Type t)
+        public virtual void Down(IDriver driver, ISchemaInfo schemaInfo)
+        {
+            driver.BeforeDown(Version);
+
+            var methods = GetDownMethods(migration.GetType(), driver);
+            methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+
+            driver.AfterDown(Version);
+
+            schemaInfo.DeleteSchemaVersion(Version);
+        }
+
+        public MethodInfo GetSetupMethod(Type t)
+        {
+            IEnumerable<MethodInfo> methods = t.GetMethodsWithAttribute(typeof(SetupAttribute));
+            if (null == methods || 0 == methods.ToList().Count)
+                return null;
+
+            return methods.ToList()[0];
+        }
+
+        public IEnumerable<MethodInfo> GetUpMethods(Type t, IDriver driver)
         {
             var methods = t.GetMethodsWithAttribute(typeof (UpAttribute));
-            return methods.OrderBy(mi => UpAttribute.GetOrder(mi));
+            return methods
+                .Where(mi => OnlyWhenDriverAttribute.ShouldRun(mi, driver.DriverName))
+                .OrderBy(mi => UpAttribute.GetOrder(mi));
         }
 
-        public IEnumerable<MethodInfo> GetDownMethods(Type t)
+        public IEnumerable<MethodInfo> GetDownMethods(Type t, IDriver driver)
         {
             var methods = t.GetMethodsWithAttribute(typeof (DownAttribute));
-            return methods.OrderBy(mi => DownAttribute.GetOrder(mi));
+            return methods
+                    .Where(mi => OnlyWhenDriverAttribute.ShouldRun(mi, driver.DriverName))
+                    .OrderBy(mi => DownAttribute.GetOrder(mi));
         }
     }
 }

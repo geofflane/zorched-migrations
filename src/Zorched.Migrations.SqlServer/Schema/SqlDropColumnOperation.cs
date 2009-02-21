@@ -8,7 +8,7 @@ namespace Zorched.Migrations.SqlServer.Schema
     {
         public string ColumnName { get; set; }
 
-        public override string CreateSql()
+        public override string ToString()
         {
             if (string.IsNullOrEmpty(TableName))
                 throw new ArgumentException("TableName must be set.");

@@ -20,7 +20,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         {
             var op = GetFullOp();
             op.TableName = null;
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -30,7 +30,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         {
             var op = GetFullOp();
             op.ConstraintName = null;
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -40,7 +40,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         {
             var op = GetFullOp();
             op.ColumnName = null;
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -50,7 +50,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         {
             var op = GetFullOp();
             op.ReferenceTableName = null;
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -60,7 +60,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         {
             var op = GetFullOp();
             op.ReferenceColumnName = null;
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
 
@@ -68,7 +68,7 @@ namespace Zorched.Migrations.SqlServer.Tests
         public void add_fk_creates_expected_sql_with_schema_and_table()
         {
             var op = GetFullOp();
-            Assert.AreEqual(FK_WITH_SCHEMAS, op.CreateSql());
+            Assert.AreEqual(FK_WITH_SCHEMAS, op.ToString());
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Zorched.Migrations.SqlServer.Tests
                              ReferenceTableName = "Role",
                              ReferenceColumnName = "Id"
                          };
-            Assert.AreEqual(FK_NO_SCHEMAS, op.CreateSql());
+            Assert.AreEqual(FK_NO_SCHEMAS, op.ToString());
         }
 
 

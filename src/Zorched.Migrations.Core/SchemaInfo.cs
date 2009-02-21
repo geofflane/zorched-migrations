@@ -4,7 +4,7 @@ using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Core
 {
-    public class SchemaInfo
+    public class SchemaInfo : ISchemaInfo
     {
         public const string SCHEMA_VERSION_TABLE = "SchemaInfo";
 

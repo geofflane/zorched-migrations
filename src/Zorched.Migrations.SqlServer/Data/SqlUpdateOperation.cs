@@ -18,7 +18,7 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public void Execute(IDbCommand command)
         {
-            command.CommandText = CreateSql();
+            command.CommandText = ToString();
             Columns.IterateOver(
                 (i, c) =>
                     {
@@ -32,7 +32,7 @@ namespace Zorched.Migrations.SqlServer.Data
             command.ExecuteNonQuery();
         }
 
-        public override string CreateSql()
+        public override string ToString()
         {
             var sb = new StringBuilder("UPDATE ");
             AddTableInfo(sb, SchemaName, TableName);

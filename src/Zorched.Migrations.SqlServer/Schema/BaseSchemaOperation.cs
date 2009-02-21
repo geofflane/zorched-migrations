@@ -9,10 +9,8 @@ namespace Zorched.Migrations.SqlServer.Schema
 
         public virtual void Execute(IDbCommand cmd)
         {
-            cmd.CommandText = CreateSql();
+            cmd.CommandText = ToString();
             cmd.ExecuteNonQuery();
         }
-
-        public abstract string CreateSql();
     }
 }

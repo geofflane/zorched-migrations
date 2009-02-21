@@ -12,5 +12,10 @@ namespace Zorched.Migrations.SqlServer.Schema
             cmd.CommandText = Sql;
             cmd.ExecuteNonQuery();
         }
+
+        public override string ToString()
+        {
+            return Sql;
+        }
     }
 }

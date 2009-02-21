@@ -11,7 +11,7 @@ namespace Zorched.Migrations.SqlServer.Schema
             SchemaName = "dbo";
         }
 
-        public override string CreateSql()
+        public override string ToString()
         {
             if (string.IsNullOrEmpty(TableName))
                 throw new ArgumentException("TableName must be set.");

@@ -8,7 +8,7 @@ namespace Zorched.Migrations.Core
     {
         private readonly DriverLoader driverLoader = new DriverLoader();
         private readonly MigrationLoader migrationLoader = new MigrationLoader();
-        private readonly SchemaInfo schemaInfo;
+        private readonly ISchemaInfo schemaInfo;
 
         public Migrator(string driverAssembly, string migrationsAssemblyPath, string connectionString)
         {
@@ -17,7 +17,7 @@ namespace Zorched.Migrations.Core
 
             Driver = driverLoader.GetDriver(driverAssem, connectionString);
 
-            Migrations = new Dictionary<long, Migration>();
+            Migrations = new Dictionary<long, IMigration>();
             migrationLoader.GetMigrations(migrationsAssem).ForEach(m => Migrations.Add(m.Version, m));
 
             schemaInfo = new SchemaInfo(Driver);
@@ -26,7 +26,7 @@ namespace Zorched.Migrations.Core
 
         public IDriver Driver { get; set; }
 
-        public IDictionary<long, Migration> Migrations { get; protected set; }
+        public IDictionary<long, IMigration> Migrations { get; protected set; }
         public List<long> AppliedMigrations { get; protected set; }
         
         public void MigrateTo()
@@ -50,7 +50,7 @@ namespace Zorched.Migrations.Core
         private void MigrateDownTo(long schemaVersion, long newVersion)
         {
             var previousVersion = schemaVersion + 1; // Start ahead and then move back in PreviousMigration
-            Migration migration = null;
+            IMigration migration = null;
             do
             {
                 migration = PreviousMigration(previousVersion);
@@ -70,7 +70,7 @@ namespace Zorched.Migrations.Core
         private void MigrateUpTo(long schemaVersion, long newVersion)
         {
             var nextVersion = schemaVersion;
-            Migration migration = null;
+            IMigration migration = null;
             do
             {
                 migration = NextMigration(nextVersion);
@@ -87,10 +87,10 @@ namespace Zorched.Migrations.Core
             } while (null != migration && nextVersion <= newVersion);
         }
 
-        protected Migration NextMigration(long current)
+        protected IMigration NextMigration(long current)
         {
             // Start searching at the current index
-            Migration next = null;
+            IMigration next = null;
             do
             {
                 next = Migrations[current++];
@@ -102,10 +102,10 @@ namespace Zorched.Migrations.Core
             return next;
         }
 
-        protected Migration PreviousMigration(long current)
+        protected IMigration PreviousMigration(long current)
         {
             // Start searching at the current index
-            Migration next = null;
+            IMigration next = null;
             do
             {
                 next = Migrations[current--];

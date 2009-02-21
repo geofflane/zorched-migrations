@@ -50,7 +50,7 @@ PRIMARY KEY CLUSTERED
             op.AddColumn("BarId", DbType.Int32, ColumnProperty.NotNull);
             op.AddColumn("Name", DbType.String, 50, ColumnProperty.NotNull);
             op.AddColumn("Description", DbType.String, ColumnProperty.Null);
-            Assert.AreEqual(TABLE1, op.CreateSql());
+            Assert.AreEqual(TABLE1, op.ToString());
         }
 
         [Test]
@@ -61,7 +61,7 @@ PRIMARY KEY CLUSTERED
             op.AddColumn("BarId", DbType.Int32, ColumnProperty.NotNull);
             op.AddColumn("Name", DbType.String, 50, ColumnProperty.NotNull);
             op.AddColumn("Description", DbType.String, ColumnProperty.Null);
-            Assert.AreEqual(TABLE2, op.CreateSql());
+            Assert.AreEqual(TABLE2, op.ToString());
         }
 
         [Test]
@@ -73,7 +73,7 @@ PRIMARY KEY CLUSTERED
             op.AddColumn("BarId", DbType.Int32, ColumnProperty.NotNull);
             op.AddColumn("Name", DbType.String, 50, ColumnProperty.NotNull);
             op.AddColumn("Description", DbType.String, ColumnProperty.Null);
-            Assert.AreEqual(TABLE3, op.CreateSql());
+            Assert.AreEqual(TABLE3, op.ToString());
         }
 
         [Test]
@@ -81,7 +81,7 @@ PRIMARY KEY CLUSTERED
         public void add_table_throws_exception_without_tablename()
         {
             var op = new SqlAddTableOperation { SchemaName = "dbo", TableName = null };
-            op.CreateSql();
+            op.ToString();
             Assert.Fail();
         }
     }

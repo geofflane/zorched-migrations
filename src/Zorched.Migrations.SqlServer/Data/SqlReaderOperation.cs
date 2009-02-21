@@ -3,7 +3,7 @@ using Zorched.Migrations.Framework.Data;
 
 namespace Zorched.Migrations.SqlServer.Data
 {
-    public class SqlGenericReaderOperation : SqlBaseOperation, IGenericReaderOperation
+    public class SqlReaderOperation : SqlBaseOperation, IReaderOperation
     {
         public string Sql { get; set; }
 
@@ -11,6 +11,11 @@ namespace Zorched.Migrations.SqlServer.Data
         {
             cmd.CommandText = Sql;
             return cmd.ExecuteReader();
+        }
+
+        public override string ToString()
+        {
+            return Sql;
         }
     }
 }

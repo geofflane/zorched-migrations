@@ -26,13 +26,13 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public IDataReader Execute(IDbCommand cmd)
         {
-            cmd.CommandText = CreateSql();
+            cmd.CommandText = ToString();
             whereHelper.AppendWhereParameter(cmd, BaseDataOperation.PARAM_FORMAT);
 
             return cmd.ExecuteReader();
         }
 
-        public string CreateSql()
+        public override string ToString()
         {
             var sb = new StringBuilder("SELECT ");
             if (0 == Columns.Count)

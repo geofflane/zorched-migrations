@@ -13,7 +13,7 @@ namespace Zorched.Migrations.SqlServer.Schema
         public string ReferenceTableName { get; set; }
         public string ReferenceColumnName { get; set; }
 
-        public override string CreateSql()
+        public override string ToString()
         {
             if (string.IsNullOrEmpty(TableName))
                 throw new ArgumentException("TableName must be set.");

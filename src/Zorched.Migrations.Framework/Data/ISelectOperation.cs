@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Zorched.Migrations.Framework.Data
 {
-    public interface ISelectOperation : IGenericReaderOperation
+    public interface ISelectOperation : IReaderOperation
     {
         string SchemaName { get; set; }
         string TableName { get; set; }

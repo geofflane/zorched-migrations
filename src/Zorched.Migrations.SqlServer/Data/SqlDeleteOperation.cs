@@ -14,12 +14,12 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public void Execute(IDbCommand command)
         {
-            command.CommandText = CreateSql();
+            command.CommandText = ToString();
             whereHelper.AppendWhereParameter(command, PARAM_FORMAT);
             command.ExecuteNonQuery();
         }
 
-        public override string CreateSql()
+        public override string ToString()
         {
             var sb = new StringBuilder("DELETE FROM ");
             AddTableInfo(sb, SchemaName, TableName);

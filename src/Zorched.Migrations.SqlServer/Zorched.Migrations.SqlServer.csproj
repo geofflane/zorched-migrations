@@ -47,8 +47,8 @@
   <ItemGroup>
     <Compile Include="Data\BaseDataOperation.cs" />
     <Compile Include="Data\SqlDeleteOperation.cs" />
+    <Compile Include="Data\SqlReaderOperation.cs" />
     <Compile Include="Data\SqlSelectOperation.cs" />
-    <Compile Include="Data\SqlGenericReaderOperation.cs" />
     <Compile Include="Data\SqlInsertOperation.cs" />
     <Compile Include="Data\SqlUpdateOperation.cs" />
     <Compile Include="Data\WhereHelper.cs" />

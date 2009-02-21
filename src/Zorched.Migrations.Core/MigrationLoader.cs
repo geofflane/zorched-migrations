@@ -8,11 +8,12 @@ namespace Zorched.Migrations.Core
 {
     public class MigrationLoader
     {
-        public IEnumerable<Migration> GetMigrations(Assembly assembly)
+        public IEnumerable<IMigration> GetMigrations(Assembly assembly)
         {
             var migrationTypes = MigrationAttribute.GetTypes(assembly);
             return migrationTypes
-                    .CastAs(t => new Migration(t))
+                    .CastAs(t => new TransactionalMigration(t))
+                    .CastAs(t => (IMigration)t)
                     .OrderBy(m => m.Version);
         }
     }

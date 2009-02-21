@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Data;
@@ -9,16 +10,36 @@ using Zorched.Migrations.SqlServer.Schema;
 namespace Zorched.Migrations.SqlServer
 {
     [Driver("SQLServer", "System.Data.SqlClient")]
-    public class SqlServerDriver : IDriver
+    public class SqlServerDriver : IDriver, IOperationRepository
     {
         public SqlServerDriver(IDbConnection connection)
         {
             Connection = connection;
+            RegisteredTypes = new Dictionary<Type, Type>();
+
+            Register<IAddTableOperation>(typeof (SqlAddTableOperation));
+            Register<IAddColumnOperation>(typeof (SqlAddColumnOperation));
+            Register<IAddForeignKeyOperation>(typeof (SqlAddForeignKeyOperation));
+            Register<IDropTableOperation>(typeof (SqlDropTableOperation));
+            Register<IDropColumnOperation>(typeof (SqlDropColumnOperation));
+            Register<IDropConstraintOperation>(typeof (SqlDropConstraintOperation));
+            Register<IGenericOperation>(typeof (SqlGenericOperation));
+
+            Register<IDeleteOperation>(typeof (SqlDeleteOperation));
+            Register<IInsertOperation>(typeof (SqlInsertOperation));
+            Register<IUpdateOperation>(typeof (SqlUpdateOperation));
+
+            RegisterReader<IReaderOperation>(typeof (SqlReaderOperation));
+            RegisterReader<ISelectOperation>(typeof (SqlSelectOperation));
         }
 
         public IDbConnection Connection { get; set; }
 
-        public void Execute(IOperation op)
+        public string DriverName { get { return "SQLServer"; } }
+
+        public Dictionary<Type, Type> RegisteredTypes { get; protected set; }
+
+        public void Run(IOperation op)
         {
             var cmd = Connection.CreateCommand();
             try
@@ -29,6 +50,109 @@ namespace Zorched.Migrations.SqlServer
             {
                 cmd.Dispose();
             }
+        }
+
+        public void Run<T>(Action<T> fn) where T : IOperation
+        {
+            var op = InstanceForInteface<T>();
+            fn(op);
+            Run(op);
+        }
+
+        public void Register<T>(Type impl) where T : IOperation
+        {
+            RegisteredTypes[typeof (T)] = impl;
+        }
+
+        public void RegisterReader<T>(Type impl) where T : IReaderOperation
+        {
+            RegisteredTypes[typeof (T)] = impl;
+        }
+
+        public Type TypeForInterface<T>()
+        {
+            var t = RegisteredTypes[typeof (T)];
+            if (null == t)
+                throw new Exception("No such registered implementation for type.");
+
+            return t;
+        }
+
+        public T InstanceForInteface<T>()
+        {
+            Type t = TypeForInterface<T>();
+            return (T) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+        }
+
+        public IDataReader Read(IReaderOperation op)
+        {
+            var cmd = Connection.CreateCommand();
+            try
+            {
+                return op.Execute(cmd);
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+
+        public IDataReader Read<T>(Action<T> fn) where T : IReaderOperation
+        {
+            var op = InstanceForInteface<T>();
+            fn(op);
+            return Read(op);
+        }
+
+        public IDataReader Select(Action<ISelectOperation> fn)
+        {
+            return Read(fn);
+        }
+
+
+        public void AddColumn(Action<IAddColumnOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void AddForeignKey(Action<IAddForeignKeyOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void AddTable(Action<IAddTableOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void Drop(Action<IDropTableOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void DropColumn(Action<IDropColumnOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void DropConstraint(Action<IDropConstraintOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void Delete(Action<IDeleteOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void Insert(Action<IInsertOperation> fn)
+        {
+            Run(fn);
+        }
+
+        public void Update(Action<IUpdateOperation> fn)
+        {
+            Run(fn);
         }
 
         public void BeforeUp(long version)
@@ -45,86 +169,6 @@ namespace Zorched.Migrations.SqlServer
 
         public void AfterDown(long version)
         {
-        }
-
-        public void Execute<T>(Action<T> fn, T op) where T : IOperation
-        {
-            fn(op);
-            Execute(op);
-        }
-
-        public void AddColumn(Action<IAddColumnOperation> fn)
-        {
-            Execute(fn, new SqlAddColumnOperation());
-        }
-
-        public void AddForeignKey(Action<IAddForeignKeyOperation> fn)
-        {
-            Execute(fn, new SqlAddForeignKeyOperation());
-        }
-
-        public void AddTable(Action<IAddTableOperation> fn)
-        {
-            Execute(fn, new SqlAddTableOperation());
-        }
-
-        public void Drop(Action<IDropTableOperation> fn)
-        {
-            Execute(fn, new SqlDropTableOperation());
-        }
-
-        public void DropColumn(Action<IDropColumnOperation> fn)
-        {
-            Execute(fn, new SqlDropColumnOperation());
-        }
-
-        public void DropConstraint(Action<IDropConstraintOperation> fn)
-        {
-            Execute(fn, new SqlDropConstraintOperation());
-        }
-
-        public void Delete(Action<IDeleteOperation> fn)
-        {
-            Execute(fn, new SqlDeleteOperation());
-        }
-
-        public void Insert(Action<IInsertOperation> fn)
-        {
-            Execute(fn, new SqlInsertOperation());
-        }
-
-        public void Update(Action<IUpdateOperation> fn)
-        {
-            Execute(fn, new SqlUpdateOperation());
-        }
-
-        public IDataReader Select(Action<ISelectOperation> fn)
-        {
-            var op = new SqlSelectOperation();
-            var cmd = Connection.CreateCommand();
-            try
-            {
-                return op.Execute(cmd);
-            }
-            finally
-            {
-                cmd.Dispose();
-            }
-        }
-
-        public void Execute(Action<IGenericOperation> fn)
-        {
-            var cmd = Connection.CreateCommand();
-            try
-            {
-                var op = new SqlGenericOperation();
-                fn(op);
-                op.Execute(cmd);
-            }
-            finally
-            {
-                cmd.Dispose();
-            }
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Data;
 
 namespace Zorched.Migrations.Framework.Data
 {
-    public interface IGenericReaderOperation
+    public interface IReaderOperation
     {
         IDataReader Execute(IDbCommand command);
     }
