@@ -17,11 +17,7 @@ ScriptFile to output the scripts that were run
 Dryrun
 
 = Operations
-Rename table
-Rename column
 Change column
-Add check constraint
-Add unique constraint
 
 == Schema inspections
   Column exists

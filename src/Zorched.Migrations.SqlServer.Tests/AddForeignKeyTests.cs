@@ -74,16 +74,9 @@ namespace Zorched.Migrations.SqlServer.Tests
         [Test]
         public void add_fk_creates_expected_sql_with_just_table()
         {
-            var op = new SqlAddForeignKeyOperation
-                         {
-                             SchemaName = null,
-                             TableName = "UserRoles",
-                             ColumnName = "RoleId",
-                             ConstraintName = "FK_UserRoles_Roles",
-                             ReferenceSchemaName = null,
-                             ReferenceTableName = "Role",
-                             ReferenceColumnName = "Id"
-                         };
+            var op = GetFullOp();
+            op.SchemaName = null;
+            op.ReferenceSchemaName = null;
             Assert.AreEqual(FK_NO_SCHEMAS, op.ToString());
         }
 

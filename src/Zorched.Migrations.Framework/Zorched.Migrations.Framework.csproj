@@ -64,6 +64,10 @@
     <Compile Include="OnlyWhenDriverAttribute.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="MigrationAttribute.cs" />
+    <Compile Include="Schema\IAddCheckConstraintOperation.cs" />
+    <Compile Include="Schema\IAddUniqueConstraintOperation.cs" />
+    <Compile Include="Schema\IRenameTableOperation.cs" />
+    <Compile Include="Schema\IRenameColumnOperation.cs" />
     <Compile Include="Schema\IAddColumnOperation.cs" />
     <Compile Include="Schema\IAddForeignKeyOperation.cs" />
     <Compile Include="Schema\IAddTableOperation.cs" />

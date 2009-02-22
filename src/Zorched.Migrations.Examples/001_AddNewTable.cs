@@ -38,7 +38,7 @@ namespace Zorched.Migrations.Examples
         [Up]
         public void AddTable(IDriver database)
         {
-            database.Run<IAddTableOperation>(
+            database.AddTable(
                 op =>
                     {
                         op.TableName = TABLE_NAME;
@@ -51,13 +51,15 @@ namespace Zorched.Migrations.Examples
                     {
                         op.Variable = "Foo";   
                     });
+
+            database.Run((ICustomOp op) => op.Variable = "Foo" );
         }
 
         [Up]
         [OnlyWhenDriver("SqlServer;Sqlite")]  // Only run when SqlServer or Sqlite Driver is running this migration
         public void AddTable2(IDriver database)
         {
-            database.Run<IAddTableOperation>(
+            database.AddTable(
                 op =>
                 {
                     op.TableName = TABLE_NAME+"2";

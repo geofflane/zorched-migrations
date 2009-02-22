@@ -55,9 +55,13 @@
     <Compile Include="DbTypeMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\BaseSchemaOperation.cs" />
+    <Compile Include="Schema\SqlAddCheckConstraintOperation.cs" />
+    <Compile Include="Schema\SqlAddUniqueConstraintOperation.cs" />
+    <Compile Include="Schema\SqlRenameTableOperation.cs" />
     <Compile Include="Schema\SqlDropColumnOperation.cs" />
     <Compile Include="Schema\SqlAddColumnOperation.cs" />
     <Compile Include="Schema\SqlAddForeignKeyOperation.cs" />
+    <Compile Include="Schema\SqlRenameColumnOperation.cs" />
     <Compile Include="SqlBaseOperation.cs" />
     <Compile Include="Schema\SqlAddTableOperation.cs" />
     <Compile Include="Schema\SqlDropConstraintOperation.cs" />

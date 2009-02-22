@@ -22,7 +22,11 @@ namespace Zorched.Migrations.SqlServer
             Register<IAddForeignKeyOperation>(typeof (SqlAddForeignKeyOperation));
             Register<IDropTableOperation>(typeof (SqlDropTableOperation));
             Register<IDropColumnOperation>(typeof (SqlDropColumnOperation));
-            Register<IDropConstraintOperation>(typeof (SqlDropConstraintOperation));
+            Register<IDropConstraintOperation>(typeof(SqlDropConstraintOperation));
+            Register<IRenameTableOperation>(typeof(SqlRenameTableOperation));
+            Register<IRenameColumnOperation>(typeof(SqlRenameColumnOperation));
+            Register<IAddCheckConstraintOperation>(typeof(SqlAddCheckConstraintOperation));
+            Register<IAddUniqueConstraintOperation>(typeof(SqlAddUniqueConstraintOperation));
             Register<IGenericOperation>(typeof (SqlGenericOperation));
 
             Register<IDeleteOperation>(typeof (SqlDeleteOperation));

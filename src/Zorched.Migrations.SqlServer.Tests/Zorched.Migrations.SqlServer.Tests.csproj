@@ -52,12 +52,16 @@
     <Compile Include="AddTableTests.cs" />
     <Compile Include="AddForeignKeyTests.cs" />
     <Compile Include="AddColumnTests.cs" />
+    <Compile Include="AddCheckConstraintTests.cs" />
+    <Compile Include="AddUniqueConstraintTests.cs" />
     <Compile Include="DeleteTests.cs" />
     <Compile Include="InsertTests.cs" />
     <Compile Include="DropColumnTests.cs" />
     <Compile Include="DropConstraintTests.cs" />
     <Compile Include="DropTableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenameColumnTests.cs" />
+    <Compile Include="RenameTableTests.cs" />
     <Compile Include="SelectTests.cs" />
     <Compile Include="UpdateTests.cs" />
   </ItemGroup>

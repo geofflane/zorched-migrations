@@ -22,17 +22,9 @@ namespace Zorched.Migrations.Framework
         /// </summary>
         Identity = 4,
         /// <summary>
-        /// Unsigned Column
-        /// </summary>
-        Unsigned = 8,
-        /// <summary>
-        /// Foreign Key
-        /// </summary>
-        ForeignKey = Unsigned | Null,
-        /// <summary>
         /// Primary Key
         /// </summary>
-        PrimaryKey = 16 | Unsigned | NotNull,
+        PrimaryKey = 8 | NotNull,
         /// <summary>
         /// Primary key. Make the column a PrimaryKey and unsigned
         /// </summary>
