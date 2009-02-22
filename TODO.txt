@@ -16,13 +16,15 @@ Logging?
 ScriptFile to output the scripts that were run
 Dryrun
 
+= Driver
+MySQL?
+PostgreSQL?
+Sqlite?
+
 = Operations
 Change column
 
-== Schema inspections
-  Column exists
-  Table exists
-  Constraint exists
-  List of tables
-
+= Schema inspections
+Constraint exists
+List of tables
 

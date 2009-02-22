@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Data;
+using Zorched.Migrations.Framework.Inspection;
 using Zorched.Migrations.Framework.Schema;
 using Zorched.Migrations.SqlServer.Data;
+using Zorched.Migrations.SqlServer.Inspection;
 using Zorched.Migrations.SqlServer.Schema;
 
 namespace Zorched.Migrations.SqlServer
@@ -35,6 +37,9 @@ namespace Zorched.Migrations.SqlServer
 
             RegisterReader<IReaderOperation>(typeof (SqlReaderOperation));
             RegisterReader<ISelectOperation>(typeof (SqlSelectOperation));
+
+            RegisterInspecor<ITableExistsOperation>(typeof(SqlTableExistsOperation));
+            RegisterInspecor<IColumnExistsOperation>(typeof(SqlColumnExistsOperation));
         }
 
         public IDbConnection Connection { get; set; }
@@ -42,6 +47,36 @@ namespace Zorched.Migrations.SqlServer
         public string DriverName { get { return "SQLServer"; } }
 
         public Dictionary<Type, Type> RegisteredTypes { get; protected set; }
+
+        public void Register<T>(Type impl) where T : IOperation
+        {
+            RegisteredTypes[typeof (T)] = impl;
+        }
+
+        public void RegisterReader<T>(Type impl) where T : IReaderOperation
+        {
+            RegisteredTypes[typeof (T)] = impl;
+        }
+
+        public void RegisterInspecor<T>(Type impl) where T : IInspectionOperation
+        {
+            RegisteredTypes[typeof(T)] = impl;
+        }
+
+        public Type TypeForInterface<T>()
+        {
+            var t = RegisteredTypes[typeof (T)];
+            if (null == t)
+                throw new OperationNotSupportedException("No such registered implementation for type.", typeof(T));
+
+            return t;
+        }
+
+        public T InstanceForInteface<T>()
+        {
+            Type t = TypeForInterface<T>();
+            return (T) t.GetConstructor(Type.EmptyTypes).Invoke(null);
+        }
 
         public void Run(IOperation op)
         {
@@ -61,31 +96,6 @@ namespace Zorched.Migrations.SqlServer
             var op = InstanceForInteface<T>();
             fn(op);
             Run(op);
-        }
-
-        public void Register<T>(Type impl) where T : IOperation
-        {
-            RegisteredTypes[typeof (T)] = impl;
-        }
-
-        public void RegisterReader<T>(Type impl) where T : IReaderOperation
-        {
-            RegisteredTypes[typeof (T)] = impl;
-        }
-
-        public Type TypeForInterface<T>()
-        {
-            var t = RegisteredTypes[typeof (T)];
-            if (null == t)
-                throw new Exception("No such registered implementation for type.");
-
-            return t;
-        }
-
-        public T InstanceForInteface<T>()
-        {
-            Type t = TypeForInterface<T>();
-            return (T) t.GetConstructor(Type.EmptyTypes).Invoke(null);
         }
 
         public IDataReader Read(IReaderOperation op)
@@ -108,11 +118,31 @@ namespace Zorched.Migrations.SqlServer
             return Read(op);
         }
 
+        public bool Inspect<T>(Action<T> fn) where T : IInspectionOperation
+        {
+            var op = InstanceForInteface<T>();
+            fn(op);
+            return Inspect(op);
+        }
+
+        public bool Inspect(IInspectionOperation op)
+        {
+            var cmd = Connection.CreateCommand();
+            try
+            {
+                return op.Execute(cmd);
+            }
+            finally
+            {
+                cmd.Dispose();
+            }
+        }
+
+
         public IDataReader Select(Action<ISelectOperation> fn)
         {
             return Read(fn);
         }
-
 
         public void AddColumn(Action<IAddColumnOperation> fn)
         {

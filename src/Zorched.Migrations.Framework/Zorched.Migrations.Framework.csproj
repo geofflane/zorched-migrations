@@ -60,10 +60,14 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="IMigrationDirection.cs" />
+    <Compile Include="Inspection\IColumnExistsOperation.cs" />
+    <Compile Include="Inspection\ITableExistsOperation.cs" />
+    <Compile Include="Inspection\IInspectionOperation.cs" />
     <Compile Include="IOperationRepository.cs" />
     <Compile Include="OnlyWhenDriverAttribute.cs" />
     <Compile Include="IOperation.cs" />
     <Compile Include="MigrationAttribute.cs" />
+    <Compile Include="OperationNotSupportedException.cs" />
     <Compile Include="Schema\IAddCheckConstraintOperation.cs" />
     <Compile Include="Schema\IAddUniqueConstraintOperation.cs" />
     <Compile Include="Schema\IRenameTableOperation.cs" />

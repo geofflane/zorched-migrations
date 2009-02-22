@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using Zorched.Migrations.Framework;
+using Zorched.Migrations.Framework.Inspection;
 
 namespace Zorched.Migrations.Core
 {
@@ -14,6 +16,14 @@ namespace Zorched.Migrations.Core
         }
 
         public IDriver Driver { get; set; }
+
+        public void EnsureSchemaTable()
+        {
+            if (! Driver.Inspect<ITableExistsOperation>(op => op.TableName = SCHEMA_VERSION_TABLE))
+            {
+                CreateSchemaTable();
+            }
+        }
 
         public void CreateSchemaTable()
         {
@@ -64,7 +74,9 @@ namespace Zorched.Migrations.Core
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("Version");
+                    op.Columns.Add("AppliedOn");
                     op.Values.Add(version);
+                    op.Values.Add(DateTime.Now);
                 });
         }
 

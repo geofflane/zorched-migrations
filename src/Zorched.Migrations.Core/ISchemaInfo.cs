@@ -8,6 +8,8 @@ namespace Zorched.Migrations.Core
 
         IDriver Driver { get; set; }
 
+        void EnsureSchemaTable();
+
         void CreateSchemaTable();
 
         long CurrentSchemaVersion();

@@ -36,6 +36,8 @@ namespace Zorched.Migrations.Core
 
         public void MigrateTo(long version)
         {
+            schemaInfo.EnsureSchemaTable();
+
             if (version <= 0)
                 version = long.MaxValue;
 

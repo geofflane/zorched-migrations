@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using Zorched.Migrations.Framework.Data;
+using Zorched.Migrations.Framework.Inspection;
 using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.Framework
@@ -15,6 +16,9 @@ namespace Zorched.Migrations.Framework
 
         IDataReader Read<T>(Action<T> fn) where T : IReaderOperation;
         IDataReader Read(IReaderOperation op);
+
+        bool Inspect<T>(Action<T> op) where T : IInspectionOperation;
+        bool Inspect(IInspectionOperation op);
 
         void AddColumn(Action<IAddColumnOperation> fn);
         void AddForeignKey(Action<IAddForeignKeyOperation> fn);

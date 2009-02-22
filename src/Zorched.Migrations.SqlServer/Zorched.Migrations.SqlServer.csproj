@@ -53,6 +53,8 @@
     <Compile Include="Data\SqlUpdateOperation.cs" />
     <Compile Include="Data\WhereHelper.cs" />
     <Compile Include="DbTypeMap.cs" />
+    <Compile Include="Inspection\SqlColumnExistsOperation.cs" />
+    <Compile Include="Inspection\SqlTableExistsOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\BaseSchemaOperation.cs" />
     <Compile Include="Schema\SqlAddCheckConstraintOperation.cs" />
