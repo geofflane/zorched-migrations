@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DriverLoaderTests.cs" />
     <Compile Include="MigrationAttributeTests.cs" />
+    <Compile Include="MigrationLoaderTests.cs" />
     <Compile Include="MigrationTests.cs" />
     <Compile Include="OnlyWhenDriverAttributeTests.cs" />
     <Compile Include="DriverAttributeTests.cs" />

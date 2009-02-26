@@ -58,12 +58,15 @@ namespace Zorched.Migrations.MSBuild
 
         public override bool Execute()
         {
-            if (null != Migrations)
+            if (null == Migrations)
             {
-                foreach (ITaskItem assembly in Migrations)
-                {
-                    Execute(assembly.GetMetadata("FullPath"));
-                }
+                Log.LogError("Migrations attribute must be set to one or more Migration Assemblies.");
+                return false;
+            }
+
+            foreach (ITaskItem assembly in Migrations)
+            {
+                Execute(assembly.GetMetadata("FullPath"));
             }
 
             return true;

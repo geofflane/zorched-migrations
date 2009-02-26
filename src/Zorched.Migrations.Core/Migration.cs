@@ -17,6 +17,10 @@ namespace Zorched.Migrations.Core
         {
             type = t;
             ConstructorInfo ci = t.GetConstructor(Type.EmptyTypes);
+            if (null == ci)
+            {
+                throw new MigrationContractException("Migration class must have a no argument constructor.", t);
+            }
             migration = ci.Invoke(null);
         }
 
@@ -25,13 +29,9 @@ namespace Zorched.Migrations.Core
             get { return MigrationAttribute.GetVersion(type); }
         }
 
-        public virtual void Setup(IOperationRepository driver)
+        public virtual void Setup(SetupRunner setupRunner, IOperationRepository driver)
         {
-            var method = GetSetupMethod(type);
-            if (null != method)
-            {
-                method.Invoke(migration, new []{driver});
-            }
+            setupRunner.Invoke(migration, driver);
         }
 
         public virtual void Up(IDriver driver, ISchemaInfo schemaInfo)
@@ -39,7 +39,14 @@ namespace Zorched.Migrations.Core
             driver.BeforeUp(Version);
 
             var methods = GetUpMethods(migration.GetType(), driver);
-            methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+            try
+            {
+                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+            }
+            catch (ArgumentException)
+            {
+                throw new MigrationContractException("[Up] methods must take a single IDriver parameter as an argument.", type);    
+            }
 
             driver.AfterUp(Version);
 
@@ -51,20 +58,18 @@ namespace Zorched.Migrations.Core
             driver.BeforeDown(Version);
 
             var methods = GetDownMethods(migration.GetType(), driver);
-            methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+            try
+            {
+                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+            }
+            catch (ArgumentException)
+            {
+                throw new MigrationContractException("[Down] methods must take a single IDriver parameter as an argument.", type);    
+            }
 
             driver.AfterDown(Version);
 
             schemaInfo.DeleteSchemaVersion(Version);
-        }
-
-        public MethodInfo GetSetupMethod(Type t)
-        {
-            IEnumerable<MethodInfo> methods = t.GetMethodsWithAttribute(typeof(SetupAttribute));
-            if (null == methods || 0 == methods.ToList().Count)
-                return null;
-
-            return methods.ToList()[0];
         }
 
         public IEnumerable<MethodInfo> GetUpMethods(Type t, IDriver driver)

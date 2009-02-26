@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Test" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <ClassLibraryOutputDirectory>bin\$(Configuration)</ClassLibraryOutputDirectory>
+        
+        <ProjectName>Zorched.Migrations</ProjectName>
+
+	    <!-- ASP.NET build / IIS deploy settings -->
+        <LibDirectory>$(MSBuildProjectDirectory)\libs</LibDirectory>
+    </PropertyGroup>
+
+    <!-- ####################################################################### -->
+    <!-- Compilation Steps -->
+    <!-- ####################################################################### -->
+    <PropertyGroup>
+        <FrameworkDir>src\Zorched.Migrations.Framework</FrameworkDir>
+        <FrameworkProject>$(FrameworkDir)\Zorched.Migrations.Framework.csproj</FrameworkProject>
+        <FrameworkAssembly>$(FrameworkDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.Framework.dll</FrameworkAssembly>
+
+        <CoreDir>src\Zorched.Migrations.Core</CoreDir>
+        <CoreProject>$(CoreDir)\Zorched.Migrations.Core.csproj</CoreProject>
+        <CoreAssembly>$(CoreDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.Core.dll</CoreAssembly>
+        
+        <MSBuildRunnerDir>src\Zorched.Migrations.MSBuild</MSBuildRunnerDir>
+        <MSBuildRunnerProject>$(MSBuildRunnerDir)\Zorched.Migrations.MSBuild.csproj</MSBuildRunnerProject>
+        <MSBuildRunnerAssembly>$(MSBuildRunnerDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.MSBuild.dll</MSBuildRunnerAssembly>
+        
+        <SqlServerDir>src\Zorched.Migrations.SqlServer</SqlServerDir>
+        <SqlServerProject>$(SqlServerDir)\Zorched.Migrations.SqlServer.csproj</SqlServerProject>
+        <SqlServerAssembly>$(SqlServerDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.SqlServer.dll</SqlServerAssembly>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <CommonTestDir>src\Zorched.Migrations.Tests</CommonTestDir>
+        <CommonTestProject>$(CommonTestDir)\Zorched.Migrations.Tests.csproj</CommonTestProject>
+        <CommonTestAssembly>$(CommonTestDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.Tests.dll</CommonTestAssembly>
+
+        <SqlServerTestDir>src\Zorched.Migrations.SqlServer.Tests</SqlServerTestDir>
+        <SqlServerTestProject>$(SqlServerTestDir)\Zorched.Migrations.SqlServer.Tests.csproj</SqlServerTestProject>
+        <SqlServerTestAssembly>$(SqlServerTestDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.SqlServer.Tests.dll</SqlServerTestAssembly>
+    </PropertyGroup>
+    
+
+    <Target Name="BuildAll" DependsOnTargets="Compile;CompileTests;"/>
+
+    <Target Name="Compile">
+        <ItemGroup>
+            <ProjectsToBuild Include="$(FrameworkProject)" />
+            <ProjectsToBuild Include="$(CoreProject)" />
+            <ProjectsToBuild Include="$(MSBuildRunnerProject)" />
+            <ProjectsToBuild Include="$(SqlServerProject)" />
+        </ItemGroup>
+    
+	    <MSBuild Projects ="@(ProjectsToBuild)"
+				 ContinueOnError ="false"
+				 Properties="Configuration=$(Configuration);$(ExtraCmdLineProperties)">
+            <Output ItemName="CoreAssemblies" TaskParameter="TargetOutputs"/>
+        </MSBuild>
+        
+        <Message Text="Built: @(CoreAssemblies)"/>
+    </Target>
+
+    <Target Name="CompileTests" DependsOnTargets="Compile">
+        <ItemGroup>
+            <TestsToBuild Include="$(CommonTestProject)" />
+            <TestsToBuild Include="$(SqlServerTestProject)" />
+        </ItemGroup>
+    
+	    <MSBuild Projects ="@(TestsToBuild)"
+				 ContinueOnError ="false"
+				 Properties="Configuration=$(Configuration);$(ExtraCmdLineProperties)">
+            <Output ItemName="TestAssemblies" TaskParameter="TargetOutputs"/>
+        </MSBuild>
+        
+        <Message Text="Built: @(TestAssemblies)"/>
+    </Target>
+
+
+    <!-- ####################################################################### -->
+    <!-- This target is used to clean all of the projects before you build them. -->
+    <!-- ####################################################################### -->
+    <Target Name="Clean">
+
+	    <ItemGroup>
+	        <TestOutput Include="*.Tests.xml" />
+	        <CoverageOutput Include="*.Coverage.xml" />
+	        <CoverageOutput Include="*.Coverage.log" />
+	        <CoverageOutput Include="*.CoverageMerge.xml" />
+	        <CoverageOutput Include="*.CoverageSummary.*" />
+	        <CoverageOutput Include="CoverageReport.xsl" />
+	    </ItemGroup>
+
+        <Delete Files="@(TestOutput)" />
+        <Delete Files="@(CoverageOutput)" />
+
+	    <MSBuild Projects="@(ProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);"/>
+        <RemoveDir Directories="$(PrecompiledWebDirectory);$(StageWebDirectory)" />
+    </Target>
+
+
+    <!-- ####################################################################### -->
+    <!-- Testing Targets -->
+    <!-- ####################################################################### -->
+
+    <UsingTask TaskName="NCoverExplorer.MSBuildTasks.NCover" AssemblyFile="$(LibDirectory)\NCover\NCoverExplorer.MSBuildTasks.dll" />
+    <UsingTask TaskName="NCoverExplorer.MSBuildTasks.NCoverExplorer" AssemblyFile="$(LibDirectory)\NCover\NCoverExplorer.MSBuildTasks.dll"/>
+
+    <!-- Run Unit tests -->
+    <Target Name="Test" DependsOnTargets="CompileTests">
+
+        <NCover ToolPath="$(LibDirectory)\NCover\"
+			    CommandLineArgs="%(TestAssemblies.FullPath) /xml=%(TestAssemblies.Filename).xml /labels /nologo /noshadow"
+			    CommandLineExe="$(LibDirectory)\NUnit\nunit-console.exe"
+			    CoverageFile="%(TestAssemblies.Filename).Coverage.xml"
+			    LogFile="%(TestAssemblies.Filename).Coverage.log"
+			    LogLevel="Verbose"
+			    WorkingDirectory="$(MSBuildProjectDirectory)"
+			    Assemblies="@(CoreAssemblies)"
+	            />
+
+	    <ItemGroup>
+		    <NCoverCoverageFiles Include="*.Coverage.xml" />
+	    </ItemGroup>
+
+        <NCoverExplorer
+             ProjectName="$(ProjectName)"
+             ReportType="ModuleClassSummary"
+             OutputDir="$(MSBuildProjectDirectory)"
+             XmlReportName="$(ProjectName).CoverageSummary.xml"
+             HtmlReportName="$(ProjectName).CoverageSummary.html"
+             ShowExcluded="True"
+             SatisfactoryCoverage="80"
+             CoverageFiles="@(NCoverCoverageFiles)"
+		     MergeFileName="$(ProjectName).CoverageMerge.xml"
+		     ToolPath="$(LibDirectory)\NCover\Explorer"
+	         />
+
+    </Target>
+
+</Project>

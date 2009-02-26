@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
 using Zorched.Migrations.Core;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Schema;
@@ -12,6 +11,8 @@ namespace Zorched.Migrations.Tests
     [TestFixture]
     public class MigrationTests
     {
+        private readonly SetupRunner setupRunner = new SetupRunner();
+
         private MockRepository mocks;
         private IOperationRepository opRepos;
         private IDriver driver;
@@ -49,7 +50,7 @@ namespace Zorched.Migrations.Tests
             Expect.Call(() => opRepos.Register<IGenericOperation>(typeof(String)));
             mocks.ReplayAll();
 
-            migration.Setup(opRepos);
+            migration.Setup(setupRunner, opRepos);
 
             mocks.VerifyAll();
         }
@@ -100,7 +101,7 @@ namespace Zorched.Migrations.Tests
             Assert.IsNotNull(migration);
             mocks.ReplayAll();
 
-            migration.Setup(opRepos);
+            migration.Setup(setupRunner, opRepos);
 
             mocks.VerifyAll();
         }

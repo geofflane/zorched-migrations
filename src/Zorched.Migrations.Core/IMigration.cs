@@ -6,6 +6,8 @@ namespace Zorched.Migrations.Core
     {
         long Version { get; }
 
+        void Setup(SetupRunner setupRunner, IOperationRepository driver);
+
         void Up(IDriver driver, ISchemaInfo schemaInfo);
 
         void Down(IDriver driver, ISchemaInfo schemaInfo);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Extensions;
@@ -6,6 +7,7 @@ namespace Zorched.Migrations.Core
 {
     public class Migrator
     {
+        private readonly SetupRunner setupRunner = new SetupRunner();
         private readonly DriverLoader driverLoader = new DriverLoader();
         private readonly MigrationLoader migrationLoader = new MigrationLoader();
         private readonly ISchemaInfo schemaInfo;
@@ -16,6 +18,7 @@ namespace Zorched.Migrations.Core
             var migrationsAssem = driverLoader.GetAssemblyFromPath(migrationsAssemblyPath);
 
             Driver = driverLoader.GetDriver(driverAssem, connectionString);
+            SetupType = SetupAttribute.GetSetupClass(driverAssem);
 
             Migrations = new Dictionary<long, IMigration>();
             migrationLoader.GetMigrations(migrationsAssem).ForEach(m => Migrations.Add(m.Version, m));
@@ -25,6 +28,7 @@ namespace Zorched.Migrations.Core
         }
 
         public IDriver Driver { get; set; }
+        public Type SetupType { get; set; }
 
         public IDictionary<long, IMigration> Migrations { get; protected set; }
         public List<long> AppliedMigrations { get; protected set; }
@@ -37,6 +41,7 @@ namespace Zorched.Migrations.Core
         public void MigrateTo(long version)
         {
             schemaInfo.EnsureSchemaTable();
+            RunSetupIfNeeded();
 
             if (version <= 0)
                 version = long.MaxValue;
@@ -49,6 +54,14 @@ namespace Zorched.Migrations.Core
 
         }
 
+        private void RunSetupIfNeeded()
+        {
+            if (null != SetupType)
+            {
+                setupRunner.Invoke(SetupType, (IOperationRepository) Driver);
+            }
+        }
+
         private void MigrateDownTo(long schemaVersion, long newVersion)
         {
             var previousVersion = schemaVersion + 1; // Start ahead and then move back in PreviousMigration
@@ -58,6 +71,8 @@ namespace Zorched.Migrations.Core
                 migration = PreviousMigration(previousVersion);
                 if (null != migration)
                 {
+                    migration.Setup(setupRunner, (IOperationRepository) Driver);
+
                     migration.Down(Driver, schemaInfo);
 
                     AppliedMigrations.Remove(migration.Version);
@@ -78,6 +93,8 @@ namespace Zorched.Migrations.Core
                 migration = NextMigration(nextVersion);
                 if (null != migration)
                 {
+                    migration.Setup(setupRunner, (IOperationRepository)Driver);
+
                     migration.Up(Driver, schemaInfo);
 
                     AppliedMigrations.Add(migration.Version);

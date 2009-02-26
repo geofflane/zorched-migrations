@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\work\other_projects\zorched-migrations\src\Zorched.Migrations.SqlServer.Tests\bin\Debug\Zorched.Migrations.SqlServer.Tests.dll" total="52" failures="0" not-run="0" date="2009-02-25" time="21:58:16">
+  <environment nunit-version="2.4.6.0" clr-version="2.0.50727.3082" os-version="Microsoft Windows NT 5.1.2600 Service Pack 2" platform="Win32NT" cwd="C:\work\other_projects\zorched-migrations" machine-name="LANEG-2008" user="laneg" user-domain="WIPFLI" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite name="C:\work\other_projects\zorched-migrations\src\Zorched.Migrations.SqlServer.Tests\bin\Debug\Zorched.Migrations.SqlServer.Tests.dll" success="True" time="2.391" asserts="0">
+    <results>
+      <test-suite name="Zorched" success="True" time="2.359" asserts="0">
+        <results>
+          <test-suite name="Migrations" success="True" time="2.344" asserts="0">
+            <results>
+              <test-suite name="SqlServer" success="True" time="2.328" asserts="0">
+                <results>
+                  <test-suite name="Tests" success="True" time="2.328" asserts="0">
+                    <results>
+                      <test-suite name="AddCheckConstraintTests" success="True" time="0.438" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddCheckConstraintTests.add_fk_creates_expected_sql_with_just_table" executed="True" success="True" time="0.406" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddCheckConstraintTests.add_fk_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddCheckConstraintTests.add_fk_throws_exception_without_constraint" executed="True" success="True" time="0.016" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddCheckConstraintTests.add_fk_throws_exception_without_tablename" executed="True" success="True" time="0.000" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="AddColumnTests" success="True" time="0.391" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddColumnTests.add_table_throws_exception_without_column" executed="True" success="True" time="0.078" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddColumnTests.add_table_throws_exception_without_tablename" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddColumnTests.can_build_column1_schema" executed="True" success="True" time="0.313" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddColumnTests.can_build_column2_schema" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="AddForeignKeyTests" success="True" time="0.141" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_creates_expected_sql_with_just_table" executed="True" success="True" time="0.125" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_throws_exception_without_columnname" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_throws_exception_without_constraint" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_throws_exception_without_referencecolumnname" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_throws_exception_without_referencetablename" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddForeignKeyTests.add_fk_throws_exception_without_tablename" executed="True" success="True" time="0.000" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="AddTableTests" success="True" time="0.359" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddTableTests.add_table_throws_exception_without_tablename" executed="True" success="True" time="0.172" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddTableTests.can_build_table1_schema" executed="True" success="True" time="0.188" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddTableTests.can_build_table2_schema" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddTableTests.can_build_table3_schema" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="AddUniqueConstraintTests" success="True" time="0.063" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddUniqueConstraintTests.add_fk_creates_expected_sql_with_just_table" executed="True" success="True" time="0.063" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddUniqueConstraintTests.add_fk_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddUniqueConstraintTests.add_fk_throws_exception_without_constraint" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.AddUniqueConstraintTests.add_fk_throws_exception_without_tablename" executed="True" success="True" time="0.000" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="DeleteTests" success="True" time="0.203" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DeleteTests.delete_no_schema" executed="True" success="True" time="0.188" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DeleteTests.delete_with_schema" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DeleteTests.delete_with_whereclause" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DeleteTests.delete_with_wherecolumn" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="DropColumnTests" success="True" time="0.047" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropColumnTests.drop_table_creates_expected_sql_with_just_table" executed="True" success="True" time="0.047" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropColumnTests.drop_table_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropColumnTests.drop_table_throws_exception_without_columnname" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropColumnTests.drop_table_throws_exception_without_tablename" executed="True" success="True" time="0.000" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="DropConstraintTests" success="True" time="0.063" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropConstraintTests.drop_constraint_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.047" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropConstraintTests.drop_constraint_throws_exception_without_constraint" executed="True" success="True" time="0.000" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropConstraintTests.drop_constraint_throws_exception_without_tablename" executed="True" success="True" time="0.016" asserts="0" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropConstraintTests.drop_table_creates_expected_sql_with_just_table" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="DropTableTests" success="True" time="0.031" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropTableTests.drop_table_creates_expected_sql_with_just_table" executed="True" success="True" time="0.031" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropTableTests.drop_table_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.DropTableTests.drop_table_throws_exception_without_tablename" executed="True" success="True" time="0.000" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="InsertTests" success="True" time="0.094" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.InsertTests.insert_no_schema" executed="True" success="True" time="0.094" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.InsertTests.insert_with_schema" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="RenameColumnTests" success="True" time="0.063" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.RenameColumnTests.rename_column_creates_expected_sql_with_just_table" executed="True" success="True" time="0.063" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.RenameColumnTests.rename_column_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="RenameTableTests" success="True" time="0.047" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.RenameTableTests.rename_table_creates_expected_sql_with_just_table" executed="True" success="True" time="0.047" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.RenameTableTests.rename_table_creates_expected_sql_with_schema_and_table" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="SelectTests" success="True" time="0.156" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.SelectTests.select_generates_proper_form_with_columns" executed="True" success="True" time="0.141" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.SelectTests.select_generates_proper_form_with_columns_and_where_clause" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.SelectTests.select_generates_proper_form_with_columns_and_where_column" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.SelectTests.select_generates_proper_form_without_columns" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.SelectTests.select_generates_proper_form_without_columns_no_schema" executed="True" success="True" time="0.000" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="UpdateTests" success="True" time="0.141" asserts="0">
+                        <results>
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.UpdateTests.update_no_schema" executed="True" success="True" time="0.125" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.UpdateTests.update_with_schema" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="Zorched.Migrations.SqlServer.Tests.UpdateTests.update_with_where_clause" executed="True" success="True" time="0.016" asserts="1" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
