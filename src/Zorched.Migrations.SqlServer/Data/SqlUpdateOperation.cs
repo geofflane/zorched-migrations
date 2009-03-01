@@ -34,6 +34,9 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public override string ToString()
         {
+            if (string.IsNullOrEmpty(TableName))
+                throw new ArgumentException("TableName must be set.");
+
             var sb = new StringBuilder("UPDATE ");
             AddTableInfo(sb, SchemaName, TableName);
             sb.Append(" SET ");

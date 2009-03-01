@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -34,6 +35,9 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public override string ToString()
         {
+            if (string.IsNullOrEmpty(TableName))
+                throw new ArgumentException("TableName must be set.");
+
             var sb = new StringBuilder("SELECT ");
             if (0 == Columns.Count)
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Text;
 using Zorched.Migrations.Framework.Data;
@@ -21,6 +22,9 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public override string ToString()
         {
+            if (string.IsNullOrEmpty(TableName))
+                throw new ArgumentException("TableName must be set.");
+
             var sb = new StringBuilder("DELETE FROM ");
             AddTableInfo(sb, SchemaName, TableName);
 

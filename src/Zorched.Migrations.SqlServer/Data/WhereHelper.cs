@@ -45,6 +45,7 @@ namespace Zorched.Migrations.SqlServer.Data
                 var whereParam = command.CreateParameter();
                 whereParam.ParameterName = string.Format(format, WhereColumn);
                 whereParam.Value = WhereValue;
+                command.Parameters.Add(whereParam);
             }
         }
     }
