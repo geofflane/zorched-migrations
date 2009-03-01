@@ -36,12 +36,12 @@ namespace Zorched.Migrations.Tests
     [Driver("Test", "System.Data.SqlClient")]
     public class DriverTestClass : IDriver
     {
-        public DriverTestClass(IDbConnection connection, ILogger logger)
+        public DriverTestClass(IDbParams dbParams, ILogger logger)
         {
-            Connection = connection;
+            Database = dbParams;
         }
 
-        public IDbConnection Connection { get; private set; }
+        public IDbParams Database { get; private set; }
 
         public string DriverName { get; private set; }
 

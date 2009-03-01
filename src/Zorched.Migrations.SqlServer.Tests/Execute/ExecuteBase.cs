@@ -2,6 +2,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using NUnit.Framework;
+using Zorched.Migrations.Core;
 using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.SqlServer.Tests.Execute
@@ -13,27 +14,27 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         protected const string TABLE_NAME = "User";
 
         protected SqlServerDriver Driver;
-        protected DbConnection Connection;
-//        protected DbTransaction Transaction;
+        protected DbParams Database;
 
         [SetUp]
         public virtual void Setup()
         {
             var cs = ConfigurationManager.ConnectionStrings["SqlServer"];
             var factory = DbProviderFactories.GetFactory(cs.ProviderName);
-            Connection = factory.CreateConnection();
-            Connection.ConnectionString = cs.ConnectionString;
-            Connection.Open();
-            Driver = new SqlServerDriver(Connection, new TestLogger());
+            var connection = factory.CreateConnection();
+            connection.ConnectionString = cs.ConnectionString;
 
-//            Transaction = Connection.BeginTransaction();
+            Database = new DbParams(connection);
+            Database.BeginTransaction();
+
+            Driver = new SqlServerDriver(Database, new TestLogger());
         }
 
         [TearDown]
         public virtual void Teardown()
         {
-//            Transaction.Rollback();
-            Connection.Close();
+            Database.Transaction.Rollback();
+            Database.Connection.Close();
         }
 
         protected void CreateTable(string tableName)

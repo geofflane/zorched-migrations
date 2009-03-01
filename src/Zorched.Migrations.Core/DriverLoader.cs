@@ -30,8 +30,8 @@ namespace Zorched.Migrations.Core
             var driverType = DriverAttribute.GetDriver(assembly);
             var connection = GetConnection(driverType, connectionString);
 
-            var constructor = driverType.GetConstructor(new[] {typeof (IDbConnection), typeof(ILogger)});
-            return (IDriver) constructor.Invoke(new object[] {connection, logger});
+            var constructor = driverType.GetConstructor(new[] {typeof (IDbParams), typeof(ILogger)});
+            return (IDriver) constructor.Invoke(new object[] {new DbParams(connection), logger});
         }
 
         public DbConnection GetConnection(Type driverType, string connectionString)

@@ -13,7 +13,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         [TearDown]
         public override void Teardown()
         {
-            using (var cmd = Connection.CreateCommand())
+            using (var cmd = Database.CreateCommand())
             {
                 cmd.CommandText = "DROP TABLE [dbo].[" + NEW_TABLE + "]";
                 cmd.ExecuteNonQuery();

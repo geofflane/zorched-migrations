@@ -58,6 +58,7 @@
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="IDbParams.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IMigrationDirection.cs" />

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbParams.cs" />
     <Compile Include="ISchemaInfo.cs" />
     <Compile Include="DriverLoader.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />

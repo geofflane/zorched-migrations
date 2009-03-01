@@ -9,7 +9,7 @@ namespace Zorched.Migrations.Core
 
         public override void Up(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
         {
-            using (var trans = driver.Connection.BeginTransaction())
+            using (var trans = driver.Database.BeginTransaction())
             {
                 base.Up(driver, logger, schemaInfo);
                 trans.Commit();
@@ -18,10 +18,9 @@ namespace Zorched.Migrations.Core
 
         public override void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
         {
-            using (var trans = driver.Connection.BeginTransaction())
+            using (var trans = driver.Database.BeginTransaction())
             {
                 base.Down(driver, logger, schemaInfo);
-
                 trans.Commit();
             }
         }

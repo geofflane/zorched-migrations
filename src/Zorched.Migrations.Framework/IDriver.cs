@@ -8,7 +8,7 @@ namespace Zorched.Migrations.Framework
 {
     public interface IDriver
     {
-        IDbConnection Connection { get; }
+        IDbParams Database { get; }
         string DriverName { get; }
 
         void Run<T>(Action<T> fn) where T : IOperation;

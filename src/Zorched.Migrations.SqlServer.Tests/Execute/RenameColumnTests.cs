@@ -1,4 +1,3 @@
-using System.Data;
 using NUnit.Framework;
 using Zorched.Migrations.Framework.Inspection;
 using Zorched.Migrations.Framework.Schema;
@@ -11,7 +10,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         [TearDown]
         public override void Teardown()
         {
-            using (var cmd = Connection.CreateCommand())
+            using (var cmd = Database.CreateCommand())
             {
                 cmd.CommandText = "DROP TABLE [dbo].[" + TABLE_NAME + "]";
                 cmd.ExecuteNonQuery();

@@ -78,6 +78,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Zorched.Migrations.Core\Zorched.Migrations.Core.csproj">
+      <Project>{1E5BC6C6-86AC-467C-AE56-7DCE1998F0F4}</Project>
+      <Name>Zorched.Migrations.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Zorched.Migrations.Framework\Zorched.Migrations.Framework.csproj">
       <Project>{6CD798FD-BB58-4D5A-A1D7-33699E1BAC33}</Project>
       <Name>Zorched.Migrations.Framework</Name>

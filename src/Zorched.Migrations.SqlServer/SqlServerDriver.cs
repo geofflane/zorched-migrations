@@ -14,9 +14,9 @@ namespace Zorched.Migrations.SqlServer
     [Driver("SQLServer", "System.Data.SqlClient")]
     public class SqlServerDriver : IDriver, IOperationRepository
     {
-        public SqlServerDriver(IDbConnection connection, ILogger logger)
+        public SqlServerDriver(IDbParams dbParams, ILogger logger)
         {
-            Connection = connection;
+            Database = dbParams;
             Logger = logger;
             RegisteredTypes = new Dictionary<Type, Type>();
 
@@ -44,7 +44,7 @@ namespace Zorched.Migrations.SqlServer
             RegisterInspecor<IColumnExistsOperation>(typeof(SqlColumnExistsOperation));
         }
 
-        public IDbConnection Connection { get; set; }
+        public IDbParams Database { get; set; }
         public ILogger Logger { get; set; }
 
         public string DriverName { get { return "SQLServer"; } }
@@ -83,7 +83,7 @@ namespace Zorched.Migrations.SqlServer
 
         public void Run(IOperation op)
         {
-            using(var cmd = Connection.CreateCommand())
+            using(var cmd = Database.CreateCommand())
             {
                 Logger.LogSql(op.ToString());
                 op.Execute(cmd);
@@ -99,7 +99,7 @@ namespace Zorched.Migrations.SqlServer
 
         public IDataReader Read(IReaderOperation op)
         {
-            using(var cmd = Connection.CreateCommand())
+            using (var cmd = Database.CreateCommand())
             {
                 Logger.LogSql(op.ToString());
                 return op.Execute(cmd);
@@ -122,7 +122,7 @@ namespace Zorched.Migrations.SqlServer
 
         public bool Inspect(IInspectionOperation op)
         {
-            using(var cmd = Connection.CreateCommand())
+            using (var cmd = Database.CreateCommand())
             {
                 Logger.LogSql(op.ToString());
                 return op.Execute(cmd);
