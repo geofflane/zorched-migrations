@@ -26,8 +26,10 @@ namespace Zorched.Migrations.SqlServer.Inspection
                 command.Parameters.Add(schemaParam);
             }
 
-            IDataReader reader = command.ExecuteReader();
-            return reader.Read();
+            using (var reader = command.ExecuteReader())
+            {
+                return reader.Read();                
+            }
         }
 
         public string WhereClause()

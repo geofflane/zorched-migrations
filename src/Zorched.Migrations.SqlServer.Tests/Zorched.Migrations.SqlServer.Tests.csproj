@@ -36,6 +36,7 @@
       <HintPath>..\..\libs\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -49,6 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Execute\AddColumnTests.cs" />
+    <Compile Include="Execute\AddConstraintsTests.cs" />
+    <Compile Include="Execute\RenameTableTests.cs" />
+    <Compile Include="Execute\RenameColumnTests.cs" />
+    <Compile Include="Execute\DropColumnTests.cs" />
+    <Compile Include="Execute\CreateTableTests.cs" />
+    <Compile Include="Execute\ExecuteBase.cs" />
+    <Compile Include="Execute\TestLogger.cs" />
     <Compile Include="Operations\AddCheckConstraintTests.cs" />
     <Compile Include="Operations\AddColumnTests.cs" />
     <Compile Include="Operations\AddForeignKeyTests.cs" />
@@ -75,6 +84,9 @@
       <Project>{35479FAF-CF44-4457-91CD-E5C4FCAC6181}</Project>
       <Name>Zorched.Migrations.SqlServer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

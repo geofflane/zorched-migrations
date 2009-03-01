@@ -37,10 +37,10 @@ namespace Zorched.Migrations.Core
         public DbConnection GetConnection(Type driverType, string connectionString)
         {
             var provider = DriverAttribute.GetProvider(driverType);
-
             var factory = DbProviderFactories.GetFactory(provider);
             var connection = factory.CreateConnection();
             connection.ConnectionString = connectionString;
+            connection.Open();
             return connection;
         }
     }

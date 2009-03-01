@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Reflection;
 using NUnit.Framework;
 using Zorched.Migrations.Core;
@@ -21,8 +22,9 @@ namespace Zorched.Migrations.Tests
         [Test]
         public void can_get_driver_from_assembly()
         {
+            var cs = ConfigurationManager.ConnectionStrings["SqlServer"];
             var assembly = GetAssembly();
-            var driver = dl.GetDriver(assembly, "Data Source=localhost;Initial Catalog=Northwind;User Id=sq;Password=sql;", new TestLogger());
+            var driver = dl.GetDriver(assembly, cs.ConnectionString, new TestLogger());
             Assert.IsNotNull(driver);
         }
 

@@ -83,15 +83,10 @@ namespace Zorched.Migrations.SqlServer
 
         public void Run(IOperation op)
         {
-            var cmd = Connection.CreateCommand();
-            try
+            using(var cmd = Connection.CreateCommand())
             {
                 Logger.LogSql(op.ToString());
                 op.Execute(cmd);
-            }
-            finally
-            {
-                cmd.Dispose();
             }
         }
 
@@ -104,15 +99,10 @@ namespace Zorched.Migrations.SqlServer
 
         public IDataReader Read(IReaderOperation op)
         {
-            var cmd = Connection.CreateCommand();
-            try
+            using(var cmd = Connection.CreateCommand())
             {
                 Logger.LogSql(op.ToString());
                 return op.Execute(cmd);
-            }
-            finally
-            {
-                cmd.Dispose();
             }
         }
 
@@ -132,15 +122,10 @@ namespace Zorched.Migrations.SqlServer
 
         public bool Inspect(IInspectionOperation op)
         {
-            var cmd = Connection.CreateCommand();
-            try
+            using(var cmd = Connection.CreateCommand())
             {
                 Logger.LogSql(op.ToString());
                 return op.Execute(cmd);
-            }
-            finally
-            {
-                cmd.Dispose();
             }
         }
 

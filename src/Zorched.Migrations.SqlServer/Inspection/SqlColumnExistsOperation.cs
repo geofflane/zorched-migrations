@@ -21,7 +21,7 @@ namespace Zorched.Migrations.SqlServer.Inspection
 
             var columnParam = command.CreateParameter();
             columnParam.ParameterName = "@columnName";
-            columnParam.Value = TableName;
+            columnParam.Value = ColumnName;
             command.Parameters.Add(columnParam);
 
             if (! string.IsNullOrEmpty(SchemaName))
@@ -32,8 +32,10 @@ namespace Zorched.Migrations.SqlServer.Inspection
                 command.Parameters.Add(schemaParam);
             }
 
-            IDataReader reader = command.ExecuteReader();
-            return reader.Read();
+            using (var reader = command.ExecuteReader())
+            {
+                return reader.Read();
+            }
         }
 
         public string WhereClause()
