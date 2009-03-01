@@ -1,6 +1,7 @@
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Zorched.Migrations.Core;
+using ILogger=Zorched.Migrations.Framework.ILogger;
 
 namespace Zorched.Migrations.MSBuild
 {
@@ -27,7 +28,6 @@ namespace Zorched.Migrations.MSBuild
     /// </example>
     public class Migrate : Task
     {
-
         public Migrate()
         {
             To = -1;
@@ -45,17 +45,18 @@ namespace Zorched.Migrations.MSBuild
         /// </summary>
         public ITaskItem[] Migrations { set; get; }
 
-        /// <summary>
-        /// The paths to the directory that contains your migrations. 
-        /// This will generally just be a single item.
-        /// </summary>
-        public string Directory { set; get; }
-
-        public string Language { set; get; }
-
         public long To { get; set; }
 
+        /// <summary>
+        /// If true, Dryrun will show what migrations will be applied to the database
+        /// </summary>
+        public bool Dryrun { get; set; }
 
+        /// <summary>
+        /// If this value is set then the SQL generated will be logged to the given file.
+        /// </summary>
+        public string ScriptFile { get; set; }
+	    
         public override bool Execute()
         {
             if (null == Migrations)
@@ -74,13 +75,30 @@ namespace Zorched.Migrations.MSBuild
 
         private void Execute(string assembly)
         {
-            var logger = new MSBuildLogger(Log);
-            var mig = new Migrator(logger, DriverAssembly, assembly, ConnectionString);
+            using (var logger = new MSBuildLogger(Log, ScriptFile))
+            {
+                var migrator = new Migrator(logger, DriverAssembly, assembly, ConnectionString);
 
-            if (To == -1)
-                mig.MigrateTo();
-            else
-                mig.MigrateTo(To);
+                if (Dryrun)
+                {
+                    LogMigrationsToBeApplied(logger, migrator);
+                    return;
+                }
+
+                if (To == -1)
+                    migrator.MigrateTo();
+                else
+                    migrator.MigrateTo(To);
+            }
+        }
+
+        private static void LogMigrationsToBeApplied(ILogger logger, Migrator migrator)
+        {
+            logger.LogInfo("Migrations to be applied:");
+            foreach(var migration in migrator.MigrationsToBeApplied)
+            {
+                logger.LogInfo(string.Format("{0} : {1}", migration.Version, migration.Name));
+            }
         }
     }
 }

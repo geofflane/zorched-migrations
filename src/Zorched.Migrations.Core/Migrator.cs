@@ -34,6 +34,22 @@ namespace Zorched.Migrations.Core
 
         public IDictionary<long, IMigration> Migrations { get; protected set; }
         public List<long> AppliedMigrations { get; protected set; }
+
+        public List<IMigration> MigrationsToBeApplied
+        {
+            get
+            {
+                var toBeApplied = new List<IMigration>();
+                foreach (var mig in Migrations.Values)
+                {
+                    if (! VersionAlreadyApplied(mig.Version))
+                    {
+                        toBeApplied.Add(mig);
+                    }
+                }
+                return toBeApplied;
+            }
+        }
         
         public void MigrateTo()
         {
@@ -56,6 +72,10 @@ namespace Zorched.Migrations.Core
                 else
                     MigrateUpTo(schemaVersion, version);
             }
+            catch (MigrationContractException mcex)
+            {
+                Logger.LogError(String.Format("Error in a migration: {0}", mcex.OffendingType.FullName), mcex);
+            }
             catch (Exception ex)
             {
                 Logger.LogError("Error running migrations", ex);
@@ -73,7 +93,7 @@ namespace Zorched.Migrations.Core
         private void MigrateDownTo(long schemaVersion, long newVersion)
         {
             var previousVersion = schemaVersion + 1; // Start ahead and then move back in PreviousMigration
-            IMigration migration = null;
+            IMigration migration;
             do
             {
                 migration = PreviousMigration(previousVersion);
@@ -95,7 +115,7 @@ namespace Zorched.Migrations.Core
         private void MigrateUpTo(long schemaVersion, long newVersion)
         {
             var nextVersion = schemaVersion;
-            IMigration migration = null;
+            IMigration migration;
             do
             {
                 migration = NextMigration(nextVersion);
@@ -117,7 +137,7 @@ namespace Zorched.Migrations.Core
         protected IMigration NextMigration(long current)
         {
             // Start searching at the current index
-            IMigration next = null;
+            IMigration next;
             do
             {
                 next = Migrations[current++];
@@ -132,7 +152,7 @@ namespace Zorched.Migrations.Core
         protected IMigration PreviousMigration(long current)
         {
             // Start searching at the current index
-            IMigration next = null;
+            IMigration next;
             do
             {
                 next = Migrations[current--];

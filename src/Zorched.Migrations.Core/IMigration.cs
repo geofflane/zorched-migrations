@@ -5,6 +5,7 @@ namespace Zorched.Migrations.Core
     public interface IMigration
     {
         long Version { get; }
+        string Name { get; }
 
         void Setup(SetupRunner setupRunner, ILogger logger, IOperationRepository driver);
 

@@ -4,14 +4,10 @@ Add attribute to mark Up/Down method as non-transactional and use base Migration
 Look at Windsor for managing dependencies?
 Work on client interface to see if it can be improved
 
-Provide IDriver interface for just generating the script without running against the DB
-
 Generate schema from existing database
-Dump schema changes to stdout/file
 Dry run to find out what changes will be applied
 
 = MSBuild
-ScriptFile to output the scripts that were run
 Dryrun
 
 = Driver

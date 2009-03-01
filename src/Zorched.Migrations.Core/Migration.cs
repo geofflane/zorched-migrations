@@ -29,6 +29,11 @@ namespace Zorched.Migrations.Core
             get { return MigrationAttribute.GetVersion(type); }
         }
 
+        public string Name
+        {
+            get { return type.ToHumanName(); }
+        }
+
         public virtual void Setup(SetupRunner setupRunner, ILogger logger, IOperationRepository driver)
         {
             setupRunner.Invoke(migration, driver);
