@@ -1,9 +1,8 @@
 using NUnit.Framework;
 using Zorched.Migrations.SqlServer.Schema;
 
-namespace Zorched.Migrations.SqlServer.Tests
+namespace Zorched.Migrations.SqlServer.Tests.Operations
 {
-
     [TestFixture]
     public class RenameTableTests
     {

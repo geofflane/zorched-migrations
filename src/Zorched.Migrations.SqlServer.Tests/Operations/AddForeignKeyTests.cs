@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Zorched.Migrations.SqlServer.Schema;
 
-namespace Zorched.Migrations.SqlServer.Tests
+namespace Zorched.Migrations.SqlServer.Tests.Operations
 {
     [TestFixture]
     public class AddForeignKeyTests
@@ -84,15 +84,15 @@ namespace Zorched.Migrations.SqlServer.Tests
         private SqlAddForeignKeyOperation GetFullOp()
         {
             return new SqlAddForeignKeyOperation
-            {
-                SchemaName = "dbo",
-                TableName = "UserRoles",
-                ColumnName = "RoleId",
-                ConstraintName = "FK_UserRoles_Roles",
-                ReferenceSchemaName = "dbo",
-                ReferenceTableName = "Role",
-                ReferenceColumnName = "Id"
-            };
+                       {
+                           SchemaName = "dbo",
+                           TableName = "UserRoles",
+                           ColumnName = "RoleId",
+                           ConstraintName = "FK_UserRoles_Roles",
+                           ReferenceSchemaName = "dbo",
+                           ReferenceTableName = "Role",
+                           ReferenceColumnName = "Id"
+                       };
         }
     }
 }

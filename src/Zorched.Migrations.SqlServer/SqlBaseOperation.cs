@@ -18,7 +18,7 @@ namespace Zorched.Migrations.SqlServer
             sb.Append(c.Property.Match(ColumnProperty.Null) ? " NULL" : " NOT NULL");
             if (null != c.DefaultValue)
             {
-                sb.Append("DEFAULT ").Append(c.DefaultValue);
+                sb.Append(" DEFAULT ").Append(c.DefaultValue);
             }
         }
 

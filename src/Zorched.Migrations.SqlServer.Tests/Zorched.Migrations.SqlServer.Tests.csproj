@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Execute\AddColumnTests.cs" />
     <Compile Include="Execute\AddConstraintsTests.cs" />
+    <Compile Include="Execute\DeleteDataTests.cs" />
     <Compile Include="Execute\UpdateDataTests.cs" />
     <Compile Include="Execute\InsertDataTests.cs" />
     <Compile Include="Execute\RenameTableTests.cs" />

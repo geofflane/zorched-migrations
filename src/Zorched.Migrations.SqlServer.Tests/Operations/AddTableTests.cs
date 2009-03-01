@@ -4,22 +4,21 @@ using NUnit.Framework;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.SqlServer.Schema;
 
-namespace Zorched.Migrations.SqlServer.Tests
+namespace Zorched.Migrations.SqlServer.Tests.Operations
 {
-
     [TestFixture]
     public class AddTableTests
     {
 
         private const string TABLE1 =
-@"CREATE TABLE [dbo].[Foo](
+            @"CREATE TABLE [dbo].[Foo](
 [Id] [int] IDENTITY(1,1) NOT NULL,
 [BarId] [int] NOT NULL,
 [Name] [nvarchar](50) NOT NULL,
 [Description] [nvarchar](MAX) NULL)";
 
         private const string TABLE2 =
-@"CREATE TABLE [dbo].[Foo](
+            @"CREATE TABLE [dbo].[Foo](
 [Id] [int] IDENTITY(1,1) NOT NULL,
 [BarId] [int] NOT NULL,
 [Name] [nvarchar](50) NOT NULL,
@@ -30,7 +29,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON))";
 
         private const string TABLE3 =
-@"CREATE TABLE [dbo].[Foo](
+            @"CREATE TABLE [dbo].[Foo](
 [Id] [int] IDENTITY(1,1) NOT NULL,
 [Id2] [int] IDENTITY(1,1) NOT NULL,
 [BarId] [int] NOT NULL,

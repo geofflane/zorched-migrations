@@ -7,7 +7,7 @@ using Zorched.Migrations.Framework.Data;
 using Zorched.Migrations.Framework.Inspection;
 using Zorched.Migrations.Framework.Schema;
 
-namespace Zorched.Migrations.Tests
+namespace Zorched.Migrations.Tests.Framework
 {
     [TestFixture]
     public class DriverAttributeTests

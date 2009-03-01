@@ -4,7 +4,7 @@ using Zorched.Migrations.Framework.Data;
 namespace Zorched.Migrations.SqlServer.Tests.Execute
 {
     [TestFixture]
-    public class UpdateDataTests : ExecuteBase
+    public class DeleteDataTests : ExecuteBase
     {
         [TearDown]
         public override void Teardown()
@@ -18,7 +18,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         }
 
         [Test]
-        public void can_update_data()
+        public void can_delete_data()
         {
             CreateTable(TABLE_NAME);
 
@@ -32,7 +32,6 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                               });
 
             int id = 0;
-
             using (var reader = Driver.Read<ISelectOperation>(op =>
                                                                   {
                                                                       op.TableName = TABLE_NAME;
@@ -47,27 +46,20 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                 Assert.AreEqual("TestPass", reader.GetString(2));
             }
 
-            Driver.Update(op =>
+            Driver.Delete(op =>
                               {
                                   op.TableName = TABLE_NAME;
-                                  op.Columns.Add("Username");
-                                  op.Values.Add("Updated");
                                   op.WhereColumn = "Id";
                                   op.WhereValue = id;
                               });
 
-
-            using (var reader = Driver.Read<ISelectOperation>(op =>
+            using (var reader = Driver.Read<IGenericReaderOperation>(op =>
                                                                   {
-                                                                      op.TableName = TABLE_NAME;
-                                                                      op.Columns.Add("Id");
-                                                                      op.Columns.Add("Username");
-                                                                      op.Columns.Add("Password");
+                                                                      op.Sql = "SELECT * FROM [" + TABLE_NAME +
+                                                                               "] WHERE id=" + id;
                                                                   }))
             {
-                Assert.IsTrue(reader.Read());
-                Assert.AreEqual("Updated", reader.GetString(1));
-                Assert.AreEqual("TestPass", reader.GetString(2));
+                Assert.IsFalse(reader.Read());
             }
         }
     }

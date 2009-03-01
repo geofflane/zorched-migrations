@@ -19,7 +19,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         }
 
         [Test]
-        public void can_add_table()
+        public void can_insert_data()
         {
             CreateTable(TABLE_NAME);
 

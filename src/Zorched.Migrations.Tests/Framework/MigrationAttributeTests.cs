@@ -3,9 +3,8 @@ using System.Reflection;
 using NUnit.Framework;
 using Zorched.Migrations.Framework;
 
-namespace Zorched.Migrations.Tests
+namespace Zorched.Migrations.Tests.Framework
 {
-
     [TestFixture]
     public class MigrationAttributeTests
     {

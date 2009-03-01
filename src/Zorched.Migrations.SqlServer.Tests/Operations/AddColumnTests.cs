@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.SqlServer.Schema;
 
-namespace Zorched.Migrations.SqlServer.Tests
+namespace Zorched.Migrations.SqlServer.Tests.Operations
 {
     [TestFixture]
     public class AddColumnTests
@@ -52,17 +52,17 @@ namespace Zorched.Migrations.SqlServer.Tests
         public void can_build_column2_schema()
         {
             var op = new SqlAddColumnOperation
-            {
-                SchemaName = null,
-                TableName = "Foo",
-                Column =
-                    new Column
-                    {
-                        Name = "Id",
-                        DbType = DbType.Int32,
-                        Property = ColumnProperty.PrimaryKeyWithIdentity
-                    }
-            };
+                         {
+                             SchemaName = null,
+                             TableName = "Foo",
+                             Column =
+                                 new Column
+                                     {
+                                         Name = "Id",
+                                         DbType = DbType.Int32,
+                                         Property = ColumnProperty.PrimaryKeyWithIdentity
+                                     }
+                         };
             Assert.AreEqual(COLUMN2, op.ToString());
         }
     }

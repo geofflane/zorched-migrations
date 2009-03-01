@@ -6,7 +6,7 @@ using Zorched.Migrations.Core;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Schema;
 
-namespace Zorched.Migrations.Tests
+namespace Zorched.Migrations.Tests.Framework
 {
     [TestFixture]
     public class MigrationTests

@@ -31,39 +31,43 @@ namespace Zorched.Migrations.Core
                 op =>
                 {
                     op.TableName = "SchemaInfo";
-                    op.AddColumn("Version", DbType.UInt64, ColumnProperty.NotNull);
+                    op.AddColumn("Version", DbType.Int64, ColumnProperty.NotNull);
                     op.AddColumn("AppliedOn", DbType.DateTime, ColumnProperty.NotNull, "(getdate())");
                 });
         }
 
         public long CurrentSchemaVersion()
         {
-            var reader = Driver.Select(
+            using (var reader = Driver.Select(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("MAX(Version)");
-                });
+                }))
+            {
+                return reader.Read() ? reader.GetInt64(0) : 0;
+            }
 
-            return reader.Read() ? reader.GetInt64(0) : 0;
         }
 
         public List<long> AppliedMigrations()
         {
-            var reader = Driver.Select(
+            using (var reader = Driver.Select(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("Version");
-                });
-
-            var versions = new List<long>();
-            while (reader.Read())
+                }))
             {
-                versions.Add(reader.GetInt64(0));
-            }
+                var versions = new List<long>();
+                while (reader.Read())
+                {
+                    versions.Add(reader.GetInt64(0));
+                }
 
-            return versions;
+                versions.Sort();
+                return versions;
+            }
         }
 
 

@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Zorched.Migrations.SqlServer.Schema;
 
-namespace Zorched.Migrations.SqlServer.Tests
+namespace Zorched.Migrations.SqlServer.Tests.Operations
 {
     [TestFixture]
     public class AddCheckConstraintTests
@@ -53,12 +53,12 @@ namespace Zorched.Migrations.SqlServer.Tests
         private SqlAddCheckConstraintOperation GetFullOp()
         {
             return new SqlAddCheckConstraintOperation()
-            {
-                SchemaName = "dbo",
-                TableName = "UserRoles",
-                ConstraintDefinition = "RoleId > 0",
-                ConstraintName = "FK_UserRoles_Roles"
-            };
+                       {
+                           SchemaName = "dbo",
+                           TableName = "UserRoles",
+                           ConstraintDefinition = "RoleId > 0",
+                           ConstraintName = "FK_UserRoles_Roles"
+                       };
         }
     }
 }

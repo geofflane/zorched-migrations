@@ -1,9 +1,8 @@
 using NUnit.Framework;
 using Zorched.Migrations.SqlServer.Data;
 
-namespace Zorched.Migrations.SqlServer.Tests
+namespace Zorched.Migrations.SqlServer.Tests.Operations
 {
-
     [TestFixture]
     public class UpdateTests
     {

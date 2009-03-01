@@ -2,9 +2,8 @@ using System.Text;
 using NUnit.Framework;
 using Zorched.Migrations.Framework.Extensions;
 
-namespace Zorched.Migrations.Tests
+namespace Zorched.Migrations.Tests.Framework
 {
-
     [TestFixture]
     public class StringExtensionTests
     {

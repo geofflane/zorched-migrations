@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Zorched.Migrations.Core;
 
-namespace Zorched.Migrations.Tests
+namespace Zorched.Migrations.Tests.Framework
 {
     [TestFixture]
     public class MigrationLoaderTests

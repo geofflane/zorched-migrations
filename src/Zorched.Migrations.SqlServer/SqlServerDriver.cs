@@ -37,7 +37,7 @@ namespace Zorched.Migrations.SqlServer
             Register<IInsertOperation>(typeof (SqlInsertOperation));
             Register<IUpdateOperation>(typeof (SqlUpdateOperation));
 
-            RegisterReader<IReaderOperation>(typeof (SqlReaderOperation));
+            RegisterReader<IGenericReaderOperation>(typeof (SqlReaderOperation));
             RegisterReader<ISelectOperation>(typeof (SqlSelectOperation));
 
             RegisterInspecor<ITableExistsOperation>(typeof(SqlTableExistsOperation));
