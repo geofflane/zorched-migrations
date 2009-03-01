@@ -14,14 +14,16 @@ namespace Zorched.Migrations.SqlServer
     [Driver("SQLServer", "System.Data.SqlClient")]
     public class SqlServerDriver : IDriver, IOperationRepository
     {
-        public SqlServerDriver(IDbConnection connection)
+        public SqlServerDriver(IDbConnection connection, ILogger logger)
         {
             Connection = connection;
+            Logger = logger;
             RegisteredTypes = new Dictionary<Type, Type>();
 
             Register<IAddTableOperation>(typeof (SqlAddTableOperation));
             Register<IAddColumnOperation>(typeof (SqlAddColumnOperation));
-            Register<IAddForeignKeyOperation>(typeof (SqlAddForeignKeyOperation));
+            Register<IAddForeignKeyOperation>(typeof(SqlAddForeignKeyOperation));
+            Register<IChangeColumnOperation>(typeof(SqlChangeColumnOperation));
             Register<IDropTableOperation>(typeof (SqlDropTableOperation));
             Register<IDropColumnOperation>(typeof (SqlDropColumnOperation));
             Register<IDropConstraintOperation>(typeof(SqlDropConstraintOperation));
@@ -43,6 +45,7 @@ namespace Zorched.Migrations.SqlServer
         }
 
         public IDbConnection Connection { get; set; }
+        public ILogger Logger { get; set; }
 
         public string DriverName { get { return "SQLServer"; } }
 
@@ -83,6 +86,7 @@ namespace Zorched.Migrations.SqlServer
             var cmd = Connection.CreateCommand();
             try
             {
+                Logger.LogSql(op.ToString());
                 op.Execute(cmd);
             }
             finally
@@ -103,6 +107,7 @@ namespace Zorched.Migrations.SqlServer
             var cmd = Connection.CreateCommand();
             try
             {
+                Logger.LogSql(op.ToString());
                 return op.Execute(cmd);
             }
             finally
@@ -130,6 +135,7 @@ namespace Zorched.Migrations.SqlServer
             var cmd = Connection.CreateCommand();
             try
             {
+                Logger.LogSql(op.ToString());
                 return op.Execute(cmd);
             }
             finally
@@ -191,18 +197,22 @@ namespace Zorched.Migrations.SqlServer
 
         public void BeforeUp(long version)
         {
+            Logger.LogInfo(String.Format("Migrating Up: {0}", version));
         }
 
         public void BeforeDown(long version)
         {
+            Logger.LogInfo(String.Format("Migrating Down: {0}", version));
         }
 
         public void AfterUp(long version)
         {
+            Logger.LogInfo(String.Format("Applied: {0}", version));
         }
 
         public void AfterDown(long version)
         {
+            Logger.LogInfo(String.Format("Removed: {0}", version));
         }
     }
 }

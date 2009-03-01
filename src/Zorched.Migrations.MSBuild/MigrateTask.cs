@@ -74,7 +74,8 @@ namespace Zorched.Migrations.MSBuild
 
         private void Execute(string assembly)
         {
-            var mig = new Migrator(DriverAssembly, assembly, ConnectionString);
+            var logger = new MSBuildLogger(Log);
+            var mig = new Migrator(logger, DriverAssembly, assembly, ConnectionString);
 
             if (To == -1)
                 mig.MigrateTo();

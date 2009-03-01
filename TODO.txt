@@ -1,4 +1,3 @@
-
 = General
 Add attribute to mark Up/Down method as non-transactional and use base Migration
 
@@ -10,7 +9,6 @@ Provide IDriver interface for just generating the script without running against
 Generate schema from existing database
 Dump schema changes to stdout/file
 Dry run to find out what changes will be applied
-Logging?
 
 = MSBuild
 ScriptFile to output the scripts that were run
@@ -21,10 +19,6 @@ MySQL?
 PostgreSQL?
 Sqlite?
 
-= Operations
-Change column
-
 = Schema inspections
 Constraint exists
 List of tables
-

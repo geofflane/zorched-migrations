@@ -59,6 +59,7 @@
     <Compile Include="Schema\BaseSchemaOperation.cs" />
     <Compile Include="Schema\SqlAddCheckConstraintOperation.cs" />
     <Compile Include="Schema\SqlAddUniqueConstraintOperation.cs" />
+    <Compile Include="Schema\SqlChangeColumnOperation.cs" />
     <Compile Include="Schema\SqlRenameTableOperation.cs" />
     <Compile Include="Schema\SqlDropColumnOperation.cs" />
     <Compile Include="Schema\SqlAddColumnOperation.cs" />

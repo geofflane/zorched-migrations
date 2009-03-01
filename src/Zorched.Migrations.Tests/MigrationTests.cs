@@ -50,7 +50,7 @@ namespace Zorched.Migrations.Tests
             Expect.Call(() => opRepos.Register<IGenericOperation>(typeof(String)));
             mocks.ReplayAll();
 
-            migration.Setup(setupRunner, opRepos);
+            migration.Setup(setupRunner, new TestLogger(), opRepos);
 
             mocks.VerifyAll();
         }
@@ -70,7 +70,7 @@ namespace Zorched.Migrations.Tests
             Expect.Call(() => schemaInfo.InsertSchemaVersion(4));
             mocks.ReplayAll();
 
-            migration.Up(driver, schemaInfo);
+            migration.Up(driver, new TestLogger(), schemaInfo);
 
             mocks.VerifyAll();
         }
@@ -89,7 +89,7 @@ namespace Zorched.Migrations.Tests
             Expect.Call(() => schemaInfo.DeleteSchemaVersion(4));
             mocks.ReplayAll();
 
-            migration.Down(driver, schemaInfo);
+            migration.Down(driver, new TestLogger(), schemaInfo);
 
             mocks.VerifyAll();
         }
@@ -101,7 +101,7 @@ namespace Zorched.Migrations.Tests
             Assert.IsNotNull(migration);
             mocks.ReplayAll();
 
-            migration.Setup(setupRunner, opRepos);
+            migration.Setup(setupRunner, new TestLogger(), opRepos);
 
             mocks.VerifyAll();
         }
@@ -111,7 +111,7 @@ namespace Zorched.Migrations.Tests
     {
         public void Execute(IDbCommand command)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public string Sql { get; set; }

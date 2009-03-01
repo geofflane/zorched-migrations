@@ -2,4 +2,7 @@ bin
 obj
 *.suo
 *.user
+Zorched.Migrations.*.log
+Zorched.Migrations.*.xml
+Zorched.Migrations.*.html
 

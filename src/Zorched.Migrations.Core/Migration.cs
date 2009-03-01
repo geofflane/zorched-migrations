@@ -29,12 +29,12 @@ namespace Zorched.Migrations.Core
             get { return MigrationAttribute.GetVersion(type); }
         }
 
-        public virtual void Setup(SetupRunner setupRunner, IOperationRepository driver)
+        public virtual void Setup(SetupRunner setupRunner, ILogger logger, IOperationRepository driver)
         {
             setupRunner.Invoke(migration, driver);
         }
 
-        public virtual void Up(IDriver driver, ISchemaInfo schemaInfo)
+        public virtual void Up(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
         {
             driver.BeforeUp(Version);
 
@@ -53,7 +53,7 @@ namespace Zorched.Migrations.Core
             schemaInfo.InsertSchemaVersion(Version);
         }
 
-        public virtual void Down(IDriver driver, ISchemaInfo schemaInfo)
+        public virtual void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
         {
             driver.BeforeDown(Version);
 

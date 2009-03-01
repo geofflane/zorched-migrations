@@ -6,10 +6,10 @@ namespace Zorched.Migrations.Core
     {
         long Version { get; }
 
-        void Setup(SetupRunner setupRunner, IOperationRepository driver);
+        void Setup(SetupRunner setupRunner, ILogger logger, IOperationRepository driver);
 
-        void Up(IDriver driver, ISchemaInfo schemaInfo);
+        void Up(IDriver driver, ILogger logger, ISchemaInfo schemaInfo);
 
-        void Down(IDriver driver, ISchemaInfo schemaInfo);
+        void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo);
     }
 }

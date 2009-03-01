@@ -1,6 +1,8 @@
+using System;
 using System.Reflection;
 using NUnit.Framework;
 using Zorched.Migrations.Core;
+using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Tests
 {
@@ -20,7 +22,7 @@ namespace Zorched.Migrations.Tests
         public void can_get_driver_from_assembly()
         {
             var assembly = GetAssembly();
-            var driver = dl.GetDriver(assembly, "Data Source=localhost;Initial Catalog=Northwind;User Id=sq;Password=sql;");
+            var driver = dl.GetDriver(assembly, "Data Source=localhost;Initial Catalog=Northwind;User Id=sq;Password=sql;", new TestLogger());
             Assert.IsNotNull(driver);
         }
 
@@ -30,6 +32,31 @@ namespace Zorched.Migrations.Tests
             Assert.IsNotNull(assembly);
 
             return assembly;
+        }
+    }
+
+    public class TestLogger : ILogger
+    {
+        public void LogError(string error)
+        {
+            Console.Error.WriteLine(error);
+        }
+
+        public void LogError(string error, Exception ex)
+        {
+            Console.Error.WriteLine(error);
+            Console.Error.WriteLine(ex.Message);
+            Console.Error.WriteLine(ex.StackTrace);
+        }
+
+        public void LogInfo(string info)
+        {
+            Console.Out.WriteLine(info);
+        }
+
+        public void LogSql(string sql)
+        {
+            Console.Out.WriteLine(sql);
         }
     }
 }

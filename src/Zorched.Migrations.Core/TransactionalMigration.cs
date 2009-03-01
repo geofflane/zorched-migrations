@@ -7,20 +7,20 @@ namespace Zorched.Migrations.Core
     {
         public TransactionalMigration(Type t) : base(t) {}
 
-        public override void Up(IDriver driver, ISchemaInfo schemaInfo)
+        public override void Up(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
         {
             using (var trans = driver.Connection.BeginTransaction())
             {
-                base.Up(driver, schemaInfo);
+                base.Up(driver, logger, schemaInfo);
                 trans.Commit();
             }
         }
 
-        public override void Down(IDriver driver, ISchemaInfo schemaInfo)
+        public override void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
         {
             using (var trans = driver.Connection.BeginTransaction())
             {
-                base.Down(driver, schemaInfo);
+                base.Down(driver, logger, schemaInfo);
 
                 trans.Commit();
             }

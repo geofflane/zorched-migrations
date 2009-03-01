@@ -36,7 +36,7 @@ namespace Zorched.Migrations.Tests
     [Driver("Test", "System.Data.SqlClient")]
     public class DriverTestClass : IDriver
     {
-        public DriverTestClass(IDbConnection connection)
+        public DriverTestClass(IDbConnection connection, ILogger logger)
         {
             Connection = connection;
         }

@@ -19,19 +19,19 @@ namespace Zorched.Migrations.Core
             return Assembly.LoadFile(assemblyPath);
         }
 
-        public IDriver GetDriver(string assemblyPath, string connectionString)
+        public IDriver GetDriver(string assemblyPath, string connectionString, ILogger logger)
         {
             var assembly = GetAssemblyFromPath(assemblyPath);
-            return GetDriver(assembly, connectionString);
+            return GetDriver(assembly, connectionString, logger);
         }
 
-        public IDriver GetDriver(Assembly assembly, string connectionString)
+        public IDriver GetDriver(Assembly assembly, string connectionString, ILogger logger)
         {
             var driverType = DriverAttribute.GetDriver(assembly);
             var connection = GetConnection(driverType, connectionString);
 
-            var constructor = driverType.GetConstructor(new[] {typeof (IDbConnection)});
-            return (IDriver) constructor.Invoke(new[] {connection});
+            var constructor = driverType.GetConstructor(new[] {typeof (IDbConnection), typeof(ILogger)});
+            return (IDriver) constructor.Invoke(new object[] {connection, logger});
         }
 
         public DbConnection GetConnection(Type driverType, string connectionString)
