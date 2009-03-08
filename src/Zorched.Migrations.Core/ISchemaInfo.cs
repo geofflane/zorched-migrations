@@ -16,7 +16,7 @@ namespace Zorched.Migrations.Core
 
         List<long> AppliedMigrations();
 
-        void InsertSchemaVersion(long version);
+        void InsertSchemaVersion(long version, string name);
 
         void DeleteSchemaVersion(long version);
     }

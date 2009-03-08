@@ -67,7 +67,7 @@ namespace Zorched.Migrations.Tests.Framework
 
             Expect.Call(() => driver.AfterUp(4));
 
-            Expect.Call(() => schemaInfo.InsertSchemaVersion(4));
+            Expect.Call(() => schemaInfo.InsertSchemaVersion(4, typeof(MigrationTestType).FullName));
             mocks.ReplayAll();
 
             migration.Up(driver, new TestLogger(), schemaInfo);

@@ -54,7 +54,7 @@ namespace Zorched.Migrations.Tests.Core
             var si = new SchemaInfo(Driver);
             si.EnsureSchemaTable();
 
-            si.InsertSchemaVersion(10);
+            si.InsertSchemaVersion(10, "foo");
 
             using (var reader = Driver.Read<IGenericReaderOperation>(op => op.Sql = "SELECT * FROM SchemaInfo WHERE Version=10"))
             {
@@ -82,9 +82,9 @@ namespace Zorched.Migrations.Tests.Core
             var si = new SchemaInfo(Driver);
             si.EnsureSchemaTable();
 
-            si.InsertSchemaVersion(10);
-            si.InsertSchemaVersion(100);
-            si.InsertSchemaVersion(1);
+            si.InsertSchemaVersion(10, "foo");
+            si.InsertSchemaVersion(100, "bar");
+            si.InsertSchemaVersion(1, "baz");
 
             Assert.AreEqual(100, si.CurrentSchemaVersion());
         }
@@ -95,9 +95,9 @@ namespace Zorched.Migrations.Tests.Core
             var si = new SchemaInfo(Driver);
             si.EnsureSchemaTable();
 
-            si.InsertSchemaVersion(10);
-            si.InsertSchemaVersion(100);
-            si.InsertSchemaVersion(1);
+            si.InsertSchemaVersion(10, "foo");
+            si.InsertSchemaVersion(100, "bar");
+            si.InsertSchemaVersion(1, "baz");
 
             IList<long> versions = si.AppliedMigrations();
             Assert.AreEqual(3, versions.Count);

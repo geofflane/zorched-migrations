@@ -55,7 +55,7 @@ namespace Zorched.Migrations.Core
 
             driver.AfterUp(Version);
 
-            schemaInfo.InsertSchemaVersion(Version);
+            schemaInfo.InsertSchemaVersion(Version, type.FullName);
         }
 
         public virtual void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)

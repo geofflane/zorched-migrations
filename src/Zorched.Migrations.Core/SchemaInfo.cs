@@ -32,6 +32,7 @@ namespace Zorched.Migrations.Core
                 {
                     op.TableName = "SchemaInfo";
                     op.AddColumn("Version", DbType.Int64, ColumnProperty.NotNull);
+                    op.AddColumn("Type", DbType.String, 255, ColumnProperty.NotNull);
                     op.AddColumn("AppliedOn", DbType.DateTime, ColumnProperty.NotNull, "(getdate())");
                 });
         }
@@ -71,15 +72,17 @@ namespace Zorched.Migrations.Core
         }
 
 
-        public void InsertSchemaVersion(long version)
+        public void InsertSchemaVersion(long version, string name)
         {
             Driver.Insert(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("Version");
+                    op.Columns.Add("Type");
                     op.Columns.Add("AppliedOn");
                     op.Values.Add(version);
+                    op.Values.Add(name);
                     op.Values.Add(DateTime.Now);
                 });
         }
