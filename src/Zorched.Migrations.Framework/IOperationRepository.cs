@@ -9,5 +9,7 @@ namespace Zorched.Migrations.Framework
         void Register<T>(Type impl) where T : IOperation;
         void RegisterReader<T>(Type impl) where T : IReaderOperation;
         void RegisterInspecor<T>(Type impl) where T : IInspectionOperation;
+
+        T InstanceForInteface<T>();
     }
 }

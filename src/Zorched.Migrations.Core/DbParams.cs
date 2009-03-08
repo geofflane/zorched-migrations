@@ -5,17 +5,38 @@ namespace Zorched.Migrations.Core
 {
     public class DbParams : IDbParams
     {
+        private const int DEFAULT_TIMEOUNT = 30;
 
-        public DbParams(IDbConnection connection)
+        private int commandTimeout;
+
+        /// <summary>
+        /// Create a new DbParams Object
+        /// </summary>
+        /// <param name="connection">The database connection to use.</param>
+        /// <param name="commandTimeout">The timeout to use for Commands in seconds. Defaults to 30 seconds.</param>
+        public DbParams(IDbConnection connection, int commandTimeout)
         {
             Connection = connection;
             if (Connection.State != ConnectionState.Open)
             {
                 Connection.Open();
             }
+
+            CommandTimeout = commandTimeout;
         }
 
+        public DbParams(IDbConnection connection) : this(connection, DEFAULT_TIMEOUNT)
+        {
+        }
+
+        public int CommandTimeout
+        {
+            get { return commandTimeout; }
+            set { commandTimeout = 0 < value ? value : DEFAULT_TIMEOUNT; }
+        }
+        
         public IDbConnection Connection { get; set; }
+        
         public IDbTransaction Transaction { get; set; }
 
         public IDbCommand CreateCommand()
@@ -24,6 +45,7 @@ namespace Zorched.Migrations.Core
             if (null != Transaction)
                 cmd.Transaction = Transaction;
 
+            cmd.CommandTimeout = CommandTimeout;
             return cmd;
         }
 

@@ -4,6 +4,7 @@ namespace Zorched.Migrations.Framework
 {
     public interface IDbParams
     {
+        int CommandTimeout { get; set; }
         IDbConnection Connection { get; }
         IDbTransaction Transaction { get; }
 
