@@ -10,6 +10,32 @@ namespace Zorched.Migrations.Core
     {
         public const string SCHEMA_VERSION_TABLE = "SchemaInfo";
 
+        public readonly Column ASSEMBLY_COLUMN = new Column
+                                                     {
+                                                         Name = "Assembly",
+                                                         DbType = DbType.String,
+                                                         Size = 255,
+                                                         Property = ColumnProperty.NotNull,
+                                                         DefaultValue = "('FIXME')"
+                                                     };
+
+        public readonly Column TYPE_COLUMN = new Column
+                                                 {
+                                                     Name = "Type",
+                                                     DbType = DbType.String,
+                                                     Size = 255,
+                                                     Property = ColumnProperty.NotNull,
+                                                     DefaultValue = "('FIXME')"
+                                                 };
+
+        public readonly Column APPLIED_ON_COLUMN = new Column
+                                                       {
+                                                           Name = "AppliedOn",
+                                                           DbType = DbType.DateTime,
+                                                           Property = ColumnProperty.NotNull,
+                                                           DefaultValue = "(getdate())"
+                                                       };
+
         public SchemaInfo(IDriver driver)
         {
             Driver = driver;
@@ -23,45 +49,64 @@ namespace Zorched.Migrations.Core
             {
                 CreateSchemaTable();
             }
+
+            EnsureColumn(ASSEMBLY_COLUMN);
+            EnsureColumn(TYPE_COLUMN);
+            EnsureColumn(APPLIED_ON_COLUMN);
+        }
+
+        public void EnsureColumn(Column c)
+        {
+            if (!Driver.Inspect<IColumnExistsOperation>(op =>
+                                                            {
+                                                                op.TableName = SCHEMA_VERSION_TABLE;
+                                                                op.ColumnName = c.Name;
+                                                            }))
+            {
+                Driver.AddColumn(op =>
+                                     {
+                                         op.TableName = SCHEMA_VERSION_TABLE;
+                                         op.Column = c;
+                                     });
+            }
         }
 
         public void CreateSchemaTable()
         {
             Driver.AddTable(
                 op =>
-                {
-                    op.TableName = "SchemaInfo";
-                    op.AddColumn("Version", DbType.Int64, ColumnProperty.NotNull);
-                    op.AddColumn("Assembly", DbType.String, 255, ColumnProperty.NotNull);
-                    op.AddColumn("Type", DbType.String, 255, ColumnProperty.NotNull);
-                    op.AddColumn("AppliedOn", DbType.DateTime, ColumnProperty.NotNull, "(getdate())");
-                });
+                    {
+                        op.TableName = "SchemaInfo";
+                        op.AddColumn("Version", DbType.Int64, ColumnProperty.NotNull);
+                        op.AddColumn(ASSEMBLY_COLUMN);
+                        op.AddColumn(TYPE_COLUMN);
+                        op.AddColumn(APPLIED_ON_COLUMN);
+                    });
         }
 
         public long CurrentSchemaVersion(string assembly)
         {
             using (var reader = Driver.Select(
                 op =>
-                {
-                    op.TableName = SCHEMA_VERSION_TABLE;
-                    op.Columns.Add("MAX(Version)");
-                    op.Where("Assembly", assembly);
-                }))
+                    {
+                        op.TableName = SCHEMA_VERSION_TABLE;
+                        op.Columns.Add("MAX(Version)");
+                        op.Where(ASSEMBLY_COLUMN.Name, assembly);
+                    }))
             {
                 return reader.Read() ? reader.GetInt64(0) : 0;
             }
-
         }
 
         public List<long> AppliedMigrations(string assembly)
         {
             using (var reader = Driver.Select(
                 op =>
-                {
-                    op.TableName = SCHEMA_VERSION_TABLE;
-                    op.Columns.Add("Version");
-                    op.Where("Assembly", assembly);
-                }))
+                    {
+                        op.TableName = SCHEMA_VERSION_TABLE;
+                        op.Columns.Add("Version");
+                        op.Where(ASSEMBLY_COLUMN.Name, assembly);
+                    }))
             {
                 var versions = new List<long>();
                 while (reader.Read())
@@ -79,27 +124,27 @@ namespace Zorched.Migrations.Core
         {
             Driver.Insert(
                 op =>
-                {
-                    op.TableName = SCHEMA_VERSION_TABLE;
-                    op.Columns.Add("Version");
-                    op.Columns.Add("Assembly");
-                    op.Columns.Add("Type");
-                    op.Columns.Add("AppliedOn");
-                    op.Values.Add(version);
-                    op.Values.Add(assembly);
-                    op.Values.Add(name);
-                    op.Values.Add(DateTime.Now);
-                });
+                    {
+                        op.TableName = SCHEMA_VERSION_TABLE;
+                        op.Columns.Add("Version");
+                        op.Columns.Add(ASSEMBLY_COLUMN.Name);
+                        op.Columns.Add(TYPE_COLUMN.Name);
+                        op.Columns.Add(APPLIED_ON_COLUMN.Name);
+                        op.Values.Add(version);
+                        op.Values.Add(assembly);
+                        op.Values.Add(name);
+                        op.Values.Add(DateTime.Now);
+                    });
         }
 
         public void DeleteSchemaVersion(long version, string assembly)
         {
             Driver.Delete(
                 op =>
-                {
-                    op.TableName = SCHEMA_VERSION_TABLE;
-                    op.Where(Restriction.Equals("Assembly", assembly), Restriction.Equals("Version", version));
-                });
+                    {
+                        op.TableName = SCHEMA_VERSION_TABLE;
+                        op.Where(Restriction.Equals(ASSEMBLY_COLUMN.Name, assembly), Restriction.Equals("Version", version));
+                    });
         }
     }
 }
