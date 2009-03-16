@@ -31,7 +31,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                                   op.Values.Add("TestPass");
                               });
 
-            int id = 0;
+            int id;
             using (var reader = Driver.Read<ISelectOperation>(op =>
                                                                   {
                                                                       op.TableName = TABLE_NAME;
@@ -49,8 +49,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
             Driver.Delete(op =>
                               {
                                   op.TableName = TABLE_NAME;
-                                  op.WhereColumn = "Id";
-                                  op.WhereValue = id;
+                                  op.Where("Id", id);
                               });
 
             using (var reader = Driver.Read<IGenericReaderOperation>(op =>

@@ -9,8 +9,10 @@ namespace Zorched.Migrations.Framework.Data
 
         IList<string> Columns { get; }
 
-        string WhereColumn { get; set; }
-        object WhereValue { get; set; }
-        string WhereClause { get; set; }
+        void Where(params Restriction[] restriction);
+
+        void Where(string rawClause);
+
+        void Where(string column, object val);
     }
 }

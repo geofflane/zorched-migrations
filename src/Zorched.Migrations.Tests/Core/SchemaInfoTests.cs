@@ -54,7 +54,7 @@ namespace Zorched.Migrations.Tests.Core
             var si = new SchemaInfo(Driver);
             si.EnsureSchemaTable();
 
-            si.InsertSchemaVersion(10, "foo");
+            si.InsertSchemaVersion(10, "assembly", "foo");
 
             using (var reader = Driver.Read<IGenericReaderOperation>(op => op.Sql = "SELECT * FROM SchemaInfo WHERE Version=10"))
             {
@@ -68,7 +68,7 @@ namespace Zorched.Migrations.Tests.Core
             can_insert_schema_version();
 
             var si = new SchemaInfo(Driver);
-            si.DeleteSchemaVersion(10);
+            si.DeleteSchemaVersion(10, "assembly");
 
             using (var reader = Driver.Read<IGenericReaderOperation>(op => op.Sql = "SELECT * FROM SchemaInfo WHERE Version=10"))
             {
@@ -82,11 +82,11 @@ namespace Zorched.Migrations.Tests.Core
             var si = new SchemaInfo(Driver);
             si.EnsureSchemaTable();
 
-            si.InsertSchemaVersion(10, "foo");
-            si.InsertSchemaVersion(100, "bar");
-            si.InsertSchemaVersion(1, "baz");
+            si.InsertSchemaVersion(10, "assembly", "foo");
+            si.InsertSchemaVersion(100, "assembly", "bar");
+            si.InsertSchemaVersion(1, "assembly", "baz");
 
-            Assert.AreEqual(100, si.CurrentSchemaVersion());
+            Assert.AreEqual(100, si.CurrentSchemaVersion("assembly"));
         }
 
         [Test]
@@ -95,11 +95,11 @@ namespace Zorched.Migrations.Tests.Core
             var si = new SchemaInfo(Driver);
             si.EnsureSchemaTable();
 
-            si.InsertSchemaVersion(10, "foo");
-            si.InsertSchemaVersion(100, "bar");
-            si.InsertSchemaVersion(1, "baz");
+            si.InsertSchemaVersion(10, "assembly", "foo");
+            si.InsertSchemaVersion(100, "assembly", "bar");
+            si.InsertSchemaVersion(1, "assembly", "baz");
 
-            IList<long> versions = si.AppliedMigrations();
+            IList<long> versions = si.AppliedMigrations("assembly");
             Assert.AreEqual(3, versions.Count);
             Assert.AreEqual(1, versions[0]);
             Assert.AreEqual(100, versions[2]);

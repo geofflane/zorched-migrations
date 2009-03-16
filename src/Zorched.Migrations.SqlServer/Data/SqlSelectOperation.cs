@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Data;
 using Zorched.Migrations.Framework.Extensions;
 
@@ -9,7 +10,7 @@ namespace Zorched.Migrations.SqlServer.Data
 {
     public class SqlSelectOperation : SqlBaseOperation, ISelectOperation
     {
-        private readonly WhereHelper whereHelper = new WhereHelper();
+        private readonly WhereHelper whereHelper = new WhereHelper(QUOTE_FORMAT, BaseDataOperation.PARAM_FORMAT);
 
         public SqlSelectOperation()
         {
@@ -21,14 +22,15 @@ namespace Zorched.Migrations.SqlServer.Data
 
         public IList<string> Columns { get; protected set; }
 
-        public string WhereColumn { get { return whereHelper.WhereColumn; } set { whereHelper.WhereColumn = value; } }
-        public object WhereValue { get { return whereHelper.WhereValue; } set { whereHelper.WhereValue = value; } }
-        public string WhereClause { get { return whereHelper.WhereClause; } set { whereHelper.WhereClause = value; } }
+        public void Where(params Restriction[] restrictions) { whereHelper.Where(restrictions); }
+        public void Where(string rawClause) { whereHelper.Where(rawClause); }
+        public void Where(string column, object val) { whereHelper.Where(column, val); }
 
         public IDataReader Execute(IDbCommand cmd)
         {
             cmd.CommandText = ToString();
-            whereHelper.AppendWhereParameter(cmd, BaseDataOperation.PARAM_FORMAT);
+            whereHelper.Command = cmd;
+            whereHelper.AppendValues();
 
             return cmd.ExecuteReader();
         }
@@ -52,7 +54,8 @@ namespace Zorched.Migrations.SqlServer.Data
             
             AddTableInfo(sb, SchemaName, TableName);
 
-            whereHelper.AppendWhere(sb, SqlUpdateOperation.UPDATE_FORMAT);
+            whereHelper.ClauseBuilder = sb;
+            whereHelper.AppendWhere();
 
             return sb.ToString();
         }

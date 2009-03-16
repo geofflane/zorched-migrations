@@ -77,6 +77,7 @@
     <Compile Include="IOperation.cs" />
     <Compile Include="MigrationAttribute.cs" />
     <Compile Include="OperationNotSupportedException.cs" />
+    <Compile Include="Restriction.cs" />
     <Compile Include="Schema\IAddCheckConstraintOperation.cs" />
     <Compile Include="Schema\IAddUniqueConstraintOperation.cs" />
     <Compile Include="Schema\IChangeColumnOperation.cs" />

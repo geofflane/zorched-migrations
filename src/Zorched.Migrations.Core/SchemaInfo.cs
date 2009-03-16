@@ -32,18 +32,20 @@ namespace Zorched.Migrations.Core
                 {
                     op.TableName = "SchemaInfo";
                     op.AddColumn("Version", DbType.Int64, ColumnProperty.NotNull);
+                    op.AddColumn("Assembly", DbType.String, 255, ColumnProperty.NotNull);
                     op.AddColumn("Type", DbType.String, 255, ColumnProperty.NotNull);
                     op.AddColumn("AppliedOn", DbType.DateTime, ColumnProperty.NotNull, "(getdate())");
                 });
         }
 
-        public long CurrentSchemaVersion()
+        public long CurrentSchemaVersion(string assembly)
         {
             using (var reader = Driver.Select(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("MAX(Version)");
+                    op.Where("Assembly", assembly);
                 }))
             {
                 return reader.Read() ? reader.GetInt64(0) : 0;
@@ -51,13 +53,14 @@ namespace Zorched.Migrations.Core
 
         }
 
-        public List<long> AppliedMigrations()
+        public List<long> AppliedMigrations(string assembly)
         {
             using (var reader = Driver.Select(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("Version");
+                    op.Where("Assembly", assembly);
                 }))
             {
                 var versions = new List<long>();
@@ -72,29 +75,30 @@ namespace Zorched.Migrations.Core
         }
 
 
-        public void InsertSchemaVersion(long version, string name)
+        public void InsertSchemaVersion(long version, string assembly, string name)
         {
             Driver.Insert(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
                     op.Columns.Add("Version");
+                    op.Columns.Add("Assembly");
                     op.Columns.Add("Type");
                     op.Columns.Add("AppliedOn");
                     op.Values.Add(version);
+                    op.Values.Add(assembly);
                     op.Values.Add(name);
                     op.Values.Add(DateTime.Now);
                 });
         }
 
-        public void DeleteSchemaVersion(long version)
+        public void DeleteSchemaVersion(long version, string assembly)
         {
             Driver.Delete(
                 op =>
                 {
                     op.TableName = SCHEMA_VERSION_TABLE;
-                    op.WhereColumn = "Version";
-                    op.WhereValue = version;
+                    op.Where(Restriction.Equals("Assembly", assembly), Restriction.Equals("Version", version));
                 });
         }
     }

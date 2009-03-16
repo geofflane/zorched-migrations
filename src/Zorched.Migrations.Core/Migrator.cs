@@ -11,12 +11,14 @@ namespace Zorched.Migrations.Core
         private readonly DriverLoader driverLoader = new DriverLoader();
         private readonly MigrationLoader migrationLoader = new MigrationLoader();
         private readonly ISchemaInfo schemaInfo;
+        private readonly string migrationAssemblyName;
 
         public Migrator(ILogger logger, string driverAssembly, string migrationsAssemblyPath, string connectionString)
         {
             Logger = logger;
             var driverAssem = driverLoader.GetAssemblyByName(driverAssembly);
             var migrationsAssem = driverLoader.GetAssemblyFromPath(migrationsAssemblyPath);
+            migrationAssemblyName = migrationsAssem.FullName;
 
             Driver = driverLoader.GetDriver(driverAssem, connectionString, Logger);
             SetupType = SetupAttribute.GetSetupClass(driverAssem);
@@ -25,7 +27,7 @@ namespace Zorched.Migrations.Core
             migrationLoader.GetMigrations(migrationsAssem).ForEach(m => Migrations.Add(m.Version, m));
 
             schemaInfo = new SchemaInfo(Driver);
-            AppliedMigrations = schemaInfo.AppliedMigrations();
+            AppliedMigrations = schemaInfo.AppliedMigrations(migrationAssemblyName);
         }
 
         public IDriver Driver { get; set; }
@@ -66,7 +68,7 @@ namespace Zorched.Migrations.Core
                 if (version <= 0)
                     version = long.MaxValue;
 
-                var schemaVersion = schemaInfo.CurrentSchemaVersion();
+                var schemaVersion = schemaInfo.CurrentSchemaVersion(migrationAssemblyName);
                 if (version < schemaVersion)
                     MigrateDownTo(schemaVersion, version);
                 else

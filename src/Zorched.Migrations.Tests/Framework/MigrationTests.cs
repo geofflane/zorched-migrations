@@ -67,7 +67,7 @@ namespace Zorched.Migrations.Tests.Framework
 
             Expect.Call(() => driver.AfterUp(4));
 
-            Expect.Call(() => schemaInfo.InsertSchemaVersion(4, typeof(MigrationTestType).FullName));
+            Expect.Call(() => schemaInfo.InsertSchemaVersion(4, typeof(MigrationTestType).Assembly.FullName, typeof(MigrationTestType).FullName));
             mocks.ReplayAll();
 
             migration.Up(driver, new TestLogger(), schemaInfo);
@@ -86,7 +86,7 @@ namespace Zorched.Migrations.Tests.Framework
             Expect.Call(driver.DriverName).Return("TestDriver");
             Expect.Call(() => driver.AfterDown(4));
 
-            Expect.Call(() => schemaInfo.DeleteSchemaVersion(4));
+            Expect.Call(() => schemaInfo.DeleteSchemaVersion(4, typeof(MigrationTestType).Assembly.FullName));
             mocks.ReplayAll();
 
             migration.Down(driver, new TestLogger(), schemaInfo);

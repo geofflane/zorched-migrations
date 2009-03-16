@@ -12,12 +12,12 @@ namespace Zorched.Migrations.Core
 
         void CreateSchemaTable();
 
-        long CurrentSchemaVersion();
+        long CurrentSchemaVersion(string assembly);
 
-        List<long> AppliedMigrations();
+        List<long> AppliedMigrations(string assembly);
 
-        void InsertSchemaVersion(long version, string name);
+        void InsertSchemaVersion(long version, string assembly, string name);
 
-        void DeleteSchemaVersion(long version);
+        void DeleteSchemaVersion(long version, string assembly);
     }
 }

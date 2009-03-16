@@ -1,22 +1,24 @@
 using System;
 using System.Data;
 using System.Text;
+using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Data;
 
 namespace Zorched.Migrations.SqlServer.Data
 {
     public class SqlDeleteOperation : BaseDataOperation, IDeleteOperation
     {
-        private readonly WhereHelper whereHelper = new WhereHelper();
+        private readonly WhereHelper whereHelper = new WhereHelper(QUOTE_FORMAT, PARAM_FORMAT);
 
-        public string WhereColumn { get { return whereHelper.WhereColumn; } set { whereHelper.WhereColumn = value; } }
-        public object WhereValue { get { return whereHelper.WhereValue; } set { whereHelper.WhereValue = value; } }
-        public string WhereClause { get { return whereHelper.WhereClause; } set { whereHelper.WhereClause = value; } }
+        public void Where(params Restriction[] restrictions) { whereHelper.Where(restrictions); }
+        public void Where(string rawClause) { whereHelper.Where(rawClause); }
+        public void Where(string column, object val) { whereHelper.Where(column, val); }
 
         public void Execute(IDbCommand command)
         {
             command.CommandText = ToString();
-            whereHelper.AppendWhereParameter(command, PARAM_FORMAT);
+            whereHelper.Command = command;
+            whereHelper.AppendValues();
             command.ExecuteNonQuery();
         }
 
@@ -28,7 +30,8 @@ namespace Zorched.Migrations.SqlServer.Data
             var sb = new StringBuilder("DELETE FROM ");
             AddTableInfo(sb, SchemaName, TableName);
 
-            whereHelper.AppendWhere(sb, SqlUpdateOperation.UPDATE_FORMAT);
+            whereHelper.ClauseBuilder = sb;
+            whereHelper.AppendWhere();
 
             return sb.ToString();
         }

@@ -30,8 +30,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Operations
             var op = new SqlUpdateOperation { SchemaName = "dbo", TableName = "Foo" };
             op.Columns.Add("var");
             op.Columns.Add("var2");
-            op.WhereColumn = "bar";
-            op.WhereValue= "baz";
+            op.Where("bar", "baz");
 
             Assert.AreEqual("UPDATE [dbo].[Foo] SET [var]=@var,[var2]=@var2 WHERE [bar]=@bar", op.ToString());
         }

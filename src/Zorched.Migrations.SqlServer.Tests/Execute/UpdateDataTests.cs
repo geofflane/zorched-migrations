@@ -52,8 +52,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                                   op.TableName = TABLE_NAME;
                                   op.Columns.Add("Username");
                                   op.Values.Add("Updated");
-                                  op.WhereColumn = "Id";
-                                  op.WhereValue = id;
+                                  op.Where("Id", id);
                               });
 
 

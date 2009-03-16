@@ -24,15 +24,17 @@ namespace Zorched.Migrations.SqlServer.Tests.Operations
         [Test]
         public void delete_with_wherecolumn()
         {
-            var op = new SqlDeleteOperation { SchemaName = "dbo", TableName = "Foo", WhereColumn = "Bar", WhereValue = 123 };
+            var op = new SqlDeleteOperation { SchemaName = "dbo", TableName = "Foo" };
+            op.Where("Bar", 123);
             Assert.AreEqual("DELETE FROM [dbo].[Foo] WHERE [Bar]=@Bar", op.ToString());
         }
 
         [Test]
         public void delete_with_whereclause()
         {
-            var op = new SqlDeleteOperation { SchemaName = "dbo", TableName = "Foo", WhereClause = "Bar=123" };
-            Assert.AreEqual("DELETE FROM [dbo].[Foo] WHERE  Bar=123", op.ToString());
+            var op = new SqlDeleteOperation { SchemaName = "dbo", TableName = "Foo" };
+            op.Where("Bar=123");
+            Assert.AreEqual("DELETE FROM [dbo].[Foo] WHERE Bar=123", op.ToString());
         }
     }
 }
