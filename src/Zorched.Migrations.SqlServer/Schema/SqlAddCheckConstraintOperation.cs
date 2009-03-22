@@ -5,7 +5,7 @@ using Zorched.Migrations.Framework.Schema;
 namespace Zorched.Migrations.SqlServer.Schema
 {
     public class SqlAddCheckConstraintOperation : BaseSchemaOperation, IAddCheckConstraintOperation
-    {
+    {        
         public string ConstraintDefinition { get; set; }
         public string ConstraintName { get; set; }
 
@@ -25,7 +25,7 @@ namespace Zorched.Migrations.SqlServer.Schema
 
             sb.Append(" WITH CHECK ADD CONSTRAINT ").AppendFormat(QUOTE_FORMAT, ConstraintName);
             sb.Append(" CHECK(").Append(ConstraintDefinition).Append(")");
-
+            
             return sb.ToString();
         }
     }

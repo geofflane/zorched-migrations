@@ -6,6 +6,8 @@ namespace Zorched.Migrations.SqlServer.Schema
 {
     public class SqlAddUniqueConstraintOperation : BaseSchemaOperation, IAddUniqueConstraintOperation
     {
+        private DeleteUpdateHelper deleteUpdateHelper = new DeleteUpdateHelper();
+        
         public string ColumnName { get; set; }
         public string ConstraintName { get; set; }
 
@@ -26,6 +28,9 @@ namespace Zorched.Migrations.SqlServer.Schema
             sb.Append(" WITH CHECK ADD CONSTRAINT ").AppendFormat(QUOTE_FORMAT, ConstraintName);
             sb.Append(" UNIQUE(").AppendFormat(QUOTE_FORMAT, ColumnName).Append(")");
 
+            deleteUpdateHelper.AddOnDeleteIfNeeded(sb, Property);
+            deleteUpdateHelper.AddOnUpdateIfNeeded(sb, Property);
+            
             return sb.ToString();
         }
     }

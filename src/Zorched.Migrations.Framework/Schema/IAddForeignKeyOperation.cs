@@ -4,6 +4,7 @@ namespace Zorched.Migrations.Framework.Schema
     {
         string ConstraintName { get; set; }
         string ColumnName { get; set; }
+        ConstraintProperty Property { get; set; }
 
         string ReferenceSchemaName { get; set; }
         string ReferenceTableName { get; set; }

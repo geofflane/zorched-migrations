@@ -6,8 +6,11 @@ namespace Zorched.Migrations.SqlServer.Schema
 {
     public class SqlAddForeignKeyOperation : BaseSchemaOperation, IAddForeignKeyOperation
     {
+        private DeleteUpdateHelper deleteUpdateHelper = new DeleteUpdateHelper();
+        
         public string ColumnName { get; set; }
         public string ConstraintName { get; set; }
+        public ConstraintProperty Property { get; set; }
 
         public string ReferenceSchemaName { get; set; }
         public string ReferenceTableName { get; set; }
@@ -39,6 +42,9 @@ namespace Zorched.Migrations.SqlServer.Schema
 
             AddTableInfo(sb, ReferenceSchemaName, ReferenceTableName);
             sb.Append(" (").AppendFormat(QUOTE_FORMAT, ReferenceColumnName).Append(")");
+
+            deleteUpdateHelper.AddOnDeleteIfNeeded(sb, Property);
+            deleteUpdateHelper.AddOnUpdateIfNeeded(sb, Property);
 
             return sb.ToString();
         }
