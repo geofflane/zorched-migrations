@@ -1,28 +1,27 @@
-using System;
 using System.Text;
-using Zorched.Migrations.Framework.Schema;
+using Zorched.Migrations.Framework;
 
 public class DeleteUpdateHelper
 {
     public void AddOnDeleteIfNeeded(StringBuilder sb, ConstraintProperty prop)
     {
-        if (prop.HasDelete()) 
+        if (prop.HasOnDelete()) 
         {
-            sb.Append(" ON DELETE ").Append(UpdateDeleteValue);
+            sb.Append(" ON DELETE ").Append(UpdateDeleteValue(prop));
         }
     }
     
     public void AddOnUpdateIfNeeded(StringBuilder sb, ConstraintProperty prop)
     {
-        if (prop.HasUpdate()) 
+        if (prop.HasOnUpdate()) 
         {
-            sb.Append(" ON UPDATE ").Append(UpdateDeleteValue);
+            sb.Append(" ON UPDATE ").Append(UpdateDeleteValue(prop));
         }
     }
-    
-    public string UpdateDeleteValue()
+
+    public string UpdateDeleteValue(ConstraintProperty prop)
     {
-        switch(Property)
+        switch (prop)
         {
             case ConstraintProperty.CascadeOnDelete:
             case ConstraintProperty.CascadeOnUpdate:

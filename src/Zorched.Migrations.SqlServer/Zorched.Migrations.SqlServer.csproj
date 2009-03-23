@@ -57,6 +57,7 @@
     <Compile Include="Inspection\SqlTableExistsOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\BaseSchemaOperation.cs" />
+    <Compile Include="Schema\DeleteUpdateHelper.cs" />
     <Compile Include="Schema\SqlAddCheckConstraintOperation.cs" />
     <Compile Include="Schema\SqlAddUniqueConstraintOperation.cs" />
     <Compile Include="Schema\SqlChangeColumnOperation.cs" />

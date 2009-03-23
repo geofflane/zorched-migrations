@@ -1,15 +1,17 @@
 using System;
 using System.Text;
+using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.SqlServer.Schema
 {
     public class SqlAddUniqueConstraintOperation : BaseSchemaOperation, IAddUniqueConstraintOperation
     {
-        private DeleteUpdateHelper deleteUpdateHelper = new DeleteUpdateHelper();
+        private readonly DeleteUpdateHelper deleteUpdateHelper = new DeleteUpdateHelper();
         
         public string ColumnName { get; set; }
         public string ConstraintName { get; set; }
+        public ConstraintProperty Property { get; set; }
 
         public override string ToString()
         {
