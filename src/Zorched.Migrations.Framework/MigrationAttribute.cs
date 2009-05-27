@@ -5,6 +5,9 @@ using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Framework
 {
+    /// <summary>
+    /// The attribute that will mark a class as a Migration.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class MigrationAttribute : Attribute
     {

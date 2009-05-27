@@ -3,6 +3,10 @@ using System.Reflection;
 
 namespace Zorched.Migrations.Framework
 {
+    /// <summary>
+    /// An attribute that will mark a method in a Migration as a method
+    /// to be run when Migrating to a new, larger version of the database schema.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class UpAttribute : Attribute, IMigrationDirection
     {

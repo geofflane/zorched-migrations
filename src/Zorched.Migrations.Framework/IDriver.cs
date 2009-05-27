@@ -6,6 +6,10 @@ using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.Framework
 {
+    /// <summary>
+    /// The IDriver interface is the main interface that will be called by
+    /// migrations to perform actions on the database.
+    /// </summary>
     public interface IDriver
     {
         IDbParams Database { get; }

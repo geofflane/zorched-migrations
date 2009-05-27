@@ -1,11 +1,11 @@
 = General
 Add attribute to mark Up/Down method as non-transactional and use base Migration
 
-Look at Windsor for managing dependencies?
 Work on client interface to see if it can be improved
 
 Generate schema from existing database
 Dry run to find out what changes will be applied
+Allow the user to override the name of the SchemaInfo table.
 
 = MSBuild
 Dryrun

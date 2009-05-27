@@ -3,9 +3,12 @@ using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Interface that defines all of the operations that can be used to
+    /// update the SchemaInfo table.
+    /// </summary>
     public interface ISchemaInfo
     {
-
         IDriver Driver { get; set; }
 
         void EnsureSchemaTable();

@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 namespace Zorched.Migrations.Framework.Data
 {
+    /// <summary>
+    /// The interface that needs to be implemented to handle select
+    /// operations on the database.
+    /// </summary>
     public interface ISelectOperation : IReaderOperation
     {
         string SchemaName { get; set; }

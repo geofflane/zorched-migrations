@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace Zorched.Migrations.Framework.Extensions
 {
+    /// <summary>
+    /// Extension methods for dealing with Assembly types.
+    /// </summary>
     public static class AssemblyExtensions
     {
         public static IEnumerable<Type> GetTypesWithAttribute(this Assembly assembly, Type attributeType)

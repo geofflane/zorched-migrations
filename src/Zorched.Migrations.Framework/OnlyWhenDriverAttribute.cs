@@ -5,6 +5,11 @@ using System.Reflection;
 
 namespace Zorched.Migrations.Framework
 {
+    /// <summary>
+    /// This attribute will mark a Migration method as something that should be run
+    /// only when the currently running Driver type matches one of the Drivers in 
+    /// the list supplied.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class OnlyWhenDriverAttribute : Attribute
     {

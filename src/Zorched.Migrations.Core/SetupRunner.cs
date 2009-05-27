@@ -7,6 +7,9 @@ using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Class classes and methods marked with the Setup attribute.
+    /// </summary>
     public class SetupRunner
     {
         public void Invoke(object instance, IOperationRepository driver)

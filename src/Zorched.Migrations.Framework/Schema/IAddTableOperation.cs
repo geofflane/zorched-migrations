@@ -3,6 +3,9 @@ using System.Data;
 
 namespace Zorched.Migrations.Framework.Schema
 {
+    /// <summary>
+    /// The interface for adding a table to the schema.
+    /// </summary>
     public interface IAddTableOperation : ISchemaOperation
     {
         IList<Column> Columns { get; }

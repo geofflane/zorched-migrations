@@ -4,6 +4,10 @@ using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Framework
 {
+    /// <summary>
+    /// The attribute that will mark the Driver class in an Assembly
+    /// for a specific implementation. e.g. SQLServer, MySQL, etc.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class DriverAttribute : Attribute
     {

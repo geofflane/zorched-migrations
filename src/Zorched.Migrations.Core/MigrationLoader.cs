@@ -6,6 +6,9 @@ using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Handles loading Migration classes from an Assembly.
+    /// </summary>
     public class MigrationLoader
     {
         public IEnumerable<IMigration> GetMigrations(Assembly assembly)

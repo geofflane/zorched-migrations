@@ -6,6 +6,10 @@ using Zorched.Migrations.Framework.Inspection;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Manages all of the interactions with the SchemaInfo table
+    /// that records what Migrations have been run against the database.
+    /// </summary>
     public class SchemaInfo : ISchemaInfo
     {
         public const string SCHEMA_VERSION_TABLE = "SchemaInfo";

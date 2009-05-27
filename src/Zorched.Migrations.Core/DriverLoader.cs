@@ -6,6 +6,9 @@ using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Handles all of the things needed to find, load and initialize IDriver implementations.
+    /// </summary>
     public class DriverLoader
     {
 

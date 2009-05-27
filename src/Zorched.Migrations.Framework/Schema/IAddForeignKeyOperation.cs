@@ -1,5 +1,8 @@
 namespace Zorched.Migrations.Framework.Schema
 {
+    /// <summary>
+    /// The interface for adding a foreign key constaint to the schema.
+    /// </summary>
     public interface IAddForeignKeyOperation : ISchemaOperation
     {
         string ConstraintName { get; set; }

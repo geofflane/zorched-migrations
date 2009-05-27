@@ -2,6 +2,9 @@ using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Interface that gets implemented to handle running migrations.
+    /// </summary>
     public interface IMigration
     {
         long Version { get; }

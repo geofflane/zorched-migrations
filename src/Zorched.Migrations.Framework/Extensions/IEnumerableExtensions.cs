@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Zorched.Migrations.Framework.Extensions
 {
+    /// <summary>
+    /// Extension methods for dealing with IEnumerable types.
+    /// </summary>
     public static class IEnumerableExtensions
     {
         public static void ForEach<T>(this IEnumerable<T> input, Action<T> fn)

@@ -8,6 +8,10 @@ using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Default, non-transactional implementation of the IMigration interface 
+    /// used by the Migrator to handle running Migrations.
+    /// </summary>
     public class Migration : IMigration
     {
         private readonly object migration;

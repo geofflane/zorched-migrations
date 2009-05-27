@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Zorched.Migrations.Framework.Extensions
 {
+    /// <summary>
+    /// Extension methods for dealing with String types.
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>

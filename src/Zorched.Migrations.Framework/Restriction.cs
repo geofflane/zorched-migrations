@@ -3,7 +3,10 @@ using System.Text;
 
 namespace Zorched.Migrations.Framework
 {
-
+    /// <summary>
+    /// The interface that needs to be implemented by classes that want to
+    /// interact with Restrictions.
+    /// </summary>
     public interface IRestrictionVisitor
     {
         StringBuilder ClauseBuilder { get; set; }
@@ -18,6 +21,9 @@ namespace Zorched.Migrations.Framework
 
     }
 
+    /// <summary>
+    /// Defines the ways that parameters in queries can be combined.
+    /// </summary>
     public abstract class Restriction
     {
 

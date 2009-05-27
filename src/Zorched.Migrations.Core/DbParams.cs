@@ -3,6 +3,9 @@ using Zorched.Migrations.Framework;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Default implementation of IDbParams.
+    /// </summary>
     public class DbParams : IDbParams
     {
         private const int DEFAULT_TIMEOUNT = 30;

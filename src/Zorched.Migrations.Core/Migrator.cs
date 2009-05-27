@@ -5,6 +5,10 @@ using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// Core implementation that coordinates all of the interactions of the other
+    /// classes to successfully run Migrations.
+    /// </summary>
     public class Migrator
     {
         private readonly SetupRunner setupRunner = new SetupRunner();
