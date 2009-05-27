@@ -1,0 +1,165 @@
+h1. Zorched Migrations
+
+Database migration utility for .NET languages.
+
+Built with extensibility in mind, the framework allows you to override any operation and to 
+register and call your own customer operations.
+
+Currently only supports *SQL Server*. But supporting other databases should be easy to support
+by implementing a Driver.
+
+
+h2. Technical
+
+* Built with *C# 3.0*
+* Unit Tests with *NUnit*
+* Build automation with *MSBuild*
+
+
+h2. Examples
+
+Some examples to show you what you can do with Migrations.
+
+h3. Create a Table in the "Normal Way"
+
+<pre>
+<code>
+using System.Data;
+using Zorched.Migrations.Framework;
+using Zorched.Migrations.Framework.Schema;
+
+namespace Zorched.Migrations.Examples
+{
+    [Migration(1)]
+    public class AddNewTable
+    {
+
+        [Up]
+        public void AddTableNormalWay(IDriver database)
+        {
+            // Override the CommandTimeout value from this point on.
+            database.Database.CommandTimeout = 100;
+
+            database.AddTable(
+                op =>
+                    {
+                        op.TableName = TABLE_NAME;
+                        op.AddColumn(new Column {Name = "Id", DbType = DbType.Int32});
+                        op.AddColumn(new Column {Name = "Title", DbType = DbType.String, Size = 50});
+                    });
+        }
+    }
+}
+</code>
+</pre>
+
+h3. Create a Table with a Fluent interface
+
+<pre>
+<code>
+using System.Data;
+using Zorched.Migrations.Framework;
+using Zorched.Migrations.Framework.Fluent;
+using Zorched.Migrations.Framework.Schema;
+
+namespace Zorched.Migrations.Examples
+{
+    [Migration(1)]
+    public class AddNewTable
+    {
+
+        [Up]
+        public void AddFluentTable(IDriver driver)
+        {
+            var database = new FluentDriver(driver);
+
+            database.AddTable
+                .UsingSchema("dbo").WithName("TestTable")
+                .WithColumn.Named("Id").OfType(DbType.String).That.IsPrimaryKey.Identity
+                .WithColumn.Named("Bar").OfType(DbType.String)
+                .Add();
+
+            database.AddColumn
+                .UsingSchema("dbo").ToTable("AnotherTable")
+                .Column.Named("Bar").OfType(DbType.String).IsNull
+                .Add();
+
+            database.DropTable
+                .UsingSchema("dbo").AndName("OldTable")
+                .Drop();
+        }
+    }
+}
+</code>
+</pre>
+
+h3. Register your own Operations
+
+<pre>
+<code>
+namespace Zorched.Migrations.Examples
+{
+    public interface ICustomOp : IOperation
+    {
+        string Variable { get; set; }
+    }
+
+    public class CustomOp : ICustomOp
+    {
+        public string Variable { get; set; }
+
+        public void Execute(IDbCommand command)
+        {
+            // ...
+        }
+
+        public override string ToString()
+        {
+            return "some kind of sql";
+        }
+    }
+    
+    [Setup]
+    public class MigrationSetup
+    {
+        [Setup]
+        public void Setup(IOperationRepository driver)
+        {
+            driver.Register<ICustomOp>(typeof(CustomOp));
+        }
+    }
+    
+
+    [Migration(1)]
+    public class CallCustomOp
+    {
+        [Up]
+        public void AddTableNormalWay(IDriver database)
+        {
+            database.Run((ICustomOp op) => op.Variable = "Foo");
+        }
+    }
+}
+</code>
+</pre>
+
+h3. Running from MSBuild
+
+Automating your Migrations is supported and encouraged. The following shows how you can
+do that using the supplied MSBuild target.
+
+<pre>
+<code>
+<Import Project="Migrator.Targets" />
+
+<Target name="Migrate" DependsOnTargets="Build">
+    <CreateProperty Value="-1"  Condition="'$(SchemaVersion)'==''">
+       <Output TaskParameter="Value" PropertyName="SchemaVersion"/>
+    </CreateProperty>
+    <Migrate DriverAssembly="Zorched.Migrations.SqlServer"
+        Connectionstring="Database=MyDB;Data Source=localhost;User Id=xxx;Password=yyy;"
+        Migrations="bin/MyProject.dll"
+        To="$(SchemaVersion)"/>
+</Target>
+</code>
+</pre>

@@ -8,7 +8,6 @@
         
         <ProjectName>Zorched.Migrations</ProjectName>
 
-	    <!-- ASP.NET build / IIS deploy settings -->
         <LibDirectory>$(MSBuildProjectDirectory)\libs</LibDirectory>
     </PropertyGroup>
 
