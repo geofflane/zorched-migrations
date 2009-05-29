@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -8,6 +9,8 @@ namespace Zorched.Migrations.Framework.Extensions
     /// </summary>
     public static class StringExtensions
     {
+        static readonly Regex HUMANIZE_REGEX = new Regex("([A-Z])");
+
         /// <summary>
         /// Convert a classname to something more readable.
         /// ex.: CreateATable => Create a table
@@ -16,8 +19,14 @@ namespace Zorched.Migrations.Framework.Extensions
         /// <returns></returns>
         public static string ToHumanName(this string className)
         {
-            string name = Regex.Replace(className, "([A-Z])", " $1").Substring(1);
-            return name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+            if (HUMANIZE_REGEX.IsMatch(className))
+            {
+                string humanName = HUMANIZE_REGEX.Replace(className, " $1");
+                if (Char.IsUpper(className[0]))
+                    humanName = humanName.Substring(1);     // remove the leading space we introduced
+                return humanName.Substring(0, 1) + humanName.Substring(1).ToLower();
+            }
+            return className;
         }
 
         /// <summary>

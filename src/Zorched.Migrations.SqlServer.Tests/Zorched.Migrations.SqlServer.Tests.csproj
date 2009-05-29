@@ -68,6 +68,7 @@
     <Compile Include="Operations\AddUniqueConstraintTests.cs" />
     <Compile Include="Operations\ChangeColumnTests.cs" />
     <Compile Include="Operations\DeleteTests.cs" />
+    <Compile Include="Operations\DeleteUpdateHelperTests.cs" />
     <Compile Include="Operations\DropColumnTests.cs" />
     <Compile Include="Operations\DropConstraintTests.cs" />
     <Compile Include="Operations\DropTableTests.cs" />

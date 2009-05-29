@@ -35,5 +35,14 @@ namespace Zorched.Migrations.Tests.Framework
             Assert.AreEqual("foo1234", sb1.TrimEnd().ToString());
             Assert.AreEqual("foo1234", sb2.TrimEnd().ToString());
         }
+
+        [Test]
+        public void can_generate_human_name()
+        {
+            Assert.AreEqual("Create a table", "CreateATable".ToHumanName());
+            Assert.AreEqual("Add a column to a table", "AddAColumnToATable".ToHumanName());
+            Assert.AreEqual("addacolumn", "addacolumn".ToHumanName());
+            Assert.AreEqual("add a column", "addAColumn".ToHumanName());
+        }
     }
 }

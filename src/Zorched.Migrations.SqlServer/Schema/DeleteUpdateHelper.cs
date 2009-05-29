@@ -1,38 +1,41 @@
 using System.Text;
 using Zorched.Migrations.Framework;
 
-public class DeleteUpdateHelper
+namespace Zorched.Migrations.SqlServer.Schema
 {
-    public void AddOnDeleteIfNeeded(StringBuilder sb, ConstraintProperty prop)
+    public class DeleteUpdateHelper
     {
-        if (prop.HasOnDelete()) 
+        public void AddOnDeleteIfNeeded(StringBuilder sb, ConstraintProperty prop)
         {
-            sb.Append(" ON DELETE ").Append(UpdateDeleteValue(prop));
+            if (prop.HasOnDelete())
+            {
+                sb.Append(" ON DELETE ").Append(UpdateDeleteValue(prop));
+            }
         }
-    }
-    
-    public void AddOnUpdateIfNeeded(StringBuilder sb, ConstraintProperty prop)
-    {
-        if (prop.HasOnUpdate()) 
-        {
-            sb.Append(" ON UPDATE ").Append(UpdateDeleteValue(prop));
-        }
-    }
 
-    public string UpdateDeleteValue(ConstraintProperty prop)
-    {
-        switch (prop)
+        public void AddOnUpdateIfNeeded(StringBuilder sb, ConstraintProperty prop)
         {
-            case ConstraintProperty.CascadeOnDelete:
-            case ConstraintProperty.CascadeOnUpdate:
-                return "CASCADE";
-            case ConstraintProperty.NullOnDelete:
-            case ConstraintProperty.NullOnUpdate:
-                return "SET NULL";                    
-            case ConstraintProperty.DefaultOnDelete:
-            case ConstraintProperty.DefaultOnUpdate:
-                return "SET DEFAULT";
+            if (prop.HasOnUpdate())
+            {
+                sb.Append(" ON UPDATE ").Append(UpdateDeleteValue(prop));
+            }
         }
-        return null;
+
+        public string UpdateDeleteValue(ConstraintProperty prop)
+        {
+            switch (prop)
+            {
+                case ConstraintProperty.CascadeOnDelete:
+                case ConstraintProperty.CascadeOnUpdate:
+                    return "CASCADE";
+                case ConstraintProperty.NullOnDelete:
+                case ConstraintProperty.NullOnUpdate:
+                    return "SET NULL";
+                case ConstraintProperty.DefaultOnDelete:
+                case ConstraintProperty.DefaultOnUpdate:
+                    return "SET DEFAULT";
+            }
+            return null;
+        }
     }
 }
