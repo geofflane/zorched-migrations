@@ -29,17 +29,27 @@ namespace Zorched.Migrations.Core
     /// </summary>
     public class SetupRunner
     {
-        public void Invoke(object instance, IOperationRepository driver)
+        /// <summary>
+        /// Invoke a method marked with the SetupAttribute in the given instance of an object.
+        /// </summary>
+        /// <param name="instance">An object that should contain a method marked with a SetupAttribute.</param>
+        /// <param name="repos">The IOperationRepository that is currently being used.</param>
+        public void Invoke(object instance, IOperationRepository repos)
         {
             var method = GetSetupMethod(instance.GetType());
             // It's ok not to have a setup method
             if (null != method)
             {
-                method.Invoke(instance, new[] { driver });
+                method.Invoke(instance, new[] { repos });
             }
         }
 
-        public void Invoke(Type type, IOperationRepository driver)
+        /// <summary>
+        /// Construct an instance of a type marked with the SetupAttribute and invoke its Setup method.
+        /// </summary>
+        /// <param name="type">The type marked with a SetupAttribute that should be instantiated and invoked.</param>
+        /// <param name="repos">The IOperationRepository that is currently being used.</param>
+        public void Invoke(Type type, IOperationRepository repos)
         {
             ConstructorInfo ci = type.GetConstructor(Type.EmptyTypes);
             if (null == ci)
@@ -48,10 +58,10 @@ namespace Zorched.Migrations.Core
             }
 
             var instance = ci.Invoke(null);
-            Invoke(instance, driver);
+            Invoke(instance, repos);
         }
 
-        public MethodInfo GetSetupMethod(Type t)
+        private MethodInfo GetSetupMethod(Type t)
         {
             IEnumerable<MethodInfo> methods = t.GetMethodsWithAttribute(typeof(SetupAttribute));
             if (null == methods || 0 == methods.ToList().Count)

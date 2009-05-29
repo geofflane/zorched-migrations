@@ -21,7 +21,6 @@ namespace Zorched.Migrations.Framework
 {
     public class Column
     {
-
         public string Name { get; set; }
         
         public DbType DbType { get; set; }

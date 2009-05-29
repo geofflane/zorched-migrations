@@ -34,6 +34,13 @@ namespace Zorched.Migrations.Core
         private readonly object migration;
         private readonly Type type;
 
+        /// <summary>
+        /// Construct a new Migration from the given Type.
+        /// </summary>
+        /// <remarks>
+        /// This class is a wrapper that handles invoking methods on the given type.
+        /// </remarks>
+        /// <param name="t">The Migration type that should be constrcuted and invoked.</param>
         public Migration(Type t)
         {
             type = t;

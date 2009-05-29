@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using Zorched.Migrations.Framework.Extensions;
 
 namespace Zorched.Migrations.Core.Extensions
 {
@@ -31,11 +31,17 @@ namespace Zorched.Migrations.Core.Extensions
             return methods.Where(m => Attribute.IsDefined(m, attributeType, true));
         }
 
+        /// <summary>
+        /// Make a Human readable name from the name of the Type.
+        /// </summary>
+        /// <example>
+        /// typeof(AddPersonTable).ToHumanName() == "Add person table"
+        /// </example>
+        /// <param name="t">The type that you want the name for.</param>
+        /// <returns>A name that has spaces where there are capital letters.</returns>
         public static string ToHumanName(this Type t)
         {
-            var className = t.Name;
-            string name = Regex.Replace(className, "([A-Z])", " $1").Substring(1);
-            return name.Substring(0, 1).ToUpper() + name.Substring(1).ToLower();
+            return t.Name.ToHumanName();
         }
     }
 }

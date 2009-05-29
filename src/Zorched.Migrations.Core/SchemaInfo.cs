@@ -64,6 +64,9 @@ namespace Zorched.Migrations.Core
 
         public IDriver Driver { get; set; }
 
+        /// <summary>
+        /// Creates or updates the SchemaInfo table so that it has the proper schema.
+        /// </summary>
         public void EnsureSchemaTable()
         {
             if (! SchemaInfoTableExists())
@@ -76,6 +79,10 @@ namespace Zorched.Migrations.Core
             EnsureColumn(APPLIED_ON_COLUMN);
         }
 
+        /// <summary>
+        /// Checks if a column exists and creates it if it doesn't.
+        /// </summary>
+        /// <param name="c">The column definition to check and create.</param>
         public void EnsureColumn(Column c)
         {
             if (!Driver.Inspect<IColumnExistsOperation>(op =>
@@ -92,6 +99,9 @@ namespace Zorched.Migrations.Core
             }
         }
 
+        /// <summary>
+        /// Creates the SchemaInfo table that contains information about applied Migrations.
+        /// </summary>
         public void CreateSchemaTable()
         {
             Driver.AddTable(
@@ -105,6 +115,14 @@ namespace Zorched.Migrations.Core
                     });
         }
 
+        /// <summary>
+        /// The highest number applied Migration that has been run against the database.
+        /// </summary>
+        /// <remarks>
+        /// Passing the assembly name allows multiple Migration assemblies to coexist.
+        /// </remarks>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
+        /// <returns>The maximum migration version or zero if none are found.</returns>
         public long CurrentSchemaVersion(string assembly)
         {
             if (!SchemaInfoTableExists())
@@ -127,6 +145,11 @@ namespace Zorched.Migrations.Core
             }
         }
 
+        /// <summary>
+        /// Get a list of all of the Migration versions that have been applied to the database.
+        /// </summary>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
+        /// <returns>A List of all of the applied migrations or an empty List if none have been applied.</returns>
         public List<long> AppliedMigrations(string assembly)
         {
             if (! SchemaInfoTableExists())
@@ -153,7 +176,12 @@ namespace Zorched.Migrations.Core
             }
         }
 
-
+        /// <summary>
+        /// Add a Migration version to the SchemaInfo table. Used when migrating up to a higher version number.
+        /// </summary>
+        /// <param name="version">The version to add to the SchemaInfo table.</param>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
+        /// <param name="name">The name of the migration to make it easier for humans to look at the table.</param>
         public void InsertSchemaVersion(long version, string assembly, string name)
         {
             Driver.Insert(
@@ -171,6 +199,11 @@ namespace Zorched.Migrations.Core
                     });
         }
 
+        /// <summary>
+        /// Remove a Migration version from the SchemaInfo table. Used when migrating down to a lower version number.
+        /// </summary>
+        /// <param name="version">The version to remove.</param>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
         public void DeleteSchemaVersion(long version, string assembly)
         {
             Driver.Delete(

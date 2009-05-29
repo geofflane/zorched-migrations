@@ -28,16 +28,42 @@ namespace Zorched.Migrations.Core
     {
         IDriver Driver { get; set; }
 
+        /// <summary>
+        /// Creates the SchemaInfo table that contains information about applied Migrations.
+        /// </summary>
         void EnsureSchemaTable();
 
-        void CreateSchemaTable();
-
+        /// <summary>
+        /// The highest number applied Migration that has been run against the database.
+        /// </summary>
+        /// <remarks>
+        /// Passing the assembly name allows multiple Migration assemblies to coexist.
+        /// </remarks>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
+        /// <returns>The maximum migration version or zero if none are found.</returns>
         long CurrentSchemaVersion(string assembly);
 
+
+        /// <summary>
+        /// Get a list of all of the Migration versions that have been applied to the database.
+        /// </summary>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
+        /// <returns>A List of all of the applied migrations or an empty List if none have been applied.</returns>
         List<long> AppliedMigrations(string assembly);
 
+        /// <summary>
+        /// Add a Migration version to the SchemaInfo table. Used when migrating up to a higher version number.
+        /// </summary>
+        /// <param name="version">The version to add to the SchemaInfo table.</param>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
+        /// <param name="name">The name of the migration to make it easier for humans to look at the table.</param>
         void InsertSchemaVersion(long version, string assembly, string name);
 
+        /// <summary>
+        /// Remove a Migration version from the SchemaInfo table. Used when migrating down to a lower version number.
+        /// </summary>
+        /// <param name="version">The version to remove.</param>
+        /// <param name="assembly">The name of the assembly that the migrations are from.</param>
         void DeleteSchemaVersion(long version, string assembly);
     }
 }

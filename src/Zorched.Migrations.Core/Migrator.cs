@@ -34,6 +34,14 @@ namespace Zorched.Migrations.Core
         private readonly ISchemaInfo schemaInfo;
         private readonly string migrationAssemblyName;
 
+        /// <summary>
+        /// Construct a new Migrator.
+        /// This is the main entry point and the core algorighm used to run migrations against a database.
+        /// </summary>
+        /// <param name="logger">An ILogger to use in the system to print info, errors and SQL output.</param>
+        /// <param name="driverAssembly">The assembly name of the Driver assembly that contains the implementation for your database.</param>
+        /// <param name="migrationsAssemblyPath">The path to a DLL containing Migrations.</param>
+        /// <param name="connectionString">The database connection string needed to connect to the database.</param>
         public Migrator(ILogger logger, string driverAssembly, string migrationsAssemblyPath, string connectionString)
         {
             Logger = logger;
@@ -58,6 +66,9 @@ namespace Zorched.Migrations.Core
         public IDictionary<long, IMigration> Migrations { get; protected set; }
         public List<long> AppliedMigrations { get; protected set; }
 
+        /// <summary>
+        /// The Migration versions that are available in the Migration Assembly but are not yet applied to the database.
+        /// </summary>
         public List<IMigration> MigrationsToBeApplied
         {
             get
@@ -74,11 +85,18 @@ namespace Zorched.Migrations.Core
             }
         }
         
+        /// <summary>
+        /// Perform migrations to the latest version possible
+        /// </summary>
         public void MigrateTo()
         {
             MigrateTo(LastMigration);
         }
 
+        /// <summary>
+        /// Perform migrations, either up or down, until the version is equal to the version specified.
+        /// </summary>
+        /// <param name="version">The version that the database should be after this is run.</param>
         public void MigrateTo(long version)
         {
             try
@@ -199,6 +217,9 @@ namespace Zorched.Migrations.Core
             return null;
         }
 
+        /// <summary>
+        /// The lowest version number of the migrations in the loaded assembly.
+        /// </summary>
         public long FirstMigration
         {
             get
@@ -209,6 +230,9 @@ namespace Zorched.Migrations.Core
             }
         }
 
+        /// <summary>
+        /// The highest version number of the migrations in the loaded assembly.
+        /// </summary>
         public long LastMigration
         {
             get
@@ -219,6 +243,11 @@ namespace Zorched.Migrations.Core
             }
         }
 
+        /// <summary>
+        /// Has the gien version already been applied to the database?
+        /// </summary>
+        /// <param name="version">The migration version to check</param>
+        /// <returns>True if the given migration was already applied.</returns>
         public bool VersionAlreadyApplied(long version)
         {
             return AppliedMigrations.Contains(version);

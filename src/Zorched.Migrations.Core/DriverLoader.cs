@@ -27,23 +27,33 @@ namespace Zorched.Migrations.Core
     /// </summary>
     public class DriverLoader
     {
-
+        /// <summary>
+        /// Load an Assembly by its name
+        /// </summary>
+        /// <param name="assemblyName">The name of the Assembly to load.</param>
+        /// <returns></returns>
         public Assembly GetAssemblyByName(string assemblyName)
         {
             return Assembly.Load(new AssemblyName(assemblyName));
         }
 
+        /// <summary>
+        /// Load an Assembly file from a given path.
+        /// </summary>
+        /// <param name="assemblyPath">The file path to the Assembly dll.</param>
+        /// <returns></returns>
         public Assembly GetAssemblyFromPath(string assemblyPath)
         {
             return Assembly.LoadFrom(assemblyPath);
         }
 
-        public IDriver GetDriver(string assemblyPath, string connectionString, ILogger logger)
-        {
-            var assembly = GetAssemblyFromPath(assemblyPath);
-            return GetDriver(assembly, connectionString, logger);
-        }
-
+        /// <summary>
+        /// Gets a class marked with the DriverAttribute from the given assmembly.
+        /// </summary>
+        /// <param name="assembly">The Assembly that should contain a Driver.</param>
+        /// <param name="connectionString">The database connection string to give to the driver.</param>
+        /// <param name="logger">The logger that will be given to the driver.</param>
+        /// <returns>An IDriver instance if everything goes well.</returns>
         public IDriver GetDriver(Assembly assembly, string connectionString, ILogger logger)
         {
             var driverType = DriverAttribute.GetDriver(assembly);

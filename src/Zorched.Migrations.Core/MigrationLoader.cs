@@ -28,6 +28,12 @@ namespace Zorched.Migrations.Core
     /// </summary>
     public class MigrationLoader
     {
+        /// <summary>
+        /// Load all of the types that are marked with a MigrationAttribute from the given assembly.
+        /// </summary>
+        /// <remarks>This method wraps the types into IMigrations so they can be executed with a simple interface.</remarks>
+        /// <param name="assembly">The Assembly containing the Migrations.</param>
+        /// <returns>A sorted list of IMigrations.</returns>
         public IEnumerable<IMigration> GetMigrations(Assembly assembly)
         {
             var migrationTypes = MigrationAttribute.GetTypes(assembly);

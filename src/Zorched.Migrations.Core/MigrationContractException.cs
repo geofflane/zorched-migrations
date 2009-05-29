@@ -19,6 +19,10 @@ using System;
 
 namespace Zorched.Migrations.Core
 {
+    /// <summary>
+    /// This exception denotes that there is something unexpected with a Migration implementation.
+    /// Usually this means the wrong signature for a Method, not having a parmaterless constructor, etc.
+    /// </summary>
     public class MigrationContractException : Exception
     {
         public MigrationContractException(string message) : base(message) { }

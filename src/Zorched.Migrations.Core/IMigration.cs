@@ -27,10 +27,28 @@ namespace Zorched.Migrations.Core
         long Version { get; }
         string Name { get; }
 
-        void Setup(SetupRunner setupRunner, ILogger logger, IOperationRepository driver);
+        /// <summary>
+        /// Call any methods marked with the SetupAttribute.
+        /// </summary>
+        /// <param name="setupRunner">A helper class used to invoke methods marked with the SetupAttribute</param>
+        /// <param name="logger">The logger currently in use.</param>
+        /// <param name="repos">The currently running OperationRepository</param>
+        void Setup(SetupRunner setupRunner, ILogger logger, IOperationRepository repos);
 
+        /// <summary>
+        /// Call any methods marked with the UpAttribute
+        /// </summary>
+        /// <param name="driver">The currently executing database Driver.</param>
+        /// <param name="logger">The logger currently in use.</param>
+        /// <param name="schemaInfo">The SchemaInfo implementation to interact with the SchemaInfo table.</param>
         void Up(IDriver driver, ILogger logger, ISchemaInfo schemaInfo);
 
+        /// <summary>
+        /// Call any methods marked with the DownAttribute
+        /// </summary>
+        /// <param name="driver">The currently executing database Driver.</param>
+        /// <param name="logger">The logger currently in use.</param>
+        /// <param name="schemaInfo">The SchemaInfo implementation to interact with the SchemaInfo table.</param>
         void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo);
     }
 }
