@@ -5,11 +5,17 @@
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
         <ClassLibraryOutputDirectory>bin\$(Configuration)</ClassLibraryOutputDirectory>
-        
-        <ProjectName>Zorched.Migrations</ProjectName>
 
+        <ProjectName>Zorched.Migrations</ProjectName>
         <LibDirectory>$(MSBuildProjectDirectory)\libs</LibDirectory>
+        <DistDirectory>Dist</DistDirectory>
+
+        <!-- MSBuild system overrides and locations -->
+        <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\libs\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
     </PropertyGroup>
+
+    <!-- This needs to be imported after we set the MSBuildPath variable first (see above) -->
+    <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
 
     <!-- ####################################################################### -->
     <!-- Compilation Steps -->
@@ -22,16 +28,16 @@
         <CoreDir>src\Zorched.Migrations.Core</CoreDir>
         <CoreProject>$(CoreDir)\Zorched.Migrations.Core.csproj</CoreProject>
         <CoreAssembly>$(CoreDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.Core.dll</CoreAssembly>
-        
+
         <MSBuildRunnerDir>src\Zorched.Migrations.MSBuild</MSBuildRunnerDir>
         <MSBuildRunnerProject>$(MSBuildRunnerDir)\Zorched.Migrations.MSBuild.csproj</MSBuildRunnerProject>
         <MSBuildRunnerAssembly>$(MSBuildRunnerDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.MSBuild.dll</MSBuildRunnerAssembly>
-        
+
         <SqlServerDir>src\Zorched.Migrations.SqlServer</SqlServerDir>
         <SqlServerProject>$(SqlServerDir)\Zorched.Migrations.SqlServer.csproj</SqlServerProject>
         <SqlServerAssembly>$(SqlServerDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.SqlServer.dll</SqlServerAssembly>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <CommonTestDir>src\Zorched.Migrations.Tests</CommonTestDir>
         <CommonTestProject>$(CommonTestDir)\Zorched.Migrations.Tests.csproj</CommonTestProject>
@@ -41,7 +47,7 @@
         <SqlServerTestProject>$(SqlServerTestDir)\Zorched.Migrations.SqlServer.Tests.csproj</SqlServerTestProject>
         <SqlServerTestAssembly>$(SqlServerTestDir)\$(ClassLibraryOutputDirectory)\Zorched.Migrations.SqlServer.Tests.dll</SqlServerTestAssembly>
     </PropertyGroup>
-    
+
 
     <Target Name="BuildAll" DependsOnTargets="Compile;CompileTests;"/>
 
@@ -52,13 +58,13 @@
             <ProjectsToBuild Include="$(MSBuildRunnerProject)" />
             <ProjectsToBuild Include="$(SqlServerProject)" />
         </ItemGroup>
-    
-	    <MSBuild Projects ="@(ProjectsToBuild)"
+
+        <MSBuild Projects ="@(ProjectsToBuild)"
 				 ContinueOnError ="false"
 				 Properties="Configuration=$(Configuration);$(ExtraCmdLineProperties)">
             <Output ItemName="CoreAssemblies" TaskParameter="TargetOutputs"/>
         </MSBuild>
-        
+
         <Message Text="Built: @(CoreAssemblies)"/>
     </Target>
 
@@ -67,13 +73,13 @@
             <TestsToBuild Include="$(CommonTestProject)" />
             <TestsToBuild Include="$(SqlServerTestProject)" />
         </ItemGroup>
-    
-	    <MSBuild Projects ="@(TestsToBuild)"
+
+        <MSBuild Projects ="@(TestsToBuild)"
 				 ContinueOnError ="false"
 				 Properties="Configuration=$(Configuration);$(ExtraCmdLineProperties)">
             <Output ItemName="TestAssemblies" TaskParameter="TargetOutputs"/>
         </MSBuild>
-        
+
         <Message Text="Built: @(TestAssemblies)"/>
     </Target>
 
@@ -83,20 +89,20 @@
     <!-- ####################################################################### -->
     <Target Name="Clean">
 
-	    <ItemGroup>
-	        <TestOutput Include="*.Tests.xml" />
-	        <CoverageOutput Include="*.Coverage.xml" />
-	        <CoverageOutput Include="*.Coverage.log" />
-	        <CoverageOutput Include="*.CoverageMerge.xml" />
-	        <CoverageOutput Include="*.CoverageSummary.*" />
-	        <CoverageOutput Include="CoverageReport.xsl" />
-	    </ItemGroup>
+        <ItemGroup>
+            <TestOutput Include="*.Tests.xml" />
+            <CoverageOutput Include="*.Coverage.xml" />
+            <CoverageOutput Include="*.Coverage.log" />
+            <CoverageOutput Include="*.CoverageMerge.xml" />
+            <CoverageOutput Include="*.CoverageSummary.*" />
+            <CoverageOutput Include="CoverageReport.xsl" />
+        </ItemGroup>
 
         <Delete Files="@(TestOutput)" />
         <Delete Files="@(CoverageOutput)" />
 
-	    <MSBuild Projects="@(ProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);"/>
-        <RemoveDir Directories="$(PrecompiledWebDirectory);$(StageWebDirectory)" />
+        <MSBuild Projects="@(ProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);"/>
+        <RemoveDir Directories="$(DistDirectory)" />
     </Target>
 
 
@@ -120,9 +126,9 @@
 			    Assemblies="@(CoreAssemblies)"
 	            />
 
-	    <ItemGroup>
-		    <NCoverCoverageFiles Include="*.Coverage.xml" />
-	    </ItemGroup>
+        <ItemGroup>
+            <NCoverCoverageFiles Include="*.Coverage.xml" />
+        </ItemGroup>
 
         <NCoverExplorer
              ProjectName="$(ProjectName)"
@@ -137,6 +143,39 @@
 		     ToolPath="$(LibDirectory)\NCover\Explorer"
 	         />
 
+    </Target>
+
+    <!-- ####################################################################### -->
+    <!-- Packaging Targets -->
+    <!-- ####################################################################### -->
+
+    <PropertyGroup>
+        <PackageDir>$(DistDirectory)\Zorched.Migrations</PackageDir>
+        <PackageBinDir>$(PackageDir)\lib</PackageBinDir>
+        <MSBuildTargetFile>$(MSBuildRunnerDir)\Migrator.Targets</MSBuildTargetFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageDirs Include="$(DistDirectory)"/>
+        <PackageDirs Include="$(PackageDir)"/>
+        <PackageDirs Include="$(PackageBinDir)"/>
+
+        <RootFiles Include="$(MSBuildTargetFile)"/>
+        <RootFiles Include="README.textile"/>
+        <RootFiles Include="TODO.txt"/>
+
+        <ZipFiles Include="$(PackageDir)\**\*.*" Exclude="*.zip" />
+    </ItemGroup>
+
+    <Target Name="Package" DependsOnTargets="Compile">
+
+        <Message Text="Packaging..." />
+
+        <MakeDir Directories="@(PackageDirs)"/>
+        <Copy SourceFiles="@(RootFiles)" DestinationFolder="$(PackageDir)" />
+        <Copy SourceFiles="@(CoreAssemblies)" DestinationFolder="$(PackageBinDir)" />
+
+        <Zip Files="@(ZipFiles)" WorkingDirectory="$(DistDirectory)" ZipFileName="$(DistDirectory)\Zorched.Migrations.zip"/>
     </Target>
 
 </Project>

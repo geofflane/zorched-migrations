@@ -5,4 +5,5 @@ obj
 Zorched.Migrations.*.log
 Zorched.Migrations.*.xml
 Zorched.Migrations.*.html
+Dist
 
