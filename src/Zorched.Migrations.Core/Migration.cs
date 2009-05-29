@@ -83,7 +83,7 @@ namespace Zorched.Migrations.Core
 
             driver.AfterUp(Version);
 
-            schemaInfo.InsertSchemaVersion(Version, type.Assembly.FullName, type.FullName);
+            schemaInfo.InsertSchemaVersion(Version, type.Assembly.GetName().Name, type.FullName);
         }
 
         public virtual void Down(IDriver driver, ILogger logger, ISchemaInfo schemaInfo)
@@ -102,7 +102,7 @@ namespace Zorched.Migrations.Core
 
             driver.AfterDown(Version);
 
-            schemaInfo.DeleteSchemaVersion(Version, type.Assembly.FullName);
+            schemaInfo.DeleteSchemaVersion(Version, type.Assembly.GetName().Name);
         }
 
         public IEnumerable<MethodInfo> GetUpMethods(Type t, IDriver driver)

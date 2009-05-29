@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Extensions;
 
@@ -47,7 +48,7 @@ namespace Zorched.Migrations.Core
             Logger = logger;
             var driverAssem = driverLoader.GetAssemblyByName(driverAssembly);
             var migrationsAssem = driverLoader.GetAssemblyFromPath(migrationsAssemblyPath);
-            migrationAssemblyName = migrationsAssem.FullName;
+            migrationAssemblyName = migrationsAssem.GetName().Name;
 
             Driver = driverLoader.GetDriver(driverAssem, connectionString, Logger);
             SetupType = SetupAttribute.GetSetupClass(migrationsAssem);
@@ -108,14 +109,19 @@ namespace Zorched.Migrations.Core
                     version = long.MaxValue;
 
                 var schemaVersion = schemaInfo.CurrentSchemaVersion(migrationAssemblyName);
-                if (version < schemaVersion)
+                Logger.LogInfo("Current DB Version: " + schemaVersion);
+                if (version == schemaVersion)
                 {
-                    Logger.LogInfo("Migrating down...");
+                    Logger.LogInfo("Current DB Version and Migration version are the same. Nothing to do.");
+                }
+                else if (version < schemaVersion)
+                {
+                    Logger.LogInfo("Migrating down to version: " + version);
                     MigrateDownTo(schemaVersion, version);
                 }
                 else
                 {
-                    Logger.LogInfo("Migrating up...");
+                    Logger.LogInfo("Migrating up to version: " + version);
                     MigrateUpTo(schemaVersion, version);
                 }
             }
@@ -225,7 +231,7 @@ namespace Zorched.Migrations.Core
             get
             {
                 if (null != Migrations && 0 != Migrations.Count)
-                    return Migrations[0].Version;
+                    return Migrations.Values.First().Version;
                 return 0;
             }
         }
@@ -238,7 +244,7 @@ namespace Zorched.Migrations.Core
             get
             {
                 if (null != Migrations && 0 != Migrations.Count)
-                    return Migrations[Migrations.Count - 1].Version;
+                    return Migrations.Values.Last().Version;
                 return 0;
             }
         }
