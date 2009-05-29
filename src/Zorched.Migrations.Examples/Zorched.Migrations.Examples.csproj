@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="001_AddNewTable.cs" />
+    <Compile Include="001_AddPersonTable.cs" />
+    <Compile Include="002_AddAddressTable.cs" />
     <Compile Include="MigrationSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

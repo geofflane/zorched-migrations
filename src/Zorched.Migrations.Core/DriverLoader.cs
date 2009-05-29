@@ -19,7 +19,7 @@ namespace Zorched.Migrations.Core
 
         public Assembly GetAssemblyFromPath(string assemblyPath)
         {
-            return Assembly.LoadFile(assemblyPath);
+            return Assembly.LoadFrom(assemblyPath);
         }
 
         public IDriver GetDriver(string assemblyPath, string connectionString, ILogger logger)

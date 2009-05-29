@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Migrate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <MigratorTasksPath>$(MSBuildProjectDirectory)\Dist\Zorched.Migrations\lib</MigratorTasksPath>
+    </PropertyGroup>
+
+    <Import Project="$(MSBuildProjectDirectory)\Dist\Zorched.Migrations\Migrator.Targets" />
+
+    <Target Name="Migrate">
+        <CreateProperty Value="-1"  Condition="'$(sv)'==''">
+            <Output TaskParameter="Value" PropertyName="sv"/>
+        </CreateProperty>
+
+        <Message Text="Migrating to version: $(sv)"/>
+        
+        <Migrate DriverAssembly="Zorched.Migrations.SqlServer"
+           Connectionstring="Data Source=localhost;Database=Test;User Id=sa;Password=sql;"
+               Migrations="$(MSBuildProjectDirectory)\src\Zorched.Migrations.Examples\bin\Debug\Zorched.Migrations.Examples.dll"
+               To="$(sv)"/>
+    </Target>
+
+</Project>

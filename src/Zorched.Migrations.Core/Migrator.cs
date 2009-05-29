@@ -25,7 +25,7 @@ namespace Zorched.Migrations.Core
             migrationAssemblyName = migrationsAssem.FullName;
 
             Driver = driverLoader.GetDriver(driverAssem, connectionString, Logger);
-            SetupType = SetupAttribute.GetSetupClass(driverAssem);
+            SetupType = SetupAttribute.GetSetupClass(migrationsAssem);
 
             Migrations = new Dictionary<long, IMigration>();
             migrationLoader.GetMigrations(migrationsAssem).ForEach(m => Migrations.Add(m.Version, m));
@@ -69,14 +69,20 @@ namespace Zorched.Migrations.Core
                 schemaInfo.EnsureSchemaTable();
                 RunSetupIfNeeded();
 
-                if (version <= 0)
+                if (version < 0)
                     version = long.MaxValue;
 
                 var schemaVersion = schemaInfo.CurrentSchemaVersion(migrationAssemblyName);
                 if (version < schemaVersion)
+                {
+                    Logger.LogInfo("Migrating down...");
                     MigrateDownTo(schemaVersion, version);
+                }
                 else
+                {
+                    Logger.LogInfo("Migrating up...");
                     MigrateUpTo(schemaVersion, version);
+                }
             }
             catch (MigrationContractException mcex)
             {
@@ -92,17 +98,17 @@ namespace Zorched.Migrations.Core
         {
             if (null != SetupType)
             {
+                Logger.LogInfo("Setup class running...");
                 setupRunner.Invoke(SetupType, (IOperationRepository) Driver);
             }
         }
 
         private void MigrateDownTo(long schemaVersion, long newVersion)
         {
-            var previousVersion = schemaVersion + 1; // Start ahead and then move back in PreviousMigration
             IMigration migration;
             do
             {
-                migration = PreviousMigration(previousVersion);
+                migration = PreviousMigration(schemaVersion);
                 if (null != migration)
                 {
                     migration.Setup(setupRunner, Logger, (IOperationRepository)Driver);
@@ -112,10 +118,10 @@ namespace Zorched.Migrations.Core
                     AppliedMigrations.Remove(migration.Version);
                     AppliedMigrations.Sort();
 
-                    previousVersion = migration.Version;
+                    schemaVersion = migration.Version - 1;
                 }
 
-            } while (null != migration && previousVersion >= newVersion);
+            } while (null != migration && schemaVersion > newVersion);
         }
 
         private void MigrateUpTo(long schemaVersion, long newVersion)
@@ -143,41 +149,55 @@ namespace Zorched.Migrations.Core
         protected IMigration NextMigration(long current)
         {
             // Start searching at the current index
-            IMigration next;
             do
             {
-                next = Migrations[current++];
-                if (AppliedMigrations.Contains(next.Version))
-                    next = null;
+                current++;
+                if (Migrations.ContainsKey(current))
+                {
+                    IMigration next = Migrations[current];
+                    if (!VersionAlreadyApplied(next.Version))
+                        return next;
+                }
 
-            } while (null == next && current < LastMigration);
+            } while (current <= LastMigration);
 
-            return next;
+            return null;
         }
 
         protected IMigration PreviousMigration(long current)
         {
             // Start searching at the current index
-            IMigration next;
             do
             {
-                next = Migrations[current--];
-                if (AppliedMigrations.Contains(next.Version))
-                    next = null;
+                if (Migrations.ContainsKey(current))
+                {
+                    return Migrations[current];
+                }
+                current--;
 
-            } while (null == next && current > 0);
+            } while (current > 0);
 
-            return next;
+            return null;
         }
 
         public long FirstMigration
         {
-            get { return Migrations[0].Version; }
+            get
+            {
+                if (null != Migrations && 0 != Migrations.Count)
+                    return Migrations[0].Version;
+                return 0;
+            }
         }
 
         public long LastMigration
         {
-            get { return Migrations[Migrations.Count - 1].Version; }
+            get
+            {
+                if (null != Migrations && 0 != Migrations.Count)
+                    return Migrations[Migrations.Count - 1].Version;
+                return 0;
+            }
         }
 
         public bool VersionAlreadyApplied(long version)

@@ -2,8 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<MigratorTasksPath Condition="'$(MigratorTasksPath)' == ''">$(MSBuildExtensionsPath)\MigratorTasks</MigratorTasksPath>
-        <MigratorTasksLib>$(MigratorTasksPath)\Migrator.MSBuild.dll</MigratorTasksLib>
+        <MigratorTasksLib>$(MigratorTasksPath)\Zorched.Migrations.MSBuild.dll</MigratorTasksLib>
     </PropertyGroup>
 
-    <UsingTask AssemblyFile="$(MigratorTasksLib)" TaskName="Migrator.MSBuild.Migrate" />
+    <UsingTask AssemblyFile="$(MigratorTasksLib)" TaskName="Zorched.Migrations.MSBuild.Migrate" />
 </Project>

@@ -49,7 +49,7 @@ namespace Zorched.Migrations.Core
 
         public void EnsureSchemaTable()
         {
-            if (! Driver.Inspect<ITableExistsOperation>(op => op.TableName = SCHEMA_VERSION_TABLE))
+            if (! SchemaInfoTableExists())
             {
                 CreateSchemaTable();
             }
@@ -90,6 +90,10 @@ namespace Zorched.Migrations.Core
 
         public long CurrentSchemaVersion(string assembly)
         {
+            if (!SchemaInfoTableExists())
+            {
+                return 0;
+            }
             using (var reader = Driver.Select(
                 op =>
                     {
@@ -98,12 +102,21 @@ namespace Zorched.Migrations.Core
                         op.Where(ASSEMBLY_COLUMN.Name, assembly);
                     }))
             {
-                return reader.Read() ? reader.GetInt64(0) : 0;
+                if (reader.Read() && ! reader.IsDBNull(0))
+                {
+                    return reader.GetInt64(0);
+                }
+                return 0;
             }
         }
 
         public List<long> AppliedMigrations(string assembly)
         {
+            if (! SchemaInfoTableExists())
+            {
+                return new List<long>();
+            }
+
             using (var reader = Driver.Select(
                 op =>
                     {
@@ -149,6 +162,11 @@ namespace Zorched.Migrations.Core
                         op.TableName = SCHEMA_VERSION_TABLE;
                         op.Where(Restriction.Equals(ASSEMBLY_COLUMN.Name, assembly), Restriction.Equals("Version", version));
                     });
+        }
+
+        private bool SchemaInfoTableExists()
+        {
+            return Driver.Inspect<ITableExistsOperation>(op => op.TableName = SCHEMA_VERSION_TABLE);
         }
     }
 }

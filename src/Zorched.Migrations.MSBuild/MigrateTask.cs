@@ -9,14 +9,14 @@ namespace Zorched.Migrations.MSBuild
     /// Runs migrations on a database
     /// </summary>
     /// <example>
-    /// <Target name="Migrate" DependsOnTargets="Build">
-    ///     <Migrate Provider="SqlServer"
+    /// <Target Name="Migrate" DependsOnTargets="Build">
+    ///     <Migrate DriverAssembly="Zorched.Migrations.SqlServer"
     ///         Connectionstring="Database=MyDB;Data Source=localhost;User Id=;Password=;"
     ///         Migrations="bin/MyProject.dll"/>
     /// </Target>
     /// </example>
     /// <example>
-    /// <Target name="Migrate" DependsOnTargets="Build">
+    /// <Target Name="Migrate" DependsOnTargets="Build">
     ///     <CreateProperty Value="-1"  Condition="'$(SchemaVersion)'==''">
     ///        <Output TaskParameter="Value" PropertyName="SchemaVersion"/>
     ///     </CreateProperty>
