@@ -57,8 +57,8 @@ namespace Zorched.Migrations.SqlServer
             RegisterReader<IGenericReaderOperation>(typeof (SqlReaderOperation));
             RegisterReader<ISelectOperation>(typeof (SqlSelectOperation));
 
-            RegisterInspecor<ITableExistsOperation>(typeof(SqlTableExistsOperation));
-            RegisterInspecor<IColumnExistsOperation>(typeof(SqlColumnExistsOperation));
+            RegisterInspector<ITableExistsOperation>(typeof(SqlTableExistsOperation));
+            RegisterInspector<IColumnExistsOperation>(typeof(SqlColumnExistsOperation));
         }
 
         public IDbParams Database { get; set; }
@@ -78,7 +78,7 @@ namespace Zorched.Migrations.SqlServer
             RegisteredTypes[typeof (T)] = impl;
         }
 
-        public void RegisterInspecor<T>(Type impl) where T : IInspectionOperation
+        public void RegisterInspector<T>(Type impl) where T : IInspectionOperation
         {
             RegisteredTypes[typeof(T)] = impl;
         }
