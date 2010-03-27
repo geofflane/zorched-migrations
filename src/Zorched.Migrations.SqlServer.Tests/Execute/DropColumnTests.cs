@@ -17,6 +17,7 @@
 
 using NUnit.Framework;
 using Zorched.Migrations.Framework.Inspection;
+using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.SqlServer.Tests.Execute
 {
@@ -41,7 +42,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         {
             CreateTable(TABLE_NAME);
 
-            Driver.DropColumn(op =>
+            Driver.Run<IDropColumnOperation>(op =>
                                   {
                                       op.TableName = TABLE_NAME;
                                       op.ColumnName = "Email";

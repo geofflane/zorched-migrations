@@ -152,7 +152,7 @@ namespace Zorched.Migrations.Core
                 migration = PreviousMigration(schemaVersion);
                 if (null != migration)
                 {
-                    migration.Setup(setupRunner, Logger, (IOperationRepository)Driver);
+                    migration.Setup(setupRunner, Logger, (IOperationRepository) Driver);
 
                     migration.Down(Driver, Logger, schemaInfo);
 

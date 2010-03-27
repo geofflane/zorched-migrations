@@ -29,7 +29,7 @@ namespace Zorched.Migrations.Framework.Fluent
         {
             this.driver = driver;
             oprepository = oprepos;
-            addTableOp = oprepository.InstanceForInteface<IAddTableOperation>();
+            addTableOp = oprepository.NewInstance<IAddTableOperation>();
         }
 
         public void SetColumn(Column c)

@@ -19,6 +19,7 @@ using System.Data;
 using NUnit.Framework;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Inspection;
+using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.SqlServer.Tests.Execute
 {
@@ -42,7 +43,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         {
             CreateTable(TABLE_NAME);
 
-            Driver.AddColumn(op =>
+            Driver.Run<IAddColumnOperation>(op =>
                                  {
                                      op.TableName = TABLE_NAME;
                                      op.Column = new Column {Name = "Newcolumn", DbType = DbType.String};

@@ -21,6 +21,7 @@ using System.Data.Common;
 using NUnit.Framework;
 using Zorched.Migrations.Core;
 using Zorched.Migrations.Framework;
+using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.SqlServer.Tests.Execute
 {
@@ -56,7 +57,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
 
         protected void CreateTable(string tableName)
         {
-            Driver.AddTable(op =>
+            Driver.Run<IAddTableOperation>(op =>
             {
                 op.TableName = tableName;
                 op.Columns.Add(new Column { Name = "Id", DbType = DbType.Int32, Property = ColumnProperty.PrimaryKeyWithIdentity });

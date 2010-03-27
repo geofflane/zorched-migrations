@@ -17,27 +17,25 @@
 
 namespace Zorched.Migrations.Framework.Fluent
 {
-    public class FluentDriver
+    public class FluentRunner : Runner
     {
-        private readonly IDriver driver;
-        public FluentDriver(IDriver driver)
+        public FluentRunner(IDriver driver) : base(driver)
         {
-            this.driver = driver;
         }
 
         public AddTable AddTable
         {
-            get { return new AddTable(driver, (IOperationRepository) driver); }
+            get { return new AddTable(Driver, (IOperationRepository) Driver); }
         }
 
         public AddColumn AddColumn
         {
-            get { return new AddColumn(driver, (IOperationRepository)driver); }
+            get { return new AddColumn(Driver, (IOperationRepository) Driver); }
         }
 
         public DropTable DropTable
         {
-            get { return new DropTable(driver, (IOperationRepository)driver); }
+            get { return new DropTable(Driver, (IOperationRepository) Driver); }
         }
     }
 }

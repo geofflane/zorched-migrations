@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6CD798FD-BB58-4D5A-A1D7-33699E1BAC33}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -56,6 +56,8 @@
     <Compile Include="Data\IInsertOperation.cs" />
     <Compile Include="Data\IUpdateOperation.cs" />
     <Compile Include="DownAttribute.cs" />
+    <Compile Include="AbstractDriver.cs" />
+    <Compile Include="Runner.cs" />
     <Compile Include="DriverAttribute.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -63,7 +65,7 @@
     <Compile Include="Fluent\AddTable.cs" />
     <Compile Include="Fluent\AddColumn.cs" />
     <Compile Include="Fluent\DropTable.cs" />
-    <Compile Include="Fluent\FluentDriver.cs" />
+    <Compile Include="Fluent\FluentRunner.cs" />
     <Compile Include="Fluent\IColumnUser.cs" />
     <Compile Include="Fluent\TableColumn.cs" />
     <Compile Include="IDbParams.cs" />
@@ -94,6 +96,8 @@
     <Compile Include="Schema\ISchemaOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetupAttribute.cs" />
+    <Compile Include="Simple\ActionRunner.cs" />
+    <Compile Include="Simple\SimpleRunner.cs" />
     <Compile Include="TypeNames.cs" />
     <Compile Include="UpAttribute.cs" />
   </ItemGroup>

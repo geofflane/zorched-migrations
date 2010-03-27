@@ -39,7 +39,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
         {
             CreateTable(TABLE_NAME);
 
-            Driver.Insert(op =>
+            Driver.Run<IInsertOperation>(op =>
                               {
                                   op.TableName = TABLE_NAME;
                                   op.Columns.Add("Username");
@@ -64,7 +64,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                 Assert.AreEqual("TestPass", reader.GetString(2));
             }
 
-            Driver.Update(op =>
+            Driver.Run<IUpdateOperation>(op =>
                               {
                                   op.TableName = TABLE_NAME;
                                   op.Columns.Add("Username");

@@ -19,7 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Zorched.Migrations.Framework;
+using Zorched.Migrations.Framework.Data;
 using Zorched.Migrations.Framework.Inspection;
+using Zorched.Migrations.Framework.Schema;
 
 namespace Zorched.Migrations.Core
 {
@@ -91,7 +93,7 @@ namespace Zorched.Migrations.Core
                                                                 op.ColumnName = c.Name;
                                                             }))
             {
-                Driver.AddColumn(op =>
+                Driver.Run<IAddColumnOperation>(op =>
                                      {
                                          op.TableName = SCHEMA_VERSION_TABLE;
                                          op.Column = c;
@@ -104,7 +106,7 @@ namespace Zorched.Migrations.Core
         /// </summary>
         public void CreateSchemaTable()
         {
-            Driver.AddTable(
+            Driver.Run<IAddTableOperation>(
                 op =>
                     {
                         op.TableName = "SchemaInfo";
@@ -184,7 +186,7 @@ namespace Zorched.Migrations.Core
         /// <param name="name">The name of the migration to make it easier for humans to look at the table.</param>
         public void InsertSchemaVersion(long version, string assembly, string name)
         {
-            Driver.Insert(
+            Driver.Run<IInsertOperation>(
                 op =>
                     {
                         op.TableName = SCHEMA_VERSION_TABLE;
@@ -206,7 +208,7 @@ namespace Zorched.Migrations.Core
         /// <param name="assembly">The name of the assembly that the migrations are from.</param>
         public void DeleteSchemaVersion(long version, string assembly)
         {
-            Driver.Delete(
+            Driver.Run<IDeleteOperation>(
                 op =>
                     {
                         op.TableName = SCHEMA_VERSION_TABLE;

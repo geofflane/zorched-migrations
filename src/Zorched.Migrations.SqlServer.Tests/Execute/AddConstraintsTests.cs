@@ -62,7 +62,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                                                                          op.ColumnName = "Email";
                                                                      }));
 
-            Driver.DropConstraint(op =>
+            Driver.Run<IDropConstraintOperation>(op =>
                                       {
                                           op.TableName = TABLE_NAME;
                                           op.ConstraintName = "UN_User_Email";
@@ -88,7 +88,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                                                                          op.TableName = TABLE_NAME;
                                                                          op.ColumnName = "Email";
                                                                      }));
-            Driver.DropConstraint(op =>
+            Driver.Run<IDropConstraintOperation>(op =>
                                       {
                                           op.TableName = TABLE_NAME;
                                           op.ConstraintName = "CK_User_Email";
@@ -101,7 +101,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
             CreateTable(TABLE_NAME);
             CreateTable(TABLE_NAME2);
 
-            Driver.AddColumn(op =>
+            Driver.Run<IAddColumnOperation>(op =>
                                  {
                                      op.TableName = TABLE_NAME;
                                      op.Column = new Column {Name = "OtherUserId", DbType = DbType.Int32};
@@ -123,7 +123,7 @@ namespace Zorched.Migrations.SqlServer.Tests.Execute
                                                                          op.ColumnName = "Email";
                                                                      }));
 
-            Driver.DropConstraint(op =>
+            Driver.Run<IDropConstraintOperation>(op =>
                                       {
                                           op.TableName = TABLE_NAME;
                                           op.ConstraintName = "FK_User_User2";

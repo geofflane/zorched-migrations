@@ -34,6 +34,6 @@ namespace Zorched.Migrations.Framework
         void RegisterReader<T>(Type impl) where T : IReaderOperation;
         void RegisterInspector<T>(Type impl) where T : IInspectionOperation;
 
-        T InstanceForInteface<T>();
+        T NewInstance<T>();
     }
 }

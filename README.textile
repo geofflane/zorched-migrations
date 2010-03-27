@@ -35,12 +35,12 @@ namespace Zorched.Migrations.Examples
     {
 
         [Up]
-        public void AddTableNormalWay(IDriver database)
+        public void AddTableNormalWay(ActionRunner runner)
         {
             // Override the CommandTimeout value from this point on.
             database.Database.CommandTimeout = 100;
 
-            database.AddTable(
+            runner.AddTable(
                 op =>
                     {
                         op.TableName = TABLE_NAME;
@@ -69,22 +69,20 @@ namespace Zorched.Migrations.Examples
     {
 
         [Up]
-        public void AddFluentTable(IDriver driver)
+        public void AddFluentTable(FluentRunner runner)
         {
-            var database = new FluentDriver(driver);
-
-            database.AddTable
+            runner.AddTable
                 .UsingSchema("dbo").WithName("TestTable")
                 .WithColumn.Named("Id").OfType(DbType.String).That.IsPrimaryKey.Identity
                 .WithColumn.Named("Bar").OfType(DbType.String)
                 .Add();
 
-            database.AddColumn
+            runner.AddColumn
                 .UsingSchema("dbo").ToTable("AnotherTable")
                 .Column.Named("Bar").OfType(DbType.String).IsNull
                 .Add();
 
-            database.DropTable
+            runner.DropTable
                 .UsingSchema("dbo").AndName("OldTable")
                 .Drop();
         }
@@ -134,9 +132,9 @@ namespace Zorched.Migrations.Examples
     public class CallCustomOp
     {
         [Up]
-        public void AddTableNormalWay(IDriver database)
+        public void AddTableNormalWay(ActionRunner runner)
         {
-            database.Run((ICustomOp op) => op.Variable = "Foo");
+            runner.Run((ICustomOp op) => op.Variable = "Foo");
         }
     }
 }

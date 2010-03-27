@@ -74,11 +74,17 @@ namespace Zorched.Migrations.Core
             var methods = GetUpMethods(migration.GetType(), driver);
             try
             {
-                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+                methods.ForEach(method => method.Invoke(migration, new[] { NewRunner(method, driver) }));
             }
             catch (ArgumentException)
             {
-                throw new MigrationContractException("[Up] methods must take a single IDriver parameter as an argument.", type);    
+                throw new MigrationContractException("[Up] methods must take a single Runner parameter as an argument.", type);    
+            }
+            catch (TargetInvocationException ex)
+            {
+                Console.Out.WriteLine(ex.InnerException.Message);
+                Console.Out.WriteLine(ex.InnerException.StackTrace);
+                throw;
             }
 
             driver.AfterUp(Version);
@@ -93,16 +99,37 @@ namespace Zorched.Migrations.Core
             var methods = GetDownMethods(migration.GetType(), driver);
             try
             {
-                methods.ForEach(method => method.Invoke(migration, new[] {driver}));
+                methods.ForEach(method => method.Invoke(migration, new[] { NewRunner(method, driver) }));
             }
             catch (ArgumentException)
             {
-                throw new MigrationContractException("[Down] methods must take a single IDriver parameter as an argument.", type);    
+                throw new MigrationContractException("[Down] methods must take a single Runner parameter as an argument.", type);    
+            }
+            catch (TargetInvocationException ex)
+            {
+                Console.Out.WriteLine(ex.InnerException.Message);
+                throw ex.InnerException;
             }
 
             driver.AfterDown(Version);
 
             schemaInfo.DeleteSchemaVersion(Version, type.Assembly.GetName().Name);
+        }
+
+        private Runner NewRunner(MethodInfo method, IDriver driver)
+        {
+            ParameterInfo[] pis = method.GetParameters();
+            if (null == pis || 0 == pis.Length)
+                throw new ArgumentException("Migration method must take a Runner as a parameter");
+
+
+            ConstructorInfo ci = pis[0].ParameterType.GetConstructor(new [] { typeof(IDriver) });
+            if (null == ci)
+            {
+                throw new MigrationContractException("Runner must have a constructor that takes an IDriver.", type);
+            }
+
+            return (Runner) ci.Invoke(new [] { driver });
         }
 
         public IEnumerable<MethodInfo> GetUpMethods(Type t, IDriver driver)

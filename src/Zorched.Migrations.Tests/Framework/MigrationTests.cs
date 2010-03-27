@@ -22,6 +22,7 @@ using Rhino.Mocks;
 using Zorched.Migrations.Core;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Schema;
+using Zorched.Migrations.Framework.Simple;
 
 namespace Zorched.Migrations.Tests.Framework
 {
@@ -144,17 +145,17 @@ namespace Zorched.Migrations.Tests.Framework
         }
 
         [Up]
-        public void DoSomething(IDriver driver)
+        public void DoSomething(ActionRunner runner)
         {
-            driver.Run<IGenericOperation>(
+            runner.Driver.Run<IGenericOperation>(
                 op => { op.Sql = "Foo"; }
                 );
         }
 
         [Down]
-        public void DoSomethingElse(IDriver driver)
+        public void DoSomethingElse(ActionRunner runner)
         {
-            driver.Run<IGenericOperation>(
+            runner.Driver.Run<IGenericOperation>(
                 op => { op.Sql = "Foo"; }
                 );
         }
@@ -165,17 +166,17 @@ namespace Zorched.Migrations.Tests.Framework
     {
 
         [Up]
-        public void DoSomething(IDriver driver)
+        public void DoSomething(ActionRunner runner)
         {
-            driver.Run<IGenericOperation>(
+            runner.Driver.Run<IGenericOperation>(
                 op => { op.Sql = "Foo"; }
                 );
         }
 
         [Down]
-        public void DoSomethingElse(IDriver driver)
+        public void DoSomethingElse(ActionRunner runner)
         {
-            driver.Run<IGenericOperation>(
+            runner.Driver.Run<IGenericOperation>(
                 op => { op.Sql = "Foo"; }
                 );
         }

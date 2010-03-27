@@ -18,6 +18,7 @@
 using System.Data;
 using Zorched.Migrations.Framework;
 using Zorched.Migrations.Framework.Schema;
+using Zorched.Migrations.Framework.Simple;
 
 namespace Zorched.Migrations.Examples
 {
@@ -30,9 +31,9 @@ namespace Zorched.Migrations.Examples
         public const string FK_NAME = "FK_person_address";
 
         [Up]
-        public void AddTableNormalWay(IDriver database)
+        public void AddTableNormalWay(ActionRunner runner)
         {
-            database.AddTable(
+            runner.AddTable(
                 op =>
                 {
                     op.TableName = TABLE_NAME;
@@ -44,9 +45,9 @@ namespace Zorched.Migrations.Examples
                     op.AddColumn(new Column { Name = "postalCode", DbType = DbType.String, Size = 12 });
                 });
 
-            database.Run<IAddReferenceAndFkOperation>(op =>
+            runner.Run<IAddReferenceAndFkOperation>(op =>
                                                  {
-                                                     op.Driver = database;
+                                                     op.Driver = runner.Driver;
                                                      op.TableName = AddPersonTable.TABLE_NAME;
                                                      op.ColumnName = FK_COL_NAME;
                                                      op.ConstraintName = FK_NAME;
@@ -56,19 +57,19 @@ namespace Zorched.Migrations.Examples
         }
 
         [Down]
-        public void RemoveTable(IDriver database)
+        public void RemoveTable(ActionRunner runner)
         {
-            database.DropConstraint(op =>
+            runner.DropConstraint(op =>
                                         {
                                             op.TableName = AddPersonTable.TABLE_NAME;
                                             op.ConstraintName = FK_NAME;
                                         });
-            database.DropColumn(op =>
+            runner.DropColumn(op =>
                                     {
                                         op.TableName = AddPersonTable.TABLE_NAME;
                                         op.ColumnName = FK_COL_NAME;
                                     });
-            database.Run<IDropTableOperation>(op => op.TableName = TABLE_NAME);
+            runner.Run<IDropTableOperation>(op => op.TableName = TABLE_NAME);
         }
     }
 }

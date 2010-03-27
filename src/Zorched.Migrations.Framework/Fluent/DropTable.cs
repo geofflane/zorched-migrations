@@ -29,7 +29,7 @@ namespace Zorched.Migrations.Framework.Fluent
         {
             this.driver = driver;
             oprepository = oprepos;
-            dropTableOp = oprepository.InstanceForInteface<IDropTableOperation>();
+            dropTableOp = oprepository.NewInstance<IDropTableOperation>();
         }
 
         public DropTable UsingSchema(string schema)
