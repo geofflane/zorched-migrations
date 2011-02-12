@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Zorched.Migrations.Providers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("WIPFLi LLP")]
+[assembly: AssemblyCompany("Zorched.net")]
 [assembly: AssemblyProduct("Zorched.Migrations.Providers")]
-[assembly: AssemblyCopyright("Copyright © WIPFLi LLP 2009")]
+[assembly: AssemblyCopyright("Copyright © Geoff Lane 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
